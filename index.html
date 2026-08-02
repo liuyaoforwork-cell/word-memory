@@ -252,7 +252,7 @@ footer{text-align:center;padding:28px 20px;color:#9ca3af;font-size:12.5px}
 <script>
 // 品睿教育 高频词汇表（词根词缀分组） T-V 部分
 // 数据结构: { root: 词根, meaning: 词根义, words: [{w:单词, ph:音标, def:释义, ex:例句, tr:翻译}] }
-const WORD_DATA = [
+var WORD_DATA = [
   {
     root: "tail", meaning: "剪", letter: "T",
     words: [
@@ -679,216 +679,281 @@ const WORD_DATA = [
 
 </script>
 <script>
+/* 兼容 ES5：全部改写为老旧手机浏览器（安卓自带/X5/UC/QQ内核等）也能解析执行的写法。
+   之前用了对象/数组展开语法，旧内核解析即失败导致整段脚本不执行、数据全 0。*/
+(function(){
+'use strict';
+
+/* ---- 数据保护：words.js 没加载或为空时给出提示，而不是白屏 ---- */
+if(typeof WORD_DATA==='undefined'||!WORD_DATA||!WORD_DATA.length){
+  var gl=document.getElementById('groupList');
+  if(gl){gl.innerHTML='<div class="empty"><div class="ico">📭</div>单词数据未能加载，请刷新页面重试</div>';}
+  return;
+}
+
+/* 浅拷贝对象（替代 {...obj}），可附加额外字段 */
+function assign(target){
+  target=target||{};
+  for(var a=1;a<arguments.length;a++){
+    var s=arguments[a];
+    if(s){for(var k in s){if(Object.prototype.hasOwnProperty.call(s,k)){target[k]=s[k];}}}
+  }
+  return target;
+}
+function copyWord(w,extra){return assign({},w,extra);}
+function toArr(x){var r=[];for(var i=0;i<x.length;i++){r[i]=x[i];}return r;}
+
 /* ============ 状态 ============ */
-const LS='wordmem_tv_v1';
-let store=JSON.parse(localStorage.getItem(LS)||'{}');
+var LS='wordmem_tv_v1';
+var store={};
+try{store=JSON.parse(localStorage.getItem(LS)||'{}')||{};}catch(e){store={};}
 store.mastered=store.mastered||{};
 store.star=store.star||{};
-function save(){localStorage.setItem(LS,JSON.stringify(store))}
+function save(){try{localStorage.setItem(LS,JSON.stringify(store));}catch(e){}}
 
-let curLetter='ALL', curSearch='', starOnly=false;
+var curLetter='ALL', curSearch='', starOnly=false;
 
 /* ============ 发音 ============ */
-let voices=[];
-function loadVoices(){voices=speechSynthesis.getVoices()}
-loadVoices(); speechSynthesis.onvoiceschanged=loadVoices;
+var voices=[];
+var hasTTS=('speechSynthesis' in window)&&(typeof SpeechSynthesisUtterance!=='undefined');
+function loadVoices(){if(hasTTS){try{voices=speechSynthesis.getVoices()||[];}catch(e){voices=[];}}}
+if(hasTTS){loadVoices();try{speechSynthesis.onvoiceschanged=loadVoices;}catch(e){}}
 function speak(text){
-  if(!('speechSynthesis' in window)){alert('当前浏览器不支持语音朗读');return}
-  speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(text);
-  const lang=document.getElementById('accentSel').value;
-  u.lang=lang; u.rate=.9; u.pitch=1;
-  const v=voices.find(x=>x.lang===lang)||voices.find(x=>x.lang.startsWith('en'));
-  if(v)u.voice=v;
-  speechSynthesis.speak(u);
+  if(!hasTTS){alert('当前浏览器不支持语音朗读，请换用系统自带浏览器或 Chrome');return;}
+  try{
+    speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(text);
+    var lang=document.getElementById('accentSel').value;
+    u.lang=lang; u.rate=0.9; u.pitch=1;
+    var v=null,i;
+    for(i=0;i<voices.length;i++){if(voices[i].lang===lang){v=voices[i];break;}}
+    if(!v){for(i=0;i<voices.length;i++){if(voices[i].lang&&voices[i].lang.indexOf('en')===0){v=voices[i];break;}}}
+    if(v)u.voice=v;
+    speechSynthesis.speak(u);
+  }catch(e){}
 }
+window.speak=speak;
 
 /* ============ 工具 ============ */
 function allWords(){
-  const arr=[];
-  WORD_DATA.forEach(g=>g.words.forEach(w=>arr.push({...w,root:g.root,mean:g.meaning,letter:g.letter})));
+  var arr=[];
+  for(var i=0;i<WORD_DATA.length;i++){
+    var g=WORD_DATA[i];
+    for(var j=0;j<g.words.length;j++){
+      arr.push(copyWord(g.words[j],{root:g.root,mean:g.meaning,letter:g.letter}));
+    }
+  }
   return arr;
 }
+function countStore(obj){var n=0;for(var k in obj){if(Object.prototype.hasOwnProperty.call(obj,k)&&obj[k])n++;}return n;}
 function filteredGroups(){
-  return WORD_DATA.filter(g=>curLetter==='ALL'||g.letter===curLetter)
-    .map(g=>{
-      let ws=g.words;
-      if(starOnly)ws=ws.filter(w=>store.star[w.w]);
-      if(curSearch){
-        const q=curSearch.toLowerCase();
-        ws=ws.filter(w=>w.w.toLowerCase().includes(q)||w.def.includes(curSearch)||g.root.includes(q)||g.meaning.includes(curSearch));
-      }
-      return {...g,words:ws};
-    }).filter(g=>g.words.length>0);
+  var out=[];
+  for(var i=0;i<WORD_DATA.length;i++){
+    var g=WORD_DATA[i];
+    if(!(curLetter==='ALL'||g.letter===curLetter))continue;
+    var ws=g.words;
+    if(starOnly){ws=ws.filter(function(w){return store.star[w.w];});}
+    if(curSearch){
+      var q=curSearch.toLowerCase();
+      ws=ws.filter(function(w){
+        return w.w.toLowerCase().indexOf(q)>-1||w.def.indexOf(curSearch)>-1||g.root.indexOf(q)>-1||g.meaning.indexOf(curSearch)>-1;
+      });
+    }
+    if(ws.length>0){out.push(assign({},g,{words:ws}));}
+  }
+  return out;
 }
 
 /* ============ 统计 ============ */
 function updateStats(){
-  const aw=allWords();
-  document.getElementById('stWords').textContent=aw.length;
+  document.getElementById('stWords').textContent=allWords().length;
   document.getElementById('stRoots').textContent=WORD_DATA.length;
-  document.getElementById('stMastered').textContent=Object.values(store.mastered).filter(Boolean).length;
-  document.getElementById('stStar').textContent=Object.values(store.star).filter(Boolean).length;
+  document.getElementById('stMastered').textContent=countStore(store.mastered);
+  document.getElementById('stStar').textContent=countStore(store.star);
 }
 
 /* ============ 浏览渲染 ============ */
 function renderBrowse(){
-  const box=document.getElementById('groupList');
-  const groups=filteredGroups();
+  var box=document.getElementById('groupList');
+  var groups=filteredGroups();
   if(groups.length===0){
     box.innerHTML='<div class="empty"><div class="ico">🔍</div>没有匹配的单词</div>';return;
   }
-  box.innerHTML=groups.map(g=>`
-    <div class="group">
-      <div class="g-head" onclick="toggleGroup(this)">
-        <span class="g-badge">${g.root}</span>
-        <span class="g-mean">${g.meaning}<small>词根 · ${g.letter}</small></span>
-        <button class="g-play" onclick="event.stopPropagation();speak('${g.root}')">🔊</button>
-        <span class="g-count">${g.words.length} 词</span>
-      </div>
-      <div class="g-body">
-        ${g.words.map(w=>cardHTML(w,g)).join('')}
-      </div>
-    </div>`).join('');
+  var html='';
+  for(var i=0;i<groups.length;i++){
+    var g=groups[i];
+    var cards='';
+    for(var j=0;j<g.words.length;j++){cards+=cardHTML(g.words[j],g);}
+    html+='<div class="group">'
+      +'<div class="g-head" onclick="toggleGroup(this)">'
+      +'<span class="g-badge">'+g.root+'</span>'
+      +'<span class="g-mean">'+g.meaning+'<small>词根 · '+g.letter+'</small></span>'
+      +'<button class="g-play" onclick="event.stopPropagation();speak(\''+g.root+'\')">🔊</button>'
+      +'<span class="g-count">'+g.words.length+' 词</span>'
+      +'</div>'
+      +'<div class="g-body">'+cards+'</div>'
+      +'</div>';
+  }
+  box.innerHTML=html;
 }
 function cardHTML(w,g){
-  const m=store.mastered[w.w]?'mastered':'';
-  const st=store.star[w.w]?'on':'';
-  return `<div class="card ${m}" data-w="${w.w}">
-    <div class="c-top">
-      <span class="c-word">${w.w}</span>
-      <button class="c-play" onclick="speak('${w.w}')">🔊</button>
-      <button class="c-star ${st}" onclick="toggleStar('${w.w}',this)">★</button>
-    </div>
-    <div class="c-ph">${w.ph}</div>
-    <div class="c-def">${w.def}</div>
-    <div class="c-ex">
-      <span class="en">${w.ex}</span>
-      <span class="cn">${w.tr}</span>
-    </div>
-    <button class="c-check" onclick="toggleMaster('${w.w}',this)">${store.mastered[w.w]?'✓ 已掌握':'标记掌握'}</button>
-  </div>`;
+  var m=store.mastered[w.w]?'mastered':'';
+  var st=store.star[w.w]?'on':'';
+  return '<div class="card '+m+'" data-w="'+w.w+'">'
+    +'<div class="c-top">'
+    +'<span class="c-word">'+w.w+'</span>'
+    +'<button class="c-play" onclick="speak(\''+w.w+'\')">🔊</button>'
+    +'<button class="c-star '+st+'" onclick="toggleStar(\''+w.w+'\',this)">★</button>'
+    +'</div>'
+    +'<div class="c-ph">'+w.ph+'</div>'
+    +'<div class="c-def">'+w.def+'</div>'
+    +'<div class="c-ex"><span class="en">'+w.ex+'</span><span class="cn">'+w.tr+'</span></div>'
+    +'<button class="c-check" onclick="toggleMaster(\''+w.w+'\',this)">'+(store.mastered[w.w]?'✓ 已掌握':'标记掌握')+'</button>'
+    +'</div>';
 }
-function toggleGroup(el){el.nextElementSibling.classList.toggle('collapsed')}
-function toggleStar(w,btn){store.star[w]=!store.star[w];save();btn.classList.toggle('on');updateStats();if(starOnly)renderBrowse()}
+function toggleGroup(el){el.nextElementSibling.className=el.nextElementSibling.className.indexOf('collapsed')>-1?'g-body':'g-body collapsed';}
+function toggleStar(w,btn){store.star[w]=!store.star[w];save();btn.className=store.star[w]?'c-star on':'c-star';updateStats();if(starOnly)renderBrowse();}
 function toggleMaster(w,btn){
   store.mastered[w]=!store.mastered[w];save();updateStats();
-  const card=btn.closest('.card');
-  card.classList.toggle('mastered');
+  var card=btn.parentNode;while(card&&card.className.indexOf('card')<0){card=card.parentNode;}
+  if(card){card.className=store.mastered[w]?'card mastered':'card';}
   btn.textContent=store.mastered[w]?'✓ 已掌握':'标记掌握';
 }
+window.toggleGroup=toggleGroup;window.toggleStar=toggleStar;window.toggleMaster=toggleMaster;
 
 /* ============ 字母导航 ============ */
 function buildLetterNav(){
-  const letters=[...new Set(WORD_DATA.map(g=>g.letter))];
-  const nav=document.getElementById('letterNav');
-  nav.innerHTML=`<button data-l="ALL" class="on" style="width:auto;padding:0 16px">全部</button>`+
-    letters.map(l=>`<button data-l="${l}">${l}</button>`).join('');
-  nav.querySelectorAll('button').forEach(b=>b.onclick=()=>{
-    curLetter=b.dataset.l;
-    nav.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on');renderBrowse();
-  });
+  var seen={},letters=[],i;
+  for(i=0;i<WORD_DATA.length;i++){var L=WORD_DATA[i].letter;if(!seen[L]){seen[L]=1;letters.push(L);}}
+  var nav=document.getElementById('letterNav');
+  var html='<button data-l="ALL" class="on" style="width:auto;padding:0 16px">全部</button>';
+  for(i=0;i<letters.length;i++){html+='<button data-l="'+letters[i]+'">'+letters[i]+'</button>';}
+  nav.innerHTML=html;
+  var btns=nav.getElementsByTagName('button');
+  for(i=0;i<btns.length;i++){
+    btns[i].onclick=function(){
+      curLetter=this.getAttribute('data-l');
+      var bs=nav.getElementsByTagName('button');
+      for(var k=0;k<bs.length;k++){bs[k].className=bs[k].className.replace(/\bon\b/,'').replace(/\s+$/,'');}
+      this.className=(this.className+' on').replace(/\s+/g,' ');
+      renderBrowse();
+    };
+  }
 }
 
 /* ============ 模式切换 ============ */
-document.querySelectorAll('#modeSeg button').forEach(b=>b.onclick=()=>{
-  document.querySelectorAll('#modeSeg button').forEach(x=>x.classList.remove('on'));
-  b.classList.add('on');
-  const m=b.dataset.mode;
-  document.getElementById('browseStage').style.display=m==='browse'?'block':'none';
-  document.getElementById('flashStage').classList.toggle('on',m==='flash');
-  document.getElementById('quizStage').classList.toggle('on',m==='quiz');
-  if(m==='flash')initFlash();
-  if(m==='quiz')initQuiz();
-});
+(function(){
+  var segBtns=document.querySelectorAll('#modeSeg button');
+  for(var i=0;i<segBtns.length;i++){
+    segBtns[i].onclick=function(){
+      var all=document.querySelectorAll('#modeSeg button');
+      for(var k=0;k<all.length;k++){all[k].className=all[k].className.replace(/\bon\b/,'').replace(/\s+$/,'');}
+      this.className=(this.className+' on').replace(/\s+/g,' ');
+      var m=this.getAttribute('data-mode');
+      document.getElementById('browseStage').style.display=(m==='browse')?'block':'none';
+      setOn(document.getElementById('flashStage'),m==='flash','fc-stage');
+      setOn(document.getElementById('quizStage'),m==='quiz','quiz-stage');
+      if(m==='flash')initFlash();
+      if(m==='quiz')initQuiz();
+    };
+  }
+})();
+function setOn(el,on,base){el.className=on?(base+' on'):base;}
 
 /* ============ 搜索 & 收藏筛选 ============ */
-document.getElementById('searchInput').oninput=e=>{curSearch=e.target.value.trim();renderBrowse()};
-document.getElementById('filterStar').onclick=function(){starOnly=true;this.classList.add('on');document.getElementById('filterAll').classList.remove('on');renderBrowse()};
-document.getElementById('filterAll').onclick=function(){starOnly=false;this.classList.add('on');document.getElementById('filterStar').classList.remove('on');renderBrowse()};
+document.getElementById('searchInput').oninput=function(e){curSearch=(this.value||'').replace(/^\s+|\s+$/g,'');renderBrowse();};
+document.getElementById('filterStar').onclick=function(){starOnly=true;this.className='on';document.getElementById('filterAll').className='';renderBrowse();};
+document.getElementById('filterAll').onclick=function(){starOnly=false;this.className='on';document.getElementById('filterStar').className='';renderBrowse();};
 
 /* ============ 卡片模式 ============ */
-let fcList=[],fcIdx=0;
+var fcList=[],fcIdx=0;
 function initFlash(){
-  const sel=document.getElementById('fcScope');
-  sel.innerHTML=`<option value="ALL">全部单词 (${allWords().length})</option>`+
-    `<option value="STAR">⭐ 我的收藏 (${Object.values(store.star).filter(Boolean).length})</option>`+
-    WORD_DATA.map(g=>`<option value="R:${g.root}">${g.root} · ${g.meaning} (${g.words.length})</option>`).join('');
-  sel.onchange=()=>{buildFcList(sel.value);fcIdx=0;showFc()};
+  var sel=document.getElementById('fcScope');
+  var html='<option value="ALL">全部单词 ('+allWords().length+')</option>'
+    +'<option value="STAR">⭐ 我的收藏 ('+countStore(store.star)+')</option>';
+  for(var i=0;i<WORD_DATA.length;i++){var g=WORD_DATA[i];html+='<option value="R:'+g.root+'">'+g.root+' · '+g.meaning+' ('+g.words.length+')</option>';}
+  sel.innerHTML=html;
+  sel.onchange=function(){buildFcList(sel.value);fcIdx=0;showFc();};
   buildFcList('ALL');fcIdx=0;showFc();
 }
 function buildFcList(scope){
-  if(scope==='ALL')fcList=allWords();
-  else if(scope==='STAR')fcList=allWords().filter(w=>store.star[w.w]);
-  else{const r=scope.slice(2);const g=WORD_DATA.find(x=>x.root===r);fcList=g.words.map(w=>({...w,root:g.root,mean:g.meaning}))}
+  if(scope==='ALL'){fcList=allWords();}
+  else if(scope==='STAR'){fcList=allWords().filter(function(w){return store.star[w.w];});}
+  else{
+    var r=scope.slice(2),g=null;
+    for(var i=0;i<WORD_DATA.length;i++){if(WORD_DATA[i].root===r){g=WORD_DATA[i];break;}}
+    fcList=[];
+    if(g){for(var j=0;j<g.words.length;j++){fcList.push(copyWord(g.words[j],{root:g.root,mean:g.meaning}));}}
+  }
 }
 function showFc(){
-  document.getElementById('flip').classList.remove('flipped');
-  if(fcList.length===0){document.getElementById('fcWord').textContent='暂无单词';document.getElementById('fcPh').textContent='';document.getElementById('fcProgress').textContent='0 / 0';return}
-  const w=fcList[fcIdx];
+  var flip=document.getElementById('flip');flip.className='flip';
+  if(fcList.length===0){document.getElementById('fcWord').textContent='暂无单词';document.getElementById('fcPh').textContent='';document.getElementById('fcProgress').textContent='0 / 0';return;}
+  var w=fcList[fcIdx];
   document.getElementById('fcWord').textContent=w.w;
   document.getElementById('fcPh').textContent=w.ph;
   document.getElementById('fcDef').textContent=w.def;
   document.getElementById('fcExEn').textContent=w.ex;
   document.getElementById('fcExCn').textContent=w.tr;
   document.getElementById('fcRoot').textContent='词根 '+w.root+' · '+w.mean;
-  document.getElementById('fcProgress').textContent=`${fcIdx+1} / ${fcList.length}`;
-  const mb=document.getElementById('fcMaster');
-  mb.textContent=store.mastered[w.w]?'✓ 已掌握':'✓ 标记掌握';
+  document.getElementById('fcProgress').textContent=(fcIdx+1)+' / '+fcList.length;
+  document.getElementById('fcMaster').textContent=store.mastered[w.w]?'✓ 已掌握':'✓ 标记掌握';
 }
-document.getElementById('flip').onclick=function(){this.classList.toggle('flipped')};
-document.getElementById('fcPlay').onclick=e=>{e.stopPropagation();speak(fcList[fcIdx].w)};
-document.getElementById('fcNext').onclick=()=>{if(fcIdx<fcList.length-1){fcIdx++;showFc()}};
-document.getElementById('fcPrev').onclick=()=>{if(fcIdx>0){fcIdx--;showFc()}};
-document.getElementById('fcMaster').onclick=()=>{const w=fcList[fcIdx].w;store.mastered[w]=!store.mastered[w];save();updateStats();showFc()};
+document.getElementById('flip').onclick=function(){this.className=this.className.indexOf('flipped')>-1?'flip':'flip flipped';};
+document.getElementById('fcPlay').onclick=function(e){if(e&&e.stopPropagation)e.stopPropagation();speak(fcList[fcIdx].w);};
+document.getElementById('fcNext').onclick=function(){if(fcIdx<fcList.length-1){fcIdx++;showFc();}};
+document.getElementById('fcPrev').onclick=function(){if(fcIdx>0){fcIdx--;showFc();}};
+document.getElementById('fcMaster').onclick=function(){var w=fcList[fcIdx].w;store.mastered[w]=!store.mastered[w];save();updateStats();showFc();};
 
 /* ============ 测验模式 ============ */
-let quizList=[],qIdx=0,qScore=0;
-function initQuiz(){
-  quizList=shuffle(allWords()).slice(0,10);
-  qIdx=0;qScore=0;renderQuiz();
-}
+var quizList=[],qIdx=0,qScore=0;
+function initQuiz(){quizList=shuffle(allWords()).slice(0,10);qIdx=0;qScore=0;renderQuiz();}
 function renderQuiz(){
-  const box=document.getElementById('quizBox');
+  var box=document.getElementById('quizBox');
   if(qIdx>=quizList.length){
-    box.innerHTML=`<div class="quiz-result">
-      <div style="font-size:40px">${qScore>=8?'🎉':qScore>=6?'👍':'💪'}</div>
-      <div class="big">${qScore} / ${quizList.length}</div>
-      <p>${qScore>=8?'太棒了，掌握得很牢固！':qScore>=6?'不错，继续加油！':'再复习一下词根卡片吧～'}</p>
-      <button class="fc-btn primary" onclick="initQuiz()">再来一组 →</button>
-    </div>`;return;
+    var face=qScore>=8?'🎉':(qScore>=6?'👍':'💪');
+    var msg=qScore>=8?'太棒了，掌握得很牢固！':(qScore>=6?'不错，继续加油！':'再复习一下词根卡片吧～');
+    box.innerHTML='<div class="quiz-result"><div style="font-size:40px">'+face+'</div>'
+      +'<div class="big">'+qScore+' / '+quizList.length+'</div><p>'+msg+'</p>'
+      +'<button class="fc-btn primary" onclick="initQuiz()">再来一组 →</button></div>';
+    return;
   }
-  const w=quizList[qIdx];
-  const opts=shuffle([w.w,...shuffle(allWords().filter(x=>x.w!==w.w)).slice(0,3).map(x=>x.w)]);
-  box.innerHTML=`
-    <div class="q-num">第 ${qIdx+1} / ${quizList.length} 题 · 得分 ${qScore}</div>
-    <div class="q-prompt">根据释义选出正确的单词 &nbsp;<b>[词根 ${w.root}·${w.mean}]</b></div>
-    <div class="q-def">${w.def}</div>
-    <div class="q-opts">${opts.map(o=>`<button class="q-opt" onclick="answerQuiz(this,'${o}','${w.w}')">${o}</button>`).join('')}</div>
-    <button class="q-next" id="qNext" onclick="qIdx++;renderQuiz()">下一题 →</button>`;
+  var w=quizList[qIdx];
+  var wrong=shuffle(allWords().filter(function(x){return x.w!==w.w;})).slice(0,3);
+  var pool=[w.w];for(var i=0;i<wrong.length;i++){pool.push(wrong[i].w);}
+  var opts=shuffle(pool);
+  var optHtml='';
+  for(i=0;i<opts.length;i++){optHtml+='<button class="q-opt" onclick="answerQuiz(this,\''+opts[i]+'\',\''+w.w+'\')">'+opts[i]+'</button>';}
+  box.innerHTML='<div class="q-num">第 '+(qIdx+1)+' / '+quizList.length+' 题 · 得分 '+qScore+'</div>'
+    +'<div class="q-prompt">根据释义选出正确的单词 &nbsp;<b>[词根 '+w.root+'·'+w.mean+']</b></div>'
+    +'<div class="q-def">'+w.def+'</div>'
+    +'<div class="q-opts">'+optHtml+'</div>'
+    +'<button class="q-next" id="qNext" onclick="qIdx_next()">下一题 →</button>';
 }
+function qIdx_next(){qIdx++;renderQuiz();}
 function answerQuiz(btn,pick,ans){
-  const opts=document.querySelectorAll('.q-opt');
-  opts.forEach(o=>o.style.pointerEvents='none');
-  if(pick===ans){btn.classList.add('correct');qScore++;speak(ans)}
-  else{btn.classList.add('wrong');opts.forEach(o=>{if(o.textContent===ans)o.classList.add('correct')})}
-  document.getElementById('qNext').classList.add('show');
+  var opts=document.querySelectorAll('.q-opt');
+  for(var i=0;i<opts.length;i++){opts[i].style.pointerEvents='none';}
+  if(pick===ans){btn.className='q-opt correct';qScore++;speak(ans);}
+  else{btn.className='q-opt wrong';for(i=0;i<opts.length;i++){if(opts[i].textContent===ans)opts[i].className='q-opt correct';}}
+  var nx=document.getElementById('qNext');nx.className='q-next show';
 }
-function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function shuffle(a){a=toArr(a);for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+window.initQuiz=initQuiz;window.answerQuiz=answerQuiz;window.qIdx_next=qIdx_next;
 
 /* ============ 键盘快捷键（卡片模式）============ */
-document.addEventListener('keydown',e=>{
-  if(!document.getElementById('flashStage').classList.contains('on'))return;
-  if(e.key==='ArrowRight')document.getElementById('fcNext').click();
-  if(e.key==='ArrowLeft')document.getElementById('fcPrev').click();
-  if(e.key===' '){e.preventDefault();document.getElementById('flip').click()}
+document.addEventListener('keydown',function(e){
+  if(document.getElementById('flashStage').className.indexOf('on')<0)return;
+  if(e.key==='ArrowRight'||e.keyCode===39)document.getElementById('fcNext').click();
+  if(e.key==='ArrowLeft'||e.keyCode===37)document.getElementById('fcPrev').click();
+  if(e.key===' '||e.keyCode===32){e.preventDefault();document.getElementById('flip').click();}
 });
 
 /* ============ 初始化 ============ */
 buildLetterNav();
 updateStats();
 renderBrowse();
+})();
 </script>
 </body>
 </html>
