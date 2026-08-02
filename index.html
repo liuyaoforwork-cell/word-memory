@@ -713,13 +713,17 @@ function save(){try{localStorage.setItem(LS,JSON.stringify(store));}catch(e){}}
 
 var curLetter='ALL', curSearch='', starOnly=false;
 
-/* ============ 发音 ============ */
+/* ============ 发音 ============
+   策略：优先用在线音频(有道词典标准发音 mp3)，微信/QQ/UC 等国产内核都能播；
+   在线播放失败时，兜底用浏览器自带语音合成(Web Speech API)。 */
 var voices=[];
 var hasTTS=('speechSynthesis' in window)&&(typeof SpeechSynthesisUtterance!=='undefined');
 function loadVoices(){if(hasTTS){try{voices=speechSynthesis.getVoices()||[];}catch(e){voices=[];}}}
 if(hasTTS){loadVoices();try{speechSynthesis.onvoiceschanged=loadVoices;}catch(e){}}
-function speak(text){
-  if(!hasTTS){alert('当前浏览器不支持语音朗读，请换用系统自带浏览器或 Chrome');return;}
+
+var _audio=null;
+function ttsFallback(text){
+  if(!hasTTS){return false;}
   try{
     speechSynthesis.cancel();
     var u=new SpeechSynthesisUtterance(text);
@@ -730,7 +734,31 @@ function speak(text){
     if(!v){for(i=0;i<voices.length;i++){if(voices[i].lang&&voices[i].lang.indexOf('en')===0){v=voices[i];break;}}}
     if(v)u.voice=v;
     speechSynthesis.speak(u);
-  }catch(e){}
+    return true;
+  }catch(e){return false;}
+}
+function speak(text){
+  if(!text){return;}
+  var t=(''+text).trim();
+  // 只取首个英文词条(有道接口对短语只读第一个词，取第一个单词最稳)
+  var word=t.split(/\s+/)[0].replace(/[^a-zA-Z\-']/g,'');
+  if(!word){ttsFallback(t);return;}
+  var accent='en-US';
+  try{accent=document.getElementById('accentSel').value;}catch(e){}
+  var type=(accent==='en-GB')?1:2; // 有道: 1=英音, 2=美音
+  var url='https://dict.youdao.com/dictvoice?type='+type+'&audio='+encodeURIComponent(word);
+  try{
+    if(_audio){try{_audio.pause();}catch(e){}}
+    _audio=new Audio(url);
+    var fellBack=false;
+    _audio.onerror=function(){if(!fellBack){fellBack=true;ttsFallback(t);}};
+    var p=_audio.play();
+    if(p&&typeof p.then==='function'){
+      p['catch'](function(){if(!fellBack){fellBack=true;ttsFallback(t);}});
+    }
+  }catch(e){
+    ttsFallback(t);
+  }
 }
 window.speak=speak;
 
