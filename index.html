@@ -34,8 +34,15 @@ header{background:linear-gradient(135deg,#4f46e5,#7c3aed 55%,#9333ea);color:#fff
 .stat span{font-size:11px;opacity:.85}
 
 /* ---------- Toolbar ---------- */
+.weekbar{background:linear-gradient(135deg,#eef2ff,#f5f0ff);border:1.5px solid #e3e0f5;
+  border-radius:14px;margin:-18px auto 14px;padding:12px 16px;display:flex;gap:10px;
+  align-items:center;flex-wrap:wrap;position:relative;z-index:6}
+.weekbar .wk-label{font-size:14px;font-weight:700;color:#5b4bc4}
+.weekbar select{border:1.5px solid #cfc8ee;border-radius:10px;padding:9px 12px;font-size:14.5px;
+  font-weight:600;color:#3d3570;background:#fff;outline:none;cursor:pointer;min-width:200px}
+.weekbar .wk-hint{font-size:12.5px;color:var(--sub);margin-left:auto}
 .toolbar{background:var(--card);border-radius:16px;box-shadow:var(--shadow);
-  margin:-18px auto 22px;padding:14px 16px;display:flex;gap:12px;align-items:center;
+  margin:0 auto 22px;padding:14px 16px;display:flex;gap:12px;align-items:center;
   flex-wrap:wrap;position:relative;z-index:5}
 .search{flex:1;min-width:200px;position:relative}
 .search input{width:100%;border:1.5px solid var(--line);border-radius:11px;
@@ -174,12 +181,12 @@ footer{text-align:center;padding:28px 20px;color:#9ca3af;font-size:12.5px}
       <div class="logo">📖</div>
       <div>
         <h1>词根记忆卡</h1>
-        <p>高频词汇 T–V · 词根词缀分组速记</p>
+        <p id="subTitle">高频词汇 · 每周一组</p>
       </div>
     </div>
     <div class="stats">
       <div class="stat"><b id="stWords">0</b><span>单词</span></div>
-      <div class="stat"><b id="stRoots">0</b><span>词根</span></div>
+      <div class="stat"><b id="stRoots">0</b><span id="stRootsLabel">词根</span></div>
       <div class="stat"><b id="stMastered">0</b><span>已掌握</span></div>
       <div class="stat"><b id="stStar">0</b><span>收藏</span></div>
     </div>
@@ -187,6 +194,11 @@ footer{text-align:center;padding:28px 20px;color:#9ca3af;font-size:12.5px}
 </header>
 
 <div class="wrap">
+  <div class="weekbar">
+    <span class="wk-label">📅 学习周次</span>
+    <select id="weekSel"></select>
+    <span class="wk-hint" id="weekHint"></span>
+  </div>
   <div class="toolbar">
     <div class="search"><input id="searchInput" placeholder="搜索单词 / 词根 / 释义…"></div>
     <div class="seg" id="modeSeg">
@@ -679,17 +691,405 @@ var WORD_DATA = [
 
 </script>
 <script>
+// 品睿教育 基础词汇表 T-Z 部分（第2周）
+// 纯单词表结构：按字母分组，words:[{w,ph,def}]，无例句
+var WORD_DATA_WEEK2 = [
+  {
+    root: "S", meaning: "字母 S（收尾）", letter: "S",
+    words: [
+      { w: "surgeon", ph: "[ˈsɜːdʒən]", def: "n.外科医生" },
+      { w: "surgery", ph: "[ˈsɜːdʒəri]", def: "n.外科,外科学；手术室,诊疗室" },
+      { w: "surprise", ph: "[səˈpraɪz]", def: "v.使诧异,使惊异；奇袭 n.诧异,惊异；奇袭" },
+      { w: "surrender", ph: "[səˈrendə(r)]", def: "vi.投降,屈服 vt.放弃,交出 n.投降,认输" },
+      { w: "surround", ph: "[səˈraʊnd]", def: "vt.包围,环绕 n.环绕物" },
+      { w: "surroundings", ph: "[səˈraʊndɪŋz]", def: "n.周围的事物,环境" },
+      { w: "survey", ph: "[ˈsɜːveɪ]", def: "v./n.俯瞰,眺望；全面审视,调查；测量图,勘定" },
+      { w: "swallow", ph: "[ˈswɒləʊ]", def: "n.燕子；吞咽 vt.吞,咽；轻信；忍受；vi.咽口水" },
+      { w: "sweat", ph: "[swet]", def: "n.汗 v.(使)出汗" },
+      { w: "sweater", ph: "[ˈswetə(r)]", def: "n.毛衣,绒衣,厚运动衫" },
+      { w: "sweep", ph: "[swiːp]", def: "v.扫,打扫；席卷,冲击;扫过,掠过" },
+      { w: "sweet", ph: "[swiːt]", def: "a.甜的;可爱的,美好的 n.(常pl.)糖果;甜食" },
+      { w: "swell", ph: "[swel]", def: "n./v.肿胀;膨胀;增大;增加" },
+      { w: "swift", ph: "[swɪft]", def: "a./ad.快的(地);敏捷的(地)a.立刻的 n.雨燕" },
+      { w: "swim", ph: "[swɪm]", def: "vi.游泳;游动;漂浮;眩晕;充溢 vt.游过 n.游泳" },
+      { w: "switch", ph: "[swɪtʃ]", def: "n.开关；转换；鞭子 v.转变,转换；抽打" },
+      { w: "sword", ph: "[sɔːd]", def: "n.剑，刀；武力" },
+      { w: "system", ph: "[ˈsɪstəm]", def: "n.系统,体系；制度；方法,方式,步骤" },
+      { w: "systematic", ph: "[ˌsɪstəˈmætɪk]", def: "a.(systematical)系统的,有组织的" }
+    ]
+  },
+  {
+    root: "T", meaning: "字母 T", letter: "T",
+    words: [
+      { w: "table", ph: "[ˈteɪbl]", def: "n.桌子;餐桌;工作台;表格 vt.搁置;提交讨论" },
+      { w: "tablet", ph: "[ˈtæblət]", def: "n.药片;碑,匾" },
+      { w: "talent", ph: "[ˈtælənt]", def: "n.才能,天资;人才" },
+      { w: "talk", ph: "[tɔːk]", def: "n.谈话；聊天,讲话,演讲 v.说话；交谈" },
+      { w: "tall", ph: "[tɔːl]", def: "a.(身材)高的,高大的；夸大的,离谱的" },
+      { w: "tank", ph: "[tæŋk]", def: "n.罐,槽,箱；坦克 vt.储于槽中" },
+      { w: "tap", ph: "[tæp]", def: "n.塞子;水龙头; n./v.轻打,轻敲; vt.开发" },
+      { w: "tape", ph: "[teɪp]", def: "n.带(子);录音带,磁带 v.录音;系,捆" },
+      { w: "tar", ph: "[tɑː(r)]", def: "n.柏油，焦油 vt.涂或浇柏油/焦油于" },
+      { w: "task", ph: "[tɑːsk]", def: "n.任务,作业,工作" },
+      { w: "taste", ph: "[teɪst]", def: "v.品尝;(of)有…味道;体验 n.滋味;味觉" },
+      { w: "taxi", ph: "[ˈtæksi]", def: "n.出租汽车 v.[指飞机](使)滑行" },
+      { w: "tea", ph: "[tiː]", def: "n.茶(叶)；午后茶点" },
+      { w: "team", ph: "[tiːm]", def: "n.小队,小组 v.协同工作" },
+      { w: "tear", ph: "[tɛː; tɪə]", def: "n.(pl.)眼泪 vt.撕裂；使…分裂 vi.破损" },
+      { w: "tease", ph: "[tiːz]", def: "v.戏弄,取笑;挑逗 n.(爱)戏弄他人者;戏弄" },
+      { w: "tell", ph: "[tel]", def: "vt.告诉,讲述；告诫；吩咐,命令；辨/区别" },
+      { w: "tempo", ph: "[ˈtempəʊ]", def: "n.节奏,行进速度;(音乐)速度" },
+      { w: "tennis", ph: "[ˈtenɪs]", def: "n.网球" },
+      { w: "tent", ph: "[tent]", def: "n.帐篷" },
+      { w: "than", ph: "[ðən; ðæn]", def: "conj.(用于形容词,副词的比较级之后)比" },
+      { w: "thank", ph: "[θæŋk]", def: "vt.感谢 int.[-s]谢谢 n.[pl.]感谢(意)" },
+      { w: "Thanksgiving", ph: "[ˌθæŋksˈɡɪvɪŋ]", def: "n.感恩节" },
+      { w: "that", ph: "[ðæt]", def: "a./pron.那，那个 ad.那么 conj.[引导从句]" },
+      { w: "the", ph: "[ðə; ði; ðiː]", def: "art.这(那)个;这(那)些(指特定的人或物)" },
+      { w: "theater", ph: "[ˈθɪətə(r)]", def: "n.(theatre)戏院;戏剧;阶梯教室" },
+      { w: "theft", ph: "[θeft]", def: "n.偷窃(行为),偷窃罪" },
+      { w: "their", ph: "[ðeə(r)]", def: "pron.[they的所有格]他(她、它)们的" },
+      { w: "theirs", ph: "[ðeəz]", def: "pron.[they的物主代词]他(她、它)们的" },
+      { w: "them", ph: "[ðəm; ðem]", def: "pron.他们/她们/它们(they的宾格形式)" },
+      { w: "theme", ph: "[θiːm]", def: "n.题目,主题；主旋律,基调" },
+      { w: "themselves", ph: "[ðəmˈselvz]", def: "pron.他(她、它)们自己；他(她、它)们亲自" },
+      { w: "then", ph: "[ðen]", def: "ad.当时,在那时；然后,于是；那么,因而" },
+      { w: "there", ph: "[ðeə(r)]", def: "ad.在那儿；往那儿；[作引导词表示\"存在\"]" },
+      { w: "thereafter", ph: "[ˌðeərˈɑːftə(r)]", def: "ad.此后,以后" },
+      { w: "therefore", ph: "[ˈðeəfɔː(r)]", def: "ad.因此,所以 conj.因此" },
+      { w: "these", ph: "[ðiːz]", def: "pron.&a.[this的复数]这些；这些人(东西)" },
+      { w: "they", ph: "[ðeɪ]", def: "pron.他(她、它)们" },
+      { w: "thick", ph: "[θɪk]", def: "a.厚的，粗的，稠的，浓的 ad.厚,浓,密" },
+      { w: "thief", ph: "[θiːf]", def: "n.(thieves)贼，小偷" },
+      { w: "thin", ph: "[θɪn]", def: "a.薄的,细的;稀薄的,淡的;瘦的 v.变薄;变稀" },
+      { w: "thing", ph: "[θɪŋ]", def: "n.物,东西；事,事情；所有物；局面,情况" },
+      { w: "think", ph: "[θɪŋk]", def: "v.想，思索；认为，以为；想要；料想，预料" },
+      { w: "this", ph: "[ðɪs]", def: "pron.这(个) a.这(个)；今 ad.这(样)" },
+      { w: "thorn", ph: "[θɔːn]", def: "n.刺,荆棘" },
+      { w: "thorough", ph: "[ˈθʌrə]", def: "a.彻底的,完全的;精心的" },
+      { w: "those", ph: "[ðəʊz]", def: "pron./a.[that的复数]那些；那些人(东西)" },
+      { w: "though", ph: "[ðəʊ]", def: "ad.可是，然而，不过 conj.尽管，虽然" },
+      { w: "thought", ph: "[θɔːt]", def: "n.思想,思考,思维；意图,打算；想法" },
+      { w: "thoughtful", ph: "[ˈθɔːtfl]", def: "a.认真思考的,沉思的;体贴人的,关心的" },
+      { w: "thousand", ph: "[ˈθaʊznd]", def: "num./n./a.一千 [pl.]许许多多,成千上万" },
+      { w: "thrill", ph: "[θrɪl]", def: "n.一阵激动(恐惧) v.激动；(使)毛骨悚然" },
+      { w: "throat", ph: "[θrəʊt]", def: "n.咽喉,嗓子" },
+      { w: "throne", ph: "[θrəʊn]", def: "n.御座，宝座；王位，王权" },
+      { w: "throw", ph: "[θrəʊ]", def: "vt.扔；使突然陷入；使困惑 n.投掷(距离)" },
+      { w: "thumb", ph: "[θʌm]", def: "n.拇指 v.示意要求搭车；迅速翻阅" },
+      { w: "Thursday", ph: "[ˈθɜːzdeɪ; ˈθɜːzdi]", def: "n.星期四" },
+      { w: "thus", ph: "[ðʌs]", def: "ad.如此；像这样；于是；因此" },
+      { w: "ticket", ph: "[ˈtɪkɪt]", def: "n.票,入场券;票签;(交通违章)罚款传票" },
+      { w: "tidy", ph: "[ˈtaɪdi]", def: "a.整洁的,整齐的 v.整理,收拾" },
+      { w: "tiger", ph: "[ˈtaɪɡə(r)]", def: "n.虎；老虎" },
+      { w: "tile", ph: "[taɪl]", def: "n.瓦片,瓷砖 vt.铺瓦于,贴砖于" },
+      { w: "till", ph: "[tɪl]", def: "prep.直到，直到…为止，与until意思相同" },
+      { w: "tilt", ph: "[tɪlt]", def: "v.(使)倾侧；(使)倾斜 n.倾斜；倾角" },
+      { w: "tip", ph: "[tɪp]", def: "n.尖端;末端;小费 n./v.轻击;倾斜;给小费" },
+      { w: "tire", ph: "[ˈtaɪə(r)]", def: "v.(使)疲倦,(使)厌倦 n.(=tyre)轮胎,车胎" },
+      { w: "tired", ph: "[ˈtaɪəd]", def: "a.疲劳的;厌倦的" },
+      { w: "tiresome", ph: "[ˈtaɪəsəm]", def: "a.使人厌倦的,讨厌的" },
+      { w: "to", ph: "[tə; tu; tuː]", def: "prep.(表示方向)到；方向；(表示间接关系)给." },
+      { w: "today", ph: "[təˈdeɪ]", def: "ad.在今天；现今，在当代 n.今天；现在" },
+      { w: "toe", ph: "[təʊ]", def: "n.脚趾,足尖" },
+      { w: "together", ph: "[təˈɡeðə(r)]", def: "ad.共同,一起;合起来,集拢地" },
+      { w: "toilet", ph: "[ˈtɔɪlət]", def: "n.厕所,盥洗室" },
+      { w: "toll", ph: "[təʊl]", def: "n.(道路、桥等的)通行费；牺牲；死伤人数" },
+      { w: "tomato", ph: "[təˈmɑːtəʊ]", def: "n.西红柿" },
+      { w: "tomb", ph: "[tuːm]", def: "n.坟,冢" },
+      { w: "tomorrow", ph: "[təˈmɒrəʊ]", def: "n.明天；来日,未来 ad.在明天,在明日" },
+      { w: "ton", ph: "[tʌn]", def: "n.吨;(pl.)大量,许多" },
+      { w: "tonight", ph: "[təˈnaɪt]", def: "ad.在今晚；在今夜 n.今晚，今夜" },
+      { w: "too", ph: "[tuː]", def: "ad.也，还；太，过于；很，非常" },
+      { w: "tool", ph: "[tuːl]", def: "n.工具，用具；方法，手段" },
+      { w: "top", ph: "[tɒp]", def: "n.顶,顶端；首位;顶点 a.最高的；顶上的" },
+      { w: "topic", ph: "[ˈtɒpɪk]", def: "n.话题,主题,题目" },
+      { w: "total", ph: "[ˈtəʊtl]", def: "n.总数,合计 a.总的,全部的 v.合计,总数达" },
+      { w: "tough", ph: "[tʌf]", def: "a.坚韧的,棘手的;强健的,吃苦耐劳的;粗暴的" },
+      { w: "tour", ph: "[tʊə(r); tɔː(r)]", def: "n.旅游，旅行；巡回演出/比赛 v.旅游" },
+      { w: "tourist", ph: "[ˈtʊərɪst; ˈtɔːrɪst]", def: "n.旅游者,观光客；巡回比赛的运动员" },
+      { w: "toward", ph: "[təˈwɔːd; twɔːd; tɔːd]", def: "prep.(towards)朝，方向；将近；对于；为了" },
+      { w: "tower", ph: "[ˈtaʊə(r)]", def: "n.塔 v.高耸" },
+      { w: "town", ph: "[taʊn]", def: "n.市镇；市民；城市商业区,闹市区" },
+      { w: "toxic", ph: "[ˈtɒksɪk]", def: "a.有毒的；中毒的" },
+      { w: "toy", ph: "[tɔɪ]", def: "n.玩具 vi.(with)漫不经心地考虑；摆弄" },
+      { w: "trade", ph: "[treɪd]", def: "n.贸易,商业;职业,行业 v.经商,交易" },
+      { w: "trademark", ph: "[ˈtreɪdmɑːk]", def: "n.商标；特征 vt.注册的…商标" },
+      { w: "tradition", ph: "[trəˈdɪʃn]", def: "n.传统；惯例；传说" },
+      { w: "traffic", ph: "[ˈtræfɪk]", def: "n.交通,交通量" },
+      { w: "tragedy", ph: "[ˈtrædʒədi]", def: "n.悲剧;惨事,灾难" },
+      { w: "tragic", ph: "[ˈtrædʒɪk]", def: "a.悲剧的,悲惨的" },
+      { w: "trait", ph: "[treɪt]", def: "n.特征,特点,特性" },
+      { w: "transient", ph: "[ˈtrænziənt]", def: "a.短暂的,转瞬即逝的；临时的,暂住的" },
+      { w: "transistor", ph: "[trænˈzɪstə(r)]", def: "n.晶体管；晶体管收音机" },
+      { w: "transition", ph: "[trænˈzɪʃn]", def: "n.转变,变迁,过渡(时期)" },
+      { w: "translate", ph: "[trænzˈleɪt]", def: "v.翻译,解释；转化" },
+      { w: "translation", ph: "[trænzˈleɪʃn]", def: "n.翻译;译文,译本" },
+      { w: "trap", ph: "[træp]", def: "n.陷阱,圈套 vt.诱捕,使中圈套 vi.设圈套" },
+      { w: "trash", ph: "[træʃ]", def: "n.垃圾；拙劣的作品；渣滓,败类" },
+      { w: "travel", ph: "[ˈtrævl]", def: "n.旅行 v.旅行;行进,传播" },
+      { w: "treasure", ph: "[ˈtreʒə(r)]", def: "n.财宝,财富;珍品 v.珍爱,珍惜" },
+      { w: "treat", ph: "[triːt]", def: "v.对待;治疗;论述;款待,请客 n.款待,请客" },
+      { w: "treaty", ph: "[ˈtriːti]", def: "n.条约，协议，协商" },
+      { w: "tree", ph: "[triː]", def: "n.树,树状物 v.爬上树" },
+      { w: "tremble", ph: "[ˈtrembl]", def: "n.战栗,颤抖 v.发抖,颤抖；摇动；焦虑" },
+      { w: "trip", ph: "[trɪp]", def: "n.旅行,远足 v.绊倒；失足；犯错" },
+      { w: "triumph", ph: "[ˈtraɪʌmf]", def: "n.胜利,成功 v.得胜,战胜" },
+      { w: "troop", ph: "[truːp]", def: "n.(pl.)部队,军队;(一)群/队 v.群集,集合" },
+      { w: "tropic", ph: "[ˈtrɒpɪk]", def: "n.回归线；[the T-s]热带地区" },
+      { w: "tropical", ph: "[ˈtrɒpɪkl]", def: "a.热带的" },
+      { w: "trouble", ph: "[ˈtrʌbl]", def: "n.烦恼;动乱;疾病,故障;辛苦 v.(使)烦恼" },
+      { w: "troublesome", ph: "[ˈtrʌblsəm]", def: "a.令人烦恼的,讨厌的" },
+      { w: "trousers", ph: "[ˈtraʊzəz]", def: "n.裤子" },
+      { w: "truck", ph: "[trʌk]", def: "n.卡车,载重汽车" },
+      { w: "true", ph: "[truː]", def: "a.真实,不假的；忠实,可靠的；正确无误的" },
+      { w: "trust", ph: "[trʌst]", def: "vt.信任;盼望;委托 n.(in)信任,依赖;委托" },
+      { w: "truth", ph: "[truːθ]", def: "n.真实,真相；真实性；真理" },
+      { w: "tube", ph: "[tjuːb]", def: "n.管,软管;电子管,显像管;地铁" },
+      { w: "Tuesday", ph: "[ˈtjuːzdeɪ; ˈtjuːzdi]", def: "n.星期二" },
+      { w: "tumour", ph: "[ˈtjuːmə(r)]", def: "n.(tumor)瘤,肿块" },
+      { w: "tunnel", ph: "[ˈtʌnl]", def: "n.隧道,山洞" },
+      { w: "twelve", ph: "[twelv]", def: "num.十二 pron./a.十二(个，只…)" },
+      { w: "twenty", ph: "[ˈtwenti]", def: "num.二十 pron./a.二十(个，只…)" },
+      { w: "twice", ph: "[twaɪs]", def: "ad.两次,两倍" },
+      { w: "twin", ph: "[twɪn]", def: "a.双的,成对的,孪生的 n.孪生子,双生子" },
+      { w: "two", ph: "[tuː]", def: "num.二，两个 n.两个(人或物)" },
+      { w: "type", ph: "[taɪp]", def: "n.型式，类型；印刷字体；活/铅字 v.打字" },
+      { w: "typewriter", ph: "[ˈtaɪpraɪtə(r)]", def: "n.打字机" },
+      { w: "typhoon", ph: "[taɪˈfuːn]", def: "n.台风" },
+      { w: "typical", ph: "[ˈtɪpɪkl]", def: "a.(of)典型的,有代表性的" },
+      { w: "typist", ph: "[ˈtaɪpɪst]", def: "n.打字员" }
+    ]
+  },
+  {
+    root: "U", meaning: "字母 U", letter: "U",
+    words: [
+      { w: "ugly", ph: "[ˈʌɡli]", def: "a.丑陋的,难看的;丑恶的,讨厌的" },
+      { w: "ultimate", ph: "[ˈʌltɪmət]", def: "a.最后的,最终的;根本的" },
+      { w: "umbrella", ph: "[ʌmˈbrelə]", def: "n.伞" },
+      { w: "uncle", ph: "[ˈʌŋkl]", def: "n.伯父，叔父，舅父，姑父，姨父" },
+      { w: "unless", ph: "[ənˈles]", def: "conj.除非 prep.除…外" },
+      { w: "until", ph: "[ənˈtɪl]", def: "conj.&prep.直到…为止，在…以前；直到…" },
+      { w: "us", ph: "[əs; ʌs]", def: "pron.我们(we的宾格形式)" },
+      { w: "usual", ph: "[ˈjuːʒuəl; ˈjuːʒəl]", def: "a.通常的,平常的" },
+      { w: "usually", ph: "[ˈjuːʒuəli; ˈjuːʒəli]", def: "ad.通常,平常" }
+    ]
+  },
+  {
+    root: "V", meaning: "字母 V", letter: "V",
+    words: [
+      { w: "vapour", ph: "[ˈveɪpə(r)]", def: "n.(vapor)汽，(水)蒸气" },
+      { w: "vase", ph: "[vɑːz]", def: "n.花瓶,瓶" },
+      { w: "vast", ph: "[vɑːst]", def: "a.巨大的,辽阔的,大量的;巨额的" },
+      { w: "vegetable", ph: "[ˈvedʒtəbl]", def: "n.蔬菜,植物 a.植物的,蔬菜的" },
+      { w: "vegetation", ph: "[ˌvedʒəˈteɪʃn]", def: "n.植物,草木" },
+      { w: "vehicle", ph: "[ˈviːəkl]", def: "n.车辆,交通工具;媒介,载体" },
+      { w: "vein", ph: "[veɪn]", def: "n.血管;静脉;叶脉;纹理;情绪 vt.使成脉络" },
+      { w: "verb", ph: "[vɜːb]", def: "n.动词" },
+      { w: "verbal", ph: "[ˈvɜːbl]", def: "a.用言辞的,用文字的;口头的;动词的" },
+      { w: "verify", ph: "[ˈverɪfaɪ]", def: "vt.证实,查证;证明" },
+      { w: "verse", ph: "[vɜːs]", def: "n.韵文,诗;诗节,诗句" },
+      { w: "vertical", ph: "[ˈvɜːtɪkl]", def: "a.垂直的,竖的 n.垂线" },
+      { w: "very", ph: "[ˈveri]", def: "ad.很，非常；完全 a.正式的；真正，真实的" },
+      { w: "via", ph: "[ˈvaɪə; ˈviːə]", def: "prep.经；通过；凭借" },
+      { w: "vibrate", ph: "[vaɪˈbreɪt]", def: "v.(使)振动,(使)摇摆；受…而感动" },
+      { w: "victim", ph: "[ˈvɪktɪm]", def: "n.牺牲品,受害者" },
+      { w: "victory", ph: "[ˈvɪktəri]", def: "n.胜利" },
+      { w: "village", ph: "[ˈvɪlɪdʒ]", def: "n.村,村庄" },
+      { w: "violate", ph: "[ˈvaɪəleɪt]", def: "vt.违背;冒犯;妨碍,侵犯;亵渎(圣物)" },
+      { w: "violence", ph: "[ˈvaɪələns]", def: "n.猛烈,强烈;暴力,暴行;强暴" },
+      { w: "violent", ph: "[ˈvaɪələnt]", def: "a.猛烈的,激烈的;暴力引起的,强暴的" },
+      { w: "violin", ph: "[ˌvaɪəˈlɪn]", def: "n.小提琴" },
+      { w: "virgin", ph: "[ˈvɜːdʒɪn]", def: "n.处女 a.处女的;纯洁的;原始的;未使用的" },
+      { w: "virtual", ph: "[ˈvɜːtʃuəl]", def: "a.实际上的,事实上的" },
+      { w: "virtue", ph: "[ˈvɜːtʃuː]", def: "n.德行,美德;贞操;优点,功效,效力" },
+      { w: "virus", ph: "[ˈvaɪrəs]", def: "n.病毒;(精神,道德方面的)有害影响" },
+      { w: "volume", ph: "[ˈvɒljuːm]", def: "n.容积,体积;卷,册;音量" },
+      { w: "voluntary", ph: "[ˈvɒləntri]", def: "a.自愿的,自发的" },
+      { w: "volunteer", ph: "[ˌvɒlənˈtɪə(r)]", def: "n./v.自愿(者,兵);自愿(提供)" },
+      { w: "voyage", ph: "[ˈvɔɪɪdʒ]", def: "n.航海;航行;旅行" },
+      { w: "vulnerable", ph: "[ˈvʌlnərəbl]", def: "a.易受攻击的" }
+    ]
+  },
+  {
+    root: "W", meaning: "字母 W", letter: "W",
+    words: [
+      { w: "wait", ph: "[weɪt]", def: "v.(for)等待；(on)侍候 n.等候，等待时间" },
+      { w: "waiter", ph: "[ˈweɪtə(r)]", def: "n.侍者,服务员" },
+      { w: "waitress", ph: "[ˈweɪtrəs]", def: "n.女侍者,女服务员" },
+      { w: "wake", ph: "[weɪk]", def: "v.醒来,唤醒;使觉醒,激发,引起" },
+      { w: "waken", ph: "[ˈweɪkən]", def: "v.醒,弄醒,唤醒" },
+      { w: "walk", ph: "[wɔːk]", def: "v.走，步行，散步；走遍 n.走，步行，散步" },
+      { w: "wall", ph: "[wɔːl]", def: "n.墙，壁，围墙 vt.筑墙围住，用墙隔开" },
+      { w: "wallet", ph: "[ˈwɒlɪt]", def: "n.皮夹,钱包" },
+      { w: "wander", ph: "[ˈwɒndə(r)]", def: "v.漫步,徘徊;迷路,迷失方向;离题" },
+      { w: "want", ph: "[wɒnt]", def: "vt.想要;希望;需要;缺少,缺乏 n.需要;短缺" },
+      { w: "war", ph: "[wɔː(r)]", def: "n.战争(状态)；冲突 vi.作战" },
+      { w: "warm", ph: "[wɔːm]", def: "a.温暖的，热心的，热情的 v.(使)变暖" },
+      { w: "warmth", ph: "[wɔːmθ]", def: "n.暖和,温暖;热心,热情" },
+      { w: "warn", ph: "[wɔːn]", def: "vt.警告 vi.发出警告" },
+      { w: "wash", ph: "[wɒʃ]", def: "n.洗；洗的衣物 vt.冲刷，洗；冲出 vi.洗澡" },
+      { w: "waste", ph: "[weɪst]", def: "v.浪费 a.无用的;荒芜的 n.浪费;废物" },
+      { w: "watch", ph: "[wɒtʃ]", def: "v.观看;注视;看守;警戒 n.注视;手表;守护" },
+      { w: "water", ph: "[ˈwɔːtə(r)]", def: "n.水 vt.浇灌；给…饮水 vi.流泪,加水" },
+      { w: "waterproof", ph: "[ˈwɔːtəpruːf]", def: "a.防水的,耐水的" },
+      { w: "watt", ph: "[wɒt]", def: "n.瓦,瓦特" },
+      { w: "wave", ph: "[weɪv]", def: "n.波浪;(挥手)示意;飘扬 v.(挥手)示意,致意" },
+      { w: "way", ph: "[weɪ]", def: "n.道路，路程；方法/方式，手段；习惯；状态" },
+      { w: "we", ph: "[wi; wiː]", def: "pron.我们<主格>" },
+      { w: "weak", ph: "[wiːk]", def: "a.虚弱的,软弱的;不够标准的;淡薄的,稀的" },
+      { w: "wealth", ph: "[welθ]", def: "n.财富,财产;大量" },
+      { w: "wealthy", ph: "[ˈwelθi]", def: "a.富有的,丰裕的,充分的 n.富人,有钱人" },
+      { w: "weapon", ph: "[ˈwepən]", def: "n.武器,兵器" },
+      { w: "wear", ph: "[weə(r)]", def: "v.穿着,戴着；磨损,用旧 n.穿；戴；磨损" },
+      { w: "weary", ph: "[ˈwɪəri]", def: "a.疲倦的;令人厌烦的 v.使疲倦,使厌倦" },
+      { w: "weather", ph: "[ˈweðə(r)]", def: "n.天气,气象" },
+      { w: "web", ph: "[web]", def: "n.网,蜘蛛网" },
+      { w: "wedding", ph: "[ˈwedɪŋ]", def: "n.婚礼" },
+      { w: "Wednesday", ph: "[ˈwenzdeɪ; ˈwenzdi]", def: "n.星期三" },
+      { w: "week", ph: "[wiːk]", def: "n.星期，周" },
+      { w: "weekday", ph: "[ˈwiːkdeɪ]", def: "n.平常日,工作日" },
+      { w: "weekend", ph: "[ˌwiːkˈend]", def: "n.周末" },
+      { w: "weekly", ph: "[ˈwiːkli]", def: "a.每星期的,一周的 ad.每周一次 n.周刊,周报" },
+      { w: "weep", ph: "[wiːp]", def: "v.哭泣,流泪;滴下 n.哭泣" },
+      { w: "weigh", ph: "[weɪ]", def: "v.称…重量,称;重达;考虑,权衡" },
+      { w: "weight", ph: "[weɪt]", def: "n.重量;负荷,重担;重要性,分量;砝码,秤砣" },
+      { w: "weird", ph: "[wɪəd]", def: "a.古怪的,离奇的;怪诞的,神秘而可怕的" },
+      { w: "welfare", ph: "[ˈwelfeə(r)]", def: "n.福利；幸福；福利事业" },
+      { w: "well", ph: "[wel]", def: "ad.好,令人满意地；很 int.哎呀,好啦,嗯" },
+      { w: "west", ph: "[west]", def: "n./a.西,西方(的),西部(的) ad.向西" },
+      { w: "western", ph: "[ˈwestən]", def: "a.西方的,西部的" },
+      { w: "wet", ph: "[wet]", def: "a.湿的,潮湿的;有雨的,多雨的 v.弄湿,沾湿" },
+      { w: "whale", ph: "[weɪl]", def: "n.鲸；庞然大物" },
+      { w: "what", ph: "[wɒt]", def: "pron.什么 a.多么,何等；什么；尽可能多的" },
+      { w: "whatever", ph: "[wɒtˈevə(r)]", def: "pron.无论什么 a.无论什么样的" },
+      { w: "when", ph: "[wen]", def: "ad./pron.何时；当时 conj.那时；然后；而" },
+      { w: "whenever", ph: "[wenˈevə(r)]", def: "conj.无论何时,随时;每当" },
+      { w: "where", ph: "[weə(r)]", def: "ad.在哪/那里 conj./pron.哪里 conj.然而" },
+      { w: "whereas", ph: "[ˌweərˈæz]", def: "conj.而,却,反之" },
+      { w: "wherever", ph: "[weərˈevə(r)]", def: "conj.无论在哪里 ad.无论在哪里,究竟在哪里" },
+      { w: "whether", ph: "[ˈweðə(r)]", def: "conj.是否,会不会,不管,无论" },
+      { w: "which", ph: "[wɪtʃ]", def: "a./pron.哪个，哪些；什么样的；那个，那些" },
+      { w: "whichever", ph: "[wɪtʃˈevə(r)]", def: "pron./a.无论哪个,无论哪些" },
+      { w: "while", ph: "[waɪl]", def: "conj.当…的时候；而；虽然；尽管 n.一会儿" },
+      { w: "whip", ph: "[wɪp]", def: "n.鞭子;车夫 v.鞭打,抽打;突然移动" },
+      { w: "whirl", ph: "[wɜːl]", def: "v.(使)旋转,打转 n.旋转;一连串快速的活动" },
+      { w: "whisper", ph: "[ˈwɪspə(r)]", def: "v.耳语;私下说,偷偷告诉 n.耳语;传闻" },
+      { w: "white", ph: "[waɪt]", def: "a.白色的；苍白的；白种的 n.白色；白种人" },
+      { w: "who", ph: "[huː]", def: "pron.谁,什么人；…的人；他，她，他们" },
+      { w: "whoever", ph: "[huːˈevə(r)]", def: "pron.[引导名词从句]谁；无论谁；究竟是谁" },
+      { w: "whole", ph: "[həʊl]", def: "n.全部 a.全体的；整个的；完整的；无缺的" },
+      { w: "wholesome", ph: "[ˈhəʊlsəm]", def: "a.卫生的;有益的;健康的,有益健康的" },
+      { w: "wholly", ph: "[ˈhəʊlli]", def: "ad.完全地,全部,一概" },
+      { w: "whom", ph: "[huːm]", def: "pron.谁；哪个人(who的宾格)" },
+      { w: "whose", ph: "[huːz]", def: "pron.谁的；哪(个)人的,那些(人)的" },
+      { w: "why", ph: "[waɪ]", def: "ad./conj.为什么；…的理由 int.咳,哎呀" },
+      { w: "wide", ph: "[waɪd]", def: "a.宽阔的;睁大的;远离的 ad.广阔地;偏离地" },
+      { w: "widespread", ph: "[ˈwaɪdspred]", def: "a.分布广泛的,普遍的" },
+      { w: "width", ph: "[wɪdθ; wɪtθ]", def: "n.宽度;宽阔,广阔" },
+      { w: "wife", ph: "[waɪf]", def: "n.妻子，夫人，太太" },
+      { w: "will", ph: "[wɪl]", def: "aux./v.将；会；愿意 n.意志；决心；愿望" },
+      { w: "willing", ph: "[ˈwɪlɪŋ]", def: "a.愿意的,乐意的,心甘情愿的" },
+      { w: "win", ph: "[wɪn]", def: "vi.获胜,赢 vt.赢得；在…中获胜 n.胜利" },
+      { w: "wind", ph: "[wɪnd]", def: "n.风;气息 v.转动;缠绕;上发条;蜿蜒而行" },
+      { w: "window", ph: "[ˈwɪndəʊ]", def: "n.窗,窗口" },
+      { w: "wine", ph: "[waɪn]", def: "n.葡萄酒,果酒" },
+      { w: "winter", ph: "[ˈwɪntə(r)]", def: "n.冬季,冬天" },
+      { w: "wipe", ph: "[waɪp]", def: "v./n.擦,揩,抹" },
+      { w: "wire", ph: "[ˈwaɪə(r)]", def: "n.金属线,电线;电报,电信 v.发电报(给)" },
+      { w: "wish", ph: "[wɪʃ]", def: "v.希望；但愿；祝 n.愿望,希望；[pl.]祝愿" },
+      { w: "with", ph: "[wɪð; wɪθ]", def: "prep.跟…一起；用；具有；关于；因；随着" },
+      { w: "withdraw", ph: "[wɪðˈdrɔː; wɪθˈdrɔː]", def: "v.收回,撤销;缩回,退出;提取(钱)" },
+      { w: "within", ph: "[wɪˈðɪn]", def: "prep.在…里面,在…以内 ad.在内" },
+      { w: "without", ph: "[wɪˈðaʊt]", def: "prep.无，没有 n.外面,外部" },
+      { w: "witness", ph: "[ˈwɪtnəs]", def: "n.目击者,证人;证据,证明 v.目击,目睹;做证" },
+      { w: "wolf", ph: "[wʊlf]", def: "n.狼" },
+      { w: "woman", ph: "[ˈwʊmən]", def: "n.(pl.)women 妇女,成年女子" },
+      { w: "wonder", ph: "[ˈwʌndə(r)]", def: "n.惊奇,惊异;奇迹,奇事 v.(at)诧异;想知道" },
+      { w: "wonderful", ph: "[ˈwʌndəfl]", def: "a.惊人的,奇妙的;极好的" },
+      { w: "wood", ph: "[wʊd]", def: "n.木材,木头,木料;(pl.)森林,林地" },
+      { w: "wooden", ph: "[ˈwʊdn]", def: "a.木制的;呆笨的" },
+      { w: "wool", ph: "[wʊl]", def: "n.羊毛,毛线,毛织品" },
+      { w: "word", ph: "[wɜːd]", def: "n.词,词语;言语,对话;谈话;消息,信息" },
+      { w: "work", ph: "[wɜːk]", def: "n.工作(数量);作品;[pl.]工厂 v.工作;运转" },
+      { w: "worker", ph: "[ˈwɜːkə(r)]", def: "n.工人,工作者,工作人员" },
+      { w: "workshop", ph: "[ˈwɜːkʃɒp]", def: "n.车间,工场,修理厂;研讨会,讲习班" },
+      { w: "world", ph: "[wɜːld]", def: "n.世界,地球;…界,领域;世间,全世界" },
+      { w: "worldwide", ph: "[ˌwɜːldˈwaɪd]", def: "a.全世界的,世界范围的 ad.遍及全世界" },
+      { w: "worm", ph: "[wɜːm]", def: "n.虫,蠕虫" },
+      { w: "worry", ph: "[ˈwʌri]", def: "v.烦恼;(about)对…感到烦恼 n.烦恼,焦虑" },
+      { w: "worse", ph: "[wɜːs]", def: "a./ad.更坏,更差(的/地)" },
+      { w: "worst", ph: "[wɜːst]", def: "a./ad.最坏(的),最差(的)" },
+      { w: "worth", ph: "[wɜːθ]", def: "n.价值 a.值…的,价值…的,值得…的" },
+      { w: "worthwhile", ph: "[ˌwɜːθˈwaɪl]", def: "a.值得(做)的" },
+      { w: "worthy", ph: "[ˈwɜːði]", def: "a.(of)值得…的,配得上…的;有价值的" },
+      { w: "would", ph: "[wʊd; wəd; əd]", def: "aux./v.将；可能；将会；总是,总会；宁愿" },
+      { w: "wound", ph: "[wuːnd]", def: "n.创伤,伤口 v.伤,伤害" },
+      { w: "wrap", ph: "[ræp]", def: "v.裹,缠,卷,包 n.披肩,围巾" },
+      { w: "wreck", ph: "[rek]", def: "n.失事船(或飞机)v.(船等)失事,遇难;破坏" },
+      { w: "wrinkle", ph: "[ˈrɪŋkl]", def: "n.皱纹 v.起皱,皱眉" },
+      { w: "write", ph: "[raɪt]", def: "v.写,书写,写字;写作;写信(给),函告" },
+      { w: "writing", ph: "[ˈraɪtɪŋ]", def: "n.写作,写作;著作,作品" },
+      { w: "wrong", ph: "[rɒŋ]", def: "a.错的 ad.错误地,不正确地 n.错误 v.委屈" }
+    ]
+  },
+  {
+    root: "Y", meaning: "字母 Y", letter: "Y",
+    words: [
+      { w: "yard", ph: "[jɑːd]", def: "n.院子,场地;码" },
+      { w: "year", ph: "[jɪə(r); jɜː(r)]", def: "n.年，年度，学年 a./ad.每年,一年一次" },
+      { w: "yearly", ph: "[ˈjɪəli; ˈjɜːli]", def: "a.每年的,一年一度的 ad.每年,一年一次地" },
+      { w: "yell", ph: "[jel]", def: "vi.大叫;呼喊 vt.叫着说 n.叫声;喊声" },
+      { w: "yellow", ph: "[ˈjeləʊ]", def: "a.黄的，黄色的 n.黄色" },
+      { w: "yes", ph: "[jes]", def: "ad.是[用于肯定句前]，是的" },
+      { w: "yesterday", ph: "[ˈjestədeɪ; ˈjestədi]", def: "n.&ad.昨天；前不久" },
+      { w: "yet", ph: "[jet]", def: "ad.还，尚，仍然；已经 conj.然而 ad.甚至" },
+      { w: "yield", ph: "[jiːld]", def: "v.出产,生长;(to)屈服,服从 n.产量,收获" },
+      { w: "you", ph: "[ju; juː]", def: "pron.你；你们；一个人，任何人" },
+      { w: "young", ph: "[jʌŋ]", def: "a.年轻的,幼小的；没经验的 n.青年人" },
+      { w: "youngster", ph: "[ˈjʌŋstə(r)]", def: "n.小伙子,年轻人；少年，儿童" },
+      { w: "your", ph: "[jɔː(r); jə(r)]", def: "pron.[you的所有格]你的,你们的" },
+      { w: "yours", ph: "[jɔːz]", def: "pron.[you的物主代词]你(们)的(所有物)" },
+      { w: "yourself", ph: "[jɔːˈself; jəˈself]", def: "pron.[反身代词]你自己；你亲自" },
+      { w: "youth", ph: "[juːθ]", def: "n.青年;年轻时期" }
+    ]
+  },
+  {
+    root: "Z", meaning: "字母 Z", letter: "Z",
+    words: [
+      { w: "zero", ph: "[ˈzɪərəʊ]", def: "n.零,零度 num.零" },
+      { w: "zone", ph: "[zəʊn]", def: "n.地区,区域 v.分区,划分地带" },
+      { w: "zoo", ph: "[zuː]", def: "n.动物园" }
+    ]
+  }
+];
+if(typeof window!=='undefined'){window.WORD_DATA_WEEK2=WORD_DATA_WEEK2;}
+
+</script>
+<script>
+/* 把各周词表汇总到 WEEKS，WORD_DATA 指向"当前周"。以后每周新增：加一份 words_weekN.js 并在此追加一项即可。 */
+var WEEKS=[];
+if(typeof WORD_DATA!=='undefined'&&WORD_DATA){WEEKS.push({name:'第1周 · 词根词缀高频词 (T–V)',sub:'按词根词缀分组速记',data:WORD_DATA});}
+if(typeof WORD_DATA_WEEK2!=='undefined'&&WORD_DATA_WEEK2){WEEKS.push({name:'第2周 · 基础词汇 (T–Z)',sub:'常用基础单词表',data:WORD_DATA_WEEK2});}
+</script>
+<script>
 /* 兼容 ES5：全部改写为老旧手机浏览器（安卓自带/X5/UC/QQ内核等）也能解析执行的写法。
    之前用了对象/数组展开语法，旧内核解析即失败导致整段脚本不执行、数据全 0。*/
 (function(){
 'use strict';
 
-/* ---- 数据保护：words.js 没加载或为空时给出提示，而不是白屏 ---- */
-if(typeof WORD_DATA==='undefined'||!WORD_DATA||!WORD_DATA.length){
+/* ---- 数据保护：词表没加载或为空时给出提示，而不是白屏 ---- */
+if(typeof WEEKS==='undefined'||!WEEKS||!WEEKS.length){
   var gl=document.getElementById('groupList');
   if(gl){gl.innerHTML='<div class="empty"><div class="ico">📭</div>单词数据未能加载，请刷新页面重试</div>';}
   return;
 }
+/* 当前周下标：优先读本地记忆，默认最后一周(最新一周) */
+var curWeek=0;
+try{var wsaved=localStorage.getItem('wordmem_curweek');if(wsaved!==null&&wsaved!==''){curWeek=parseInt(wsaved,10)||0;}else{curWeek=WEEKS.length-1;}}catch(e){curWeek=WEEKS.length-1;}
+if(curWeek<0||curWeek>=WEEKS.length)curWeek=WEEKS.length-1;
+/* WORD_DATA 指向当前周（全局变量，供所有渲染函数读取） */
+WORD_DATA=WEEKS[curWeek].data;
 
 /* 浅拷贝对象（替代 {...obj}），可附加额外字段 */
 function assign(target){
@@ -702,6 +1102,8 @@ function assign(target){
 }
 function copyWord(w,extra){return assign({},w,extra);}
 function toArr(x){var r=[];for(var i=0;i<x.length;i++){r[i]=x[i];}return r;}
+/* 判断是否为"字母组"(基础词表,root是单个字母),用于决定是否显示"词根"字样 */
+function isLetterGroup(g){return g&&g.root&&g.root.length===1&&/[A-Za-z]/.test(g.root);}
 
 /* ============ 状态 ============ */
 var LS='wordmem_tv_v1';
@@ -812,11 +1214,14 @@ function renderBrowse(){
     var g=groups[i];
     var cards='';
     for(var j=0;j<g.words.length;j++){cards+=cardHTML(g.words[j],g);}
+    var isLG=isLetterGroup(g);
+    var meanSmall=isLG?'<small>字母表 · '+g.letter+'</small>':'<small>词根 · '+g.letter+'</small>';
+    var playBtn=isLG?'':'<button class="g-play" onclick="event.stopPropagation();speak(\''+g.root+'\')">🔊</button>';
     html+='<div class="group">'
       +'<div class="g-head" onclick="toggleGroup(this)">'
       +'<span class="g-badge">'+g.root+'</span>'
-      +'<span class="g-mean">'+g.meaning+'<small>词根 · '+g.letter+'</small></span>'
-      +'<button class="g-play" onclick="event.stopPropagation();speak(\''+g.root+'\')">🔊</button>'
+      +'<span class="g-mean">'+g.meaning+meanSmall+'</span>'
+      +playBtn
       +'<span class="g-count">'+g.words.length+' 词</span>'
       +'</div>'
       +'<div class="g-body">'+cards+'</div>'
@@ -835,7 +1240,7 @@ function cardHTML(w,g){
     +'</div>'
     +'<div class="c-ph">'+w.ph+'</div>'
     +'<div class="c-def">'+w.def+'</div>'
-    +'<div class="c-ex"><span class="en">'+w.ex+'</span><span class="cn">'+w.tr+'</span></div>'
+    +(w.ex?('<div class="c-ex"><span class="en">'+w.ex+'</span><span class="cn">'+(w.tr||'')+'</span></div>'):'')
     +'<button class="c-check" onclick="toggleMaster(\''+w.w+'\',this)">'+(store.mastered[w.w]?'✓ 已掌握':'标记掌握')+'</button>'
     +'</div>';
 }
@@ -921,9 +1326,10 @@ function showFc(){
   document.getElementById('fcWord').textContent=w.w;
   document.getElementById('fcPh').textContent=w.ph;
   document.getElementById('fcDef').textContent=w.def;
-  document.getElementById('fcExEn').textContent=w.ex;
-  document.getElementById('fcExCn').textContent=w.tr;
-  document.getElementById('fcRoot').textContent='词根 '+w.root+' · '+w.mean;
+  document.getElementById('fcExEn').textContent=w.ex||'';
+  document.getElementById('fcExCn').textContent=w.tr||'';
+  var isLG=w.root&&w.root.length===1&&/[A-Za-z]/.test(w.root);
+  document.getElementById('fcRoot').textContent=isLG?('字母表 '+w.root):('词根 '+w.root+' · '+w.mean);
   document.getElementById('fcProgress').textContent=(fcIdx+1)+' / '+fcList.length;
   document.getElementById('fcMaster').textContent=store.mastered[w.w]?'✓ 已掌握':'✓ 标记掌握';
 }
@@ -952,8 +1358,10 @@ function renderQuiz(){
   var opts=shuffle(pool);
   var optHtml='';
   for(i=0;i<opts.length;i++){optHtml+='<button class="q-opt" onclick="answerQuiz(this,\''+opts[i]+'\',\''+w.w+'\')">'+opts[i]+'</button>';}
+  var isLG=w.root&&w.root.length===1&&/[A-Za-z]/.test(w.root);
+  var tag=isLG?'':(' &nbsp;<b>[词根 '+w.root+'·'+w.mean+']</b>');
   box.innerHTML='<div class="q-num">第 '+(qIdx+1)+' / '+quizList.length+' 题 · 得分 '+qScore+'</div>'
-    +'<div class="q-prompt">根据释义选出正确的单词 &nbsp;<b>[词根 '+w.root+'·'+w.mean+']</b></div>'
+    +'<div class="q-prompt">根据释义选出正确的单词'+tag+'</div>'
     +'<div class="q-def">'+w.def+'</div>'
     +'<div class="q-opts">'+optHtml+'</div>'
     +'<button class="q-next" id="qNext" onclick="qIdx_next()">下一题 →</button>';
@@ -977,7 +1385,48 @@ document.addEventListener('keydown',function(e){
   if(e.key===' '||e.keyCode===32){e.preventDefault();document.getElementById('flip').click();}
 });
 
+/* ============ 周切换 ============ */
+function buildWeekSelector(){
+  var sel=document.getElementById('weekSel');
+  if(!sel)return;
+  var html='';
+  for(var i=0;i<WEEKS.length;i++){
+    var wc=0;for(var j=0;j<WEEKS[i].data.length;j++){wc+=WEEKS[i].data[j].words.length;}
+    html+='<option value="'+i+'"'+(i===curWeek?' selected':'')+'>'+WEEKS[i].name+' ('+wc+'词)</option>';
+  }
+  sel.innerHTML=html;
+  sel.onchange=function(){switchWeek(parseInt(this.value,10)||0);};
+  applyWeekMeta();
+}
+function applyWeekMeta(){
+  var wk=WEEKS[curWeek];
+  var st=document.getElementById('subTitle');if(st)st.textContent=wk.sub;
+  var lbl=document.getElementById('stRootsLabel');
+  if(lbl){lbl.textContent=(wk.data.length&&isLetterGroup(wk.data[0]))?'字母组':'词根';}
+  var hint=document.getElementById('weekHint');
+  if(hint){var wc=0;for(var j=0;j<wk.data.length;j++){wc+=wk.data[j].words.length;}hint.textContent='本周 '+wc+' 词 · 共 '+WEEKS.length+' 周';}
+}
+function switchWeek(i){
+  if(i<0||i>=WEEKS.length)return;
+  curWeek=i;
+  try{localStorage.setItem('wordmem_curweek',String(i));}catch(e){}
+  WORD_DATA=WEEKS[curWeek].data;      /* 切换全局数据源 */
+  curLetter='ALL';curSearch='';starOnly=false;
+  var si=document.getElementById('searchInput');if(si)si.value='';
+  var fa=document.getElementById('filterAll'),fs=document.getElementById('filterStar');
+  if(fa)fa.className='on';if(fs)fs.className='';
+  applyWeekMeta();
+  buildLetterNav();
+  updateStats();
+  renderBrowse();
+  /* 若当前在卡片/测验模式，重置其内容 */
+  if(document.getElementById('flashStage').className.indexOf('on')>=0)initFlash();
+  if(document.getElementById('quizStage').className.indexOf('on')>=0)initQuiz();
+}
+window.switchWeek=switchWeek;
+
 /* ============ 初始化 ============ */
+buildWeekSelector();
 buildLetterNav();
 updateStats();
 renderBrowse();
