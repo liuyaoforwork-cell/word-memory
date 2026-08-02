@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>词根记忆卡 · 高频词汇 T-V</title>
+<style>
+:root{
+  --bg:#f4f6fb; --card:#ffffff; --ink:#1f2937; --sub:#6b7280;
+  --line:#e5e7eb; --brand:#4f46e5; --brand2:#7c3aed; --brand-soft:#eef2ff;
+  --ok:#059669; --ok-soft:#ecfdf5; --warn:#d97706; --star:#f59e0b;
+  --shadow:0 1px 3px rgba(0,0,0,.06),0 8px 24px rgba(31,41,55,.06);
+  --shadow-lg:0 12px 40px rgba(79,70,229,.16);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+/* ---------- Header ---------- */
+header{background:linear-gradient(135deg,#4f46e5,#7c3aed 55%,#9333ea);color:#fff;
+  padding:30px 0 26px;box-shadow:0 6px 24px rgba(79,70,229,.25)}
+.hd-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:46px;height:46px;border-radius:13px;background:rgba(255,255,255,.16);
+  display:grid;place-items:center;font-size:24px;backdrop-filter:blur(6px)}
+.brand h1{font-size:21px;font-weight:800;letter-spacing:.5px}
+.brand p{font-size:12.5px;opacity:.85;font-weight:500}
+.stats{display:flex;gap:10px;flex-wrap:wrap}
+.stat{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);
+  border-radius:12px;padding:8px 14px;text-align:center;min-width:74px;backdrop-filter:blur(6px)}
+.stat b{display:block;font-size:19px;font-weight:800}
+.stat span{font-size:11px;opacity:.85}
+
+/* ---------- Toolbar ---------- */
+.toolbar{background:var(--card);border-radius:16px;box-shadow:var(--shadow);
+  margin:-18px auto 22px;padding:14px 16px;display:flex;gap:12px;align-items:center;
+  flex-wrap:wrap;position:relative;z-index:5}
+.search{flex:1;min-width:200px;position:relative}
+.search input{width:100%;border:1.5px solid var(--line);border-radius:11px;
+  padding:11px 14px 11px 38px;font-size:14.5px;outline:none;transition:.2s;background:#fbfbfd}
+.search input:focus{border-color:var(--brand);background:#fff;box-shadow:0 0 0 3px var(--brand-soft)}
+.search::before{content:"🔍";position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:14px;opacity:.6}
+.seg{display:flex;background:#f1f2f7;border-radius:11px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;padding:8px 15px;border-radius:9px;
+  font-size:13.5px;font-weight:600;color:var(--sub);cursor:pointer;transition:.18s;white-space:nowrap}
+.seg button.on{background:#fff;color:var(--brand);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.accent-sel{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--sub)}
+.accent-sel select{border:1.5px solid var(--line);border-radius:9px;padding:8px 10px;
+  font-size:13.5px;background:#fbfbfd;cursor:pointer;color:var(--ink);outline:none}
+
+/* ---------- Letter nav ---------- */
+.letters{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.letters button{border:1.5px solid var(--line);background:#fff;border-radius:10px;
+  width:40px;height:40px;font-weight:800;font-size:15px;color:var(--sub);cursor:pointer;transition:.18s}
+.letters button:hover{border-color:var(--brand);color:var(--brand)}
+.letters button.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+
+/* ---------- Root group ---------- */
+.group{background:var(--card);border-radius:18px;box-shadow:var(--shadow);
+  margin-bottom:18px;overflow:hidden}
+.g-head{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;
+  background:linear-gradient(90deg,var(--brand-soft),#fff);border-bottom:1px solid var(--line)}
+.g-badge{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;font-weight:800;
+  padding:7px 15px;border-radius:11px;font-size:15px;letter-spacing:.5px;box-shadow:0 3px 10px rgba(79,70,229,.3)}
+.g-mean{font-size:16px;font-weight:700;color:var(--ink)}
+.g-mean small{color:var(--sub);font-weight:500;font-size:13px;margin-left:6px}
+.g-count{margin-left:auto;font-size:12.5px;color:var(--sub);background:#f1f2f7;
+  padding:4px 11px;border-radius:20px;font-weight:600}
+.g-play{border:0;background:var(--brand-soft);color:var(--brand);width:36px;height:36px;
+  border-radius:10px;cursor:pointer;font-size:15px;transition:.18s;flex-shrink:0}
+.g-play:hover{background:var(--brand);color:#fff}
+
+.g-body{padding:16px 20px 20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+.g-body.collapsed{display:none}
+
+/* ---------- Word card ---------- */
+.card{border:1.5px solid var(--line);border-radius:14px;padding:14px 15px;
+  background:#fff;transition:.2s;position:relative}
+.card:hover{border-color:#c7cbf5;box-shadow:var(--shadow);transform:translateY(-2px)}
+.card.mastered{background:var(--ok-soft);border-color:#a7f3d0}
+.c-top{display:flex;align-items:center;gap:9px;margin-bottom:5px}
+.c-word{font-size:19px;font-weight:800;color:var(--brand);letter-spacing:.3px}
+.card.mastered .c-word{color:var(--ok)}
+.c-play{border:0;background:var(--brand-soft);color:var(--brand);width:30px;height:30px;
+  border-radius:8px;cursor:pointer;font-size:13px;transition:.18s;flex-shrink:0}
+.c-play:hover{background:var(--brand);color:#fff;transform:scale(1.08)}
+.c-star{margin-left:auto;border:0;background:transparent;font-size:19px;cursor:pointer;
+  opacity:.3;transition:.18s;line-height:1}
+.c-star:hover{opacity:.7;transform:scale(1.15)}
+.c-star.on{opacity:1;filter:drop-shadow(0 1px 3px rgba(245,158,11,.4))}
+.c-ph{font-size:13px;color:var(--sub);font-family:"Times New Roman",Georgia,serif;margin-bottom:7px}
+.c-def{font-size:13.5px;color:#374151;margin-bottom:8px;line-height:1.55}
+.c-ex{font-size:12.5px;color:var(--sub);border-left:3px solid var(--brand-soft);
+  padding:2px 0 2px 10px;font-style:italic}
+.c-ex .en{color:#4b5563;display:block}
+.c-ex .cn{color:#9ca3af;font-style:normal;display:block;margin-top:1px}
+.c-check{position:absolute;bottom:12px;right:13px;border:0;background:#f1f2f7;color:var(--sub);
+  font-size:11px;padding:4px 10px;border-radius:20px;cursor:pointer;font-weight:600;transition:.18s;display:none}
+.card:hover .c-check{display:block}
+.card.mastered .c-check{display:block;background:var(--ok);color:#fff}
+
+/* ---------- Flashcard mode ---------- */
+.fc-stage{display:none;padding:24px 0 40px}
+.fc-stage.on{display:block}
+.fc-bar{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap;justify-content:center}
+.fc-progress{font-size:13.5px;color:var(--sub);font-weight:600}
+.fc-scope{border:1.5px solid var(--line);border-radius:9px;padding:8px 12px;font-size:13.5px;background:#fff;cursor:pointer;outline:none}
+.flip{max-width:520px;margin:0 auto;perspective:1600px}
+.flip-inner{position:relative;width:100%;min-height:290px;transition:transform .6s;
+  transform-style:preserve-3d;cursor:pointer}
+.flip.flipped .flip-inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:22px;
+  background:var(--card);box-shadow:var(--shadow-lg);padding:34px;display:flex;
+  flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.face.back{transform:rotateY(180deg);background:linear-gradient(135deg,#faf7ff,#fff)}
+.fc-word{font-size:40px;font-weight:800;color:var(--brand);letter-spacing:1px;margin-bottom:10px}
+.fc-ph{font-size:17px;color:var(--sub);font-family:Georgia,serif;margin-bottom:22px}
+.fc-play-big{border:0;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;
+  width:58px;height:58px;border-radius:50%;font-size:24px;cursor:pointer;box-shadow:0 6px 18px rgba(79,70,229,.35);transition:.2s}
+.fc-play-big:hover{transform:scale(1.1)}
+.fc-hint{font-size:12.5px;color:#c0c4cc;margin-top:20px}
+.fc-def{font-size:17px;color:var(--ink);font-weight:600;margin-bottom:16px;line-height:1.7}
+.fc-ex-en{font-size:14px;color:#4b5563;font-style:italic;margin-bottom:4px}
+.fc-ex-cn{font-size:13px;color:var(--sub)}
+.fc-root{margin-top:18px;font-size:12px;color:var(--brand);background:var(--brand-soft);padding:4px 12px;border-radius:20px}
+.fc-ctrl{display:flex;gap:12px;justify-content:center;margin-top:24px}
+.fc-btn{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:12px 26px;
+  font-size:15px;font-weight:700;cursor:pointer;transition:.18s;color:var(--ink)}
+.fc-btn:hover{border-color:var(--brand);color:var(--brand)}
+.fc-btn.primary{background:var(--brand);color:#fff;border-color:var(--brand)}
+.fc-btn.primary:hover{background:#4338ca;color:#fff}
+.fc-btn.ok{background:var(--ok);color:#fff;border-color:var(--ok)}
+
+/* ---------- Quiz mode ---------- */
+.quiz-stage{display:none;padding:24px 0 40px}
+.quiz-stage.on{display:block}
+.quiz-box{max-width:560px;margin:0 auto;background:var(--card);border-radius:22px;
+  box-shadow:var(--shadow-lg);padding:32px 30px}
+.q-num{font-size:13px;color:var(--sub);font-weight:600;margin-bottom:6px}
+.q-prompt{font-size:15px;color:var(--ink);margin-bottom:18px}
+.q-prompt b{color:var(--brand);font-size:17px}
+.q-def{font-size:20px;font-weight:700;text-align:center;padding:20px;background:var(--brand-soft);
+  border-radius:14px;margin-bottom:20px;color:#4338ca}
+.q-opts{display:grid;gap:10px}
+.q-opt{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:14px 18px;
+  font-size:16px;font-weight:600;cursor:pointer;text-align:left;transition:.15s;color:var(--ink);font-family:Georgia,serif}
+.q-opt:hover{border-color:var(--brand);background:var(--brand-soft)}
+.q-opt.correct{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.q-opt.wrong{background:#fef2f2;border-color:#f87171;color:#dc2626}
+.q-next{margin-top:20px;width:100%;border:0;background:var(--brand);color:#fff;
+  border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;transition:.18s;display:none}
+.q-next.show{display:block}
+.q-next:hover{background:#4338ca}
+.quiz-result{text-align:center;padding:20px 0}
+.quiz-result .big{font-size:52px;font-weight:800;color:var(--brand);margin:8px 0}
+.quiz-result p{color:var(--sub);margin-bottom:20px}
+
+.empty{text-align:center;padding:50px 20px;color:var(--sub)}
+.empty .ico{font-size:44px;margin-bottom:12px}
+footer{text-align:center;padding:28px 20px;color:#9ca3af;font-size:12.5px}
+@media(max-width:560px){
+  .g-body{grid-template-columns:1fr}
+  .stats{width:100%;justify-content:flex-start}
+  .fc-word{font-size:32px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap hd-top">
+    <div class="brand">
+      <div class="logo">📖</div>
+      <div>
+        <h1>词根记忆卡</h1>
+        <p>高频词汇 T–V · 词根词缀分组速记</p>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="stWords">0</b><span>单词</span></div>
+      <div class="stat"><b id="stRoots">0</b><span>词根</span></div>
+      <div class="stat"><b id="stMastered">0</b><span>已掌握</span></div>
+      <div class="stat"><b id="stStar">0</b><span>收藏</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="toolbar">
+    <div class="search"><input id="searchInput" placeholder="搜索单词 / 词根 / 释义…"></div>
+    <div class="seg" id="modeSeg">
+      <button data-mode="browse" class="on">📚 浏览</button>
+      <button data-mode="flash">🎴 卡片</button>
+      <button data-mode="quiz">✏️ 测验</button>
+    </div>
+    <div class="accent-sel">
+      🔊<select id="accentSel">
+        <option value="en-GB">英式发音</option>
+        <option value="en-US">美式发音</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- BROWSE -->
+  <div id="browseStage">
+    <div class="letters" id="letterNav"></div>
+    <div class="letters" style="margin-top:-8px">
+      <button id="filterStar" style="width:auto;padding:0 14px">⭐ 只看收藏</button>
+      <button id="filterAll" class="on" style="width:auto;padding:0 14px">全部单词</button>
+    </div>
+    <div id="groupList"></div>
+  </div>
+
+  <!-- FLASHCARD -->
+  <div id="flashStage" class="fc-stage">
+    <div class="fc-bar">
+      <select class="fc-scope" id="fcScope"></select>
+      <span class="fc-progress" id="fcProgress">0 / 0</span>
+    </div>
+    <div class="flip" id="flip">
+      <div class="flip-inner">
+        <div class="face front">
+          <div class="fc-word" id="fcWord">—</div>
+          <div class="fc-ph" id="fcPh"></div>
+          <button class="fc-play-big" id="fcPlay">🔊</button>
+          <div class="fc-hint">点击卡片查看释义 · 点喇叭听发音</div>
+        </div>
+        <div class="face back">
+          <div class="fc-def" id="fcDef"></div>
+          <div class="fc-ex-en" id="fcExEn"></div>
+          <div class="fc-ex-cn" id="fcExCn"></div>
+          <div class="fc-root" id="fcRoot"></div>
+        </div>
+      </div>
+    </div>
+    <div class="fc-ctrl">
+      <button class="fc-btn" id="fcPrev">← 上一个</button>
+      <button class="fc-btn ok" id="fcMaster">✓ 已掌握</button>
+      <button class="fc-btn primary" id="fcNext">下一个 →</button>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quizStage" class="quiz-stage">
+    <div class="quiz-box" id="quizBox"></div>
+  </div>
+</div>
+
+<footer>词根记忆卡 · 数据来自「品睿教育」高频词汇表 · 发音由浏览器语音合成（Web Speech API）提供</footer>
+
+<script>
+// 品睿教育 高频词汇表（词根词缀分组） T-V 部分
+// 数据结构: { root: 词根, meaning: 词根义, words: [{w:单词, ph:音标, def:释义, ex:例句, tr:翻译}] }
+const WORD_DATA = [
+  {
+    root: "tail", meaning: "剪", letter: "T",
+    words: [
+      { w: "tail", ph: "[teɪl]", def: "n.尾巴；尾部；跟踪者 vt.尾随，跟踪", ex: "a black dog with a long tail.", tr: "一只长尾巴的黑狗。" },
+      { w: "tailor", ph: "[ˈteɪlə(r)]", def: "n.裁缝 v.缝制,剪裁", ex: "I was promoted to overseer at the tailor shop.", tr: "我被提拔为这家裁缝铺的工头。" },
+      { w: "retail", ph: "[ˈriːteɪl]", def: "n.零售", ex: "The retail division is BT's cash cow.", tr: "零售部是英国电信公司的摇钱树。" },
+      { w: "entail", ph: "[ɪnˈteɪl]", def: "vt.使承担；需要；把(疾病等)遗传给;限定", ex: "What kind of responsibilities does that job entail?", tr: "那份工作需要承担什么样的责任？" }
+    ]
+  },
+  {
+    root: "tain", meaning: "拿，握", letter: "T",
+    words: [
+      { w: "attain", ph: "[əˈteɪn]", def: "vt.达到；完成；获得 vi.达到", ex: "Most of our students attained five 'A' grades in their exams.", tr: "我们多数学生的考试成绩是五个优。" },
+      { w: "contain", ph: "[kənˈteɪn]", def: "v.包含,容纳；容忍,抑制；可被...除尽", ex: "Most vegetables contain fibre.", tr: "大多数蔬菜含有纤维。" },
+      { w: "container", ph: "[kənˈteɪnə(r)]", def: "n.容器;集装箱", ex: "Do not fill the container more than two-thirds full.", tr: "加入的量不要超过容器总容量的2/3。" },
+      { w: "detain", ph: "[dɪˈteɪn]", def: "v.耽搁;扣押,拘留", ex: "He caught her arm in a subconscious attempt to detain her.", tr: "他下意识地抓住了她的胳膊，试图留住她。" },
+      { w: "entertain", ph: "[ˌentəˈteɪn]", def: "v.招待,款待;使娱乐;使欢乐;容纳,接受", ex: "I don't like to entertain guests anymore.", tr: "我不再喜欢招待客人。" },
+      { w: "entertainment", ph: "[ˌentəˈteɪnmənt]", def: "n.招待,款待;表演文娱节目", ex: "Gambling is a form of entertainment.", tr: "赌博是一种娱乐形式。" },
+      { w: "maintain", ph: "[meɪnˈteɪn]", def: "v.维修,保养,维持,供养,坚持,主张,支持", ex: "The house costs a fortune to maintain.", tr: "维修这房子花费巨大。" },
+      { w: "maintenance", ph: "[ˈmeɪntənəns]", def: "n.维修,保养,维持,保持,生活费用", ex: "Careful maintenance can extend the life of your car.", tr: "精心保养可延长汽车寿命。" },
+      { w: "obtain", ph: "[əbˈteɪn]", def: "v.获得,得到", ex: "Underage youths can obtain alcohol from their older friends.", tr: "未到法定年龄的孩子可以从他们年长的朋友那里得到酒。" },
+      { w: "retain", ph: "[rɪˈteɪn]", def: "v.保持,保留", ex: "He struggled to retain control of the situation.", tr: "他曾努力保持对局势的控制。" },
+      { w: "retention", ph: "[rɪˈtenʃn]", def: "n.保留,保持,保持力,记忆力", ex: "Eating too much salt can cause fluid retention.", tr: "摄盐过多会导致体液潴留。" },
+      { w: "stain", ph: "[steɪn]", def: "n.污点,瑕疵 v.玷污;染色", ex: "I rubbed at the stain on the cloth.", tr: "我擦了擦布上的污渍。" },
+      { w: "sustain", ph: "[səˈsteɪn]", def: "vt.支撑,撑住;维持,持续,经受,忍耐", ex: "The ice will not sustain your weight.", tr: "这冰承受不了你的体重。" },
+      { w: "content", ph: "[ˈkɒntent; kənˈtent]", def: "n.容量,内容,(pl.)目录 a.(with)满足的", ex: "He seemed more content, less bitter.", tr: "他看起来比较满意，不那么失望。" },
+      { w: "tenant", ph: "[ˈtenənt]", def: "n.承租人;房客;佃户 vt.租借,承租", ex: "The decorating was done by a previous tenant.", tr: "装修是一位前房客搞的。" },
+      { w: "continual", ph: "[kənˈtɪnjuəl]", def: "a.不断的,连续的,频繁的", ex: "They felt continual pressure to perform well.", tr: "他们感受到持续不断的、要表演得好的压力。" },
+      { w: "continue", ph: "[kənˈtɪnjuː]", def: "v.继续,连续,延伸", ex: "It's useless for us to continue.", tr: "我们继续做下去也无用。" },
+      { w: "continuous", ph: "[kənˈtɪnjuəs]", def: "a.连续的,持续的", ex: "The continuous rain had saturated the soil.", tr: "连绵不断的雨把土地淋了个透。" }
+    ]
+  },
+  {
+    root: "take", meaning: "拿", letter: "T",
+    words: [
+      { w: "take", ph: "[teɪk]", def: "v.拿取；吃；记录；取得；花费；捕获；认为", ex: "She can't take criticism.", tr: "她受不了批评。" },
+      { w: "mistake", ph: "[mɪˈsteɪk]", def: "n.错误,过失,误解 v.弄错;(for)把...误认为", ex: "One mistake and you're toast.", tr: "要是出一次错，你就完了。" },
+      { w: "overtake", ph: "[ˌəʊvəˈteɪk]", def: "v.追上,超过,突然降临,压倒", ex: "He pulled out to overtake a truck.", tr: "他驶出车流，以超过一辆卡车。" },
+      { w: "undertake", ph: "[ˌʌndəˈteɪk]", def: "v.承担,担任;许诺,保证;着手,从事", ex: "University professors both teach and undertake research.", tr: "大学教授既要教学又要从事研究工作。" }
+    ]
+  },
+  {
+    root: "tackle", meaning: "处理", letter: "T",
+    words: [
+      { w: "tackle", ph: "[ˈtækl]", def: "n.滑车;用具,器械 v.处理,解决;抱住,抓住", ex: "You would be well advised to tackle this problem urgently.", tr: "你还是抓紧处理这个问题为好。" }
+    ]
+  },
+  {
+    root: "tech", meaning: "技术", letter: "T",
+    words: [
+      { w: "technical", ph: "[ˈteknɪkl]", def: "a.技术(性)的,工艺的；专门性的,专业性的", ex: "We offer free technical support.", tr: "我们免费提供技术支持。" },
+      { w: "technician", ph: "[tekˈnɪʃn]", def: "n.技术员,技师,技工", ex: "It quickly became clear that the woman was not a computer technician.", tr: "事情很快就搞清楚了，这名女子不是电脑技术员。" },
+      { w: "technique", ph: "[tekˈniːk]", def: "n.技巧,手艺,技能；技术,工艺", ex: "She showed her students the technique.", tr: "她向学生演示了那个技巧。" },
+      { w: "technology", ph: "[tekˈnɒlədʒi]", def: "n.科学技术；工业技术；应用科学", ex: "Technology is changing fast.", tr: "技术日新月异。" },
+      { w: "psychology", ph: "[saɪˈkɒlədʒi]", def: "n.心理,心理学,心理状态", ex: "He studied philosophy and psychology at Yale.", tr: "他在耶鲁大学学习哲学和心理学。" }
+    ]
+  },
+  {
+    root: "tect", meaning: "覆盖", letter: "T",
+    words: [
+      { w: "protect", ph: "[prəˈtekt]", def: "v.(from)保护,保卫", ex: "My prime concern is to protect my property.", tr: "我最关心的是保护自己的财产。" },
+      { w: "detect", ph: "[dɪˈtekt]", def: "v.察觉,发觉,侦察,探测", ex: "Arnold could detect a certain sadness in the old man's face.", tr: "阿诺德能察觉到老人脸上的某种悲伤。" },
+      { w: "detective", ph: "[dɪˈtektɪv]", def: "n.侦探", ex: "He plays a wise detective.", tr: "他扮演一位智慧的侦探。" },
+      { w: "detector", ph: "[dɪˈtektə(r)]", def: "n.发现者,侦察器,探测器,检波器,检电器", ex: "A smoke detector is on the ceiling in your room.", tr: "你房间的天花板上有一个烟雾探测器。" }
+    ]
+  },
+  {
+    root: "temper", meaning: "温度", letter: "T",
+    words: [
+      { w: "temper", ph: "[ˈtempə(r)]", def: "n.脾气；韧度 vt.调和，使缓和；使回火", ex: "All at once she lost her temper.", tr: "她突然大发脾气。" },
+      { w: "temperament", ph: "[ˈtemprəmənt]", def: "n.气质，性格，性情；资质", ex: "His only weakness is his temperament.", tr: "他唯一的弱点是他的脾气。" },
+      { w: "temperature", ph: "[ˈtemprətʃə(r)]", def: "n.温度，体温；热度，发烧", ex: "The temperature is plus four degrees.", tr: "温度为零上四度。" }
+    ]
+  },
+  {
+    root: "tempt", meaning: "诱惑", letter: "T",
+    words: [
+      { w: "tempt", ph: "[tempt]", def: "v.诱惑,引诱;吸引,使感兴趣", ex: "Cars like that may tempt drivers to speed.", tr: "那样的汽车可能会引诱司机超速行驶。" },
+      { w: "temptation", ph: "[tempˈteɪʃn]", def: "n.引诱,诱惑；诱惑物", ex: "An expensive bicycle is a temptation to thieves.", tr: "高档自行车对窃贼是个诱惑。" },
+      { w: "attempt", ph: "[əˈtempt]", def: "vt.企图,试图 n.努力,尝试,企图", ex: "They made no attempt to escape.", tr: "他们没有企图逃跑。" },
+      { w: "contempt", ph: "[kənˈtempt]", def: "n.轻视,藐视；侮辱，丢脸", ex: "She looked at him with contempt.", tr: "她轻蔑地看着他。" }
+    ]
+  },
+  {
+    root: "tend", meaning: "伸", letter: "T",
+    words: [
+      { w: "attend", ph: "[əˈtend]", def: "vt.出席，参加；照顾，护理 vi.注意；侍奉", ex: "Which school do they attend?", tr: "他们上的是哪一所学校？" },
+      { w: "attendance", ph: "[əˈtendəns]", def: "n.出席；出席人数；护理，照料", ex: "His attendance record was spotty.", tr: "他的出勤记录时好时差。" },
+      { w: "attendant", ph: "[əˈtendənt]", def: "n.陪从；出席人；服务员 a.出席的；伴随的", ex: "The attendant showed us to our seats.", tr: "服务员把我们带到我们的座位。" },
+      { w: "attention", ph: "[əˈtenʃn]", def: "n.注意，注意力；立正；特别照顾；照料", ex: "My shoes caught his attention.", tr: "我的鞋子引起了他的注意。" },
+      { w: "contend", ph: "[kənˈtend]", def: "v.竞争,斗争;坚决主张", ex: "It is time, once again, to contend with racism.", tr: "又是对付种族主义的时候了。" },
+      { w: "extend", ph: "[ɪkˈstend]", def: "v.延长,延伸;扩充;给予;提供;估价", ex: "The caves extend for some 12 miles.", tr: "这些洞穴延伸约12英里。" },
+      { w: "extension", ph: "[ɪkˈstenʃn]", def: "n.延长,扩大;范围;大小;尺寸;电话分机", ex: "They've built an extension on.", tr: "他们进行了一项扩建。" },
+      { w: "extensive", ph: "[ɪkˈstensɪv]", def: "a.广大的,广阔的", ex: "Extensive repair work is being carried out.", tr: "大规模的修缮工作正在进行。" },
+      { w: "extent", ph: "[ɪkˈstent]", def: "n.广度,宽度,长度;程度,限度", ex: "The extent of the violence came as a shock.", tr: "暴力的程度令人震惊。" },
+      { w: "intend", ph: "[ɪnˈtend]", def: "vt.想要,打算,企图", ex: "They intend to sue for damages.", tr: "他们打算起诉，要求赔偿损失。" },
+      { w: "intense", ph: "[ɪnˈtens]", def: "a.强烈的,剧烈的;热烈的,热情的", ex: "It was a period of intense activity.", tr: "那是活动激烈的时期。" },
+      { w: "intensity", ph: "[ɪnˈtensəti]", def: "n.强烈,剧烈;强度", ex: "The intensity of the work left little room for personal grief.", tr: "该工作的强度很少给个人留下悲伤或忧虑的机会。" },
+      { w: "intensive", ph: "[ɪnˈtensɪv]", def: "a.加强的,集中的,深入细致的,精耕细作的", ex: "Ahead of us lay ten days of intensive training.", tr: "我们还要进行十天的强化训练。" },
+      { w: "intention", ph: "[ɪnˈtenʃn]", def: "n.意图,意向,目的", ex: "The bank announced its intention to bid.", tr: "银行宣布了其投标意向。" },
+      { w: "pretend", ph: "[prɪˈtend]", def: "v.假装,假托,借口;(在游戏中)装扮", ex: "Let's pretend (that) we're astronauts.", tr: "咱们装扮成太空人吧。" },
+      { w: "tend", ph: "[tend]", def: "v.趋向,往往是;照料,看护", ex: "His views tend towards the extreme.", tr: "他的观点趋于偏激。" },
+      { w: "tender", ph: "[ˈtendə(r)]", def: "a.嫩的;敏感的;温柔的 v.提出,提供,投标", ex: "This meat is extremely tender.", tr: "这肉嫩得很。" },
+      { w: "tendency", ph: "[ˈtendənsi]", def: "n.趋势,趋向；倾向", ex: "There is a growing tendency among employers to hire casual staff.", tr: "雇主雇用临时职员有增加的趋势。" },
+      { w: "tentative", ph: "[ˈtentətɪv]", def: "a.试探性地,暂时的；犹豫不决的", ex: "Political leaders have reached a tentative agreement.", tr: "政治领导人已经就会议达成初步协议。" },
+      { w: "tedious", ph: "[ˈtiːdiəs]", def: "a.乏味的,单调的,冗长的", ex: "The journey soon became tedious.", tr: "那次旅行不久就变得乏味起来。" },
+      { w: "trend", ph: "[trend]", def: "n.倾向,趋势 vi.倾向,倾向", ex: "This is a growing trend.", tr: "这是一个不断增长的趋势。" },
+      { w: "tense", ph: "[tens]", def: "n.时态 v.拉紧,(使)紧张 a.绷紧的,紧张的", ex: "He's a very tense person.", tr: "他是个神经非常紧张的人。" },
+      { w: "tension", ph: "[ˈtenʃn]", def: "n.(紧张)状态；拉(绷)紧；张力，拉力", ex: "The atmosphere crackled with tension.", tr: "气氛顿时紧张了起来。" }
+    ]
+  },
+  {
+    root: "term", meaning: "界限", letter: "T",
+    words: [
+      { w: "term", ph: "[tɜːm]", def: "n.学期;期限,期间;(pl.)条件,条款;术语", ex: "It's nearly the end of term.", tr: "学期快要结束了。" },
+      { w: "terminal", ph: "[ˈtɜːmɪnl]", def: "a.晚期的;终点的;期末的 n.终点(站);终端", ex: "A second terminal was opened in 1998.", tr: "第二个航空客站是1998年开始运营的。" },
+      { w: "terminate", ph: "[ˈtɜːmɪneɪt]", def: "vi.(使)结束，(使)停止", ex: "She decided to terminate the pregnancy.", tr: "她决定终止妊娠。" },
+      { w: "determine", ph: "[dɪˈtɜːmɪn]", def: "v.决心,决定;确定,限定", ex: "You alone should determine what is right for you.", tr: "只有你应该决定什么对你是合适的。" }
+    ]
+  },
+  {
+    root: "terr", meaning: "可怕", letter: "T",
+    words: [
+      { w: "terrible", ph: "[ˈterəbl]", def: "a.很糟的;可怕的,骇人的;极度的,厉害的", ex: "I often have terrible nightmares.", tr: "我经常做可怕的噩梦。" },
+      { w: "terrific", ph: "[təˈrɪfɪk]", def: "a.极好的,非常的,极度的", ex: "I feel absolutely terrific today!", tr: "我今天的感觉真是好极了！" },
+      { w: "terrify", ph: "[ˈterɪfaɪ]", def: "v.使害怕,使惊恐", ex: "He was terrified of heights.", tr: "他过去恐高。" },
+      { w: "terror", ph: "[ˈterə(r)]", def: "n.恐怖;可怕的人(事)", ex: "The children watched in stark terror.", tr: "孩子们极端恐惧地看着。" },
+      { w: "territory", ph: "[ˈterətri]", def: "n.领土;版图;领域,范围", ex: "The government denies that any of its territory is under rebel control.", tr: "该政府否认有任何领土被叛乱者控制。" }
+    ]
+  },
+  {
+    root: "test", meaning: "测试", letter: "T",
+    words: [
+      { w: "test", ph: "[test]", def: "n./vt.试验；检验；测验", ex: "She took her driving test yesterday.", tr: "她昨天参加了驾照考试。" },
+      { w: "testify", ph: "[ˈtestɪfaɪ]", def: "v.做证，证明；(to)表明，说明", ex: "Fiers promised to testify fully and truthfully.", tr: "菲尔斯承诺毫无保留地、如实地做证。" },
+      { w: "testimony", ph: "[ˈtestɪməni]", def: "n.证据,证词;表明,说明", ex: "Can I refuse to give testimony?", tr: "我能拒绝做证吗？" },
+      { w: "contest", ph: "[ˈkɒntest]", def: "n.竞争,竞赛,比赛 v.竞争,比赛,争论", ex: "The election contest is heating up.", tr: "选举竞争正趋于白热化。" },
+      { w: "protest", ph: "[ˈprəʊtest; prəˈtest]", def: "v./n.主张,断言,抗议,反对", ex: "All protest had been silenced.", tr: "一切反对的声音都被压了下去。" }
+    ]
+  },
+  {
+    root: "text", meaning: "编织", letter: "T",
+    words: [
+      { w: "text", ph: "[tekst]", def: "n.正文,文本；原文；教科书", ex: "I'll text you the final score.", tr: "我会发短信告诉你最终的比分。" },
+      { w: "textbook", ph: "[ˈtekstbʊk]", def: "n.课本,教科书", ex: "I gave the textbook back to him.", tr: "我把课本还给他了。" },
+      { w: "textile", ph: "[ˈtekstaɪl]", def: "n.纺织品 a.纺织的", ex: "But the textile boom lasted only several decades.", tr: "但是纺织业的繁荣只持续了几十年。" },
+      { w: "texture", ph: "[ˈtekstʃə(r)]", def: "n.(织物)质地；(材料)构造；结构；肌理", ex: "It has an orange flavour and smooth texture.", tr: "它有一种橘子的味道，质地光滑。" },
+      { w: "pretext", ph: "[ˈpriːtekst]", def: "n.借口,托词", ex: "He left the party early on the pretext of having to work.", tr: "他借口有事要处理，早早离开了聚会。" },
+      { w: "context", ph: "[ˈkɒntekst]", def: "n.（文章等）前后关系；(事件等发生的)背景", ex: "His decision can only be understood in context.", tr: "只有了解来龙去脉才能明白他的决定。" },
+      { w: "tissue", ph: "[ˈtɪʃuː; ˈtɪsjuː]", def: "n.织物,薄绢,纸巾;(动,植物的)组织", ex: "a small package wrapped in tissue paper.", tr: "一个小包裹，用薄棉纸包着。" }
+    ]
+  },
+  {
+    root: "theor", meaning: "理论", letter: "T",
+    words: [
+      { w: "theory", ph: "[ˈθɪəri]", def: "n.理论,原理;学说,见解,看法", ex: "The theory remains untested.", tr: "该理论仍未经过验证。" },
+      { w: "theoretical", ph: "[ˌθɪəˈretɪkl]", def: "a.理论(上)的", ex: "It's a theoretical possibility.", tr: "这是理论上存在的可能性。" },
+      { w: "therapy", ph: "[ˈθerəpi]", def: "n.治疗,(不需要药物或手术的)物理疗法", ex: "She's in therapy.", tr: "她在接受心理治疗。" }
+    ]
+  },
+  {
+    root: "thesis", meaning: "论文", letter: "T",
+    words: [
+      { w: "thesis", ph: "[ˈθiːsɪs]", def: "n.(pl.theses) 论文;论题;论点", ex: "This thesis does not stand up to close inspection.", tr: "这个论点经不起仔细推敲。" },
+      { w: "hypothesis", ph: "[haɪˈpɒθəsɪs]", def: "n.假说,假设,前提", ex: "Work will now begin to test the hypothesis in rats.", tr: "在老鼠身上验证这一假设的工作现在要开始了。" },
+      { w: "synthesis", ph: "[ˈsɪnθəsɪs]", def: "n.(pl.syntheses)综合,合成", ex: "Instead, he advocates a synthesis of these two views.", tr: "相反，他主张综合这两种观点。" },
+      { w: "synthetic", ph: "[sɪnˈθetɪk]", def: "a.合成的,人造的;综合的", ex: "Boots made from synthetic materials can usually be washed in a machine.", tr: "用合成材料做成的靴子通常可以在机器里洗。" }
+    ]
+  },
+  {
+    root: "tie", meaning: "系", letter: "T",
+    words: [
+      { w: "tie", ph: "[taɪ]", def: "n.领带;联系,关系,纽带;束缚 v.扎,系,捆", ex: "He carefully knotted his tie.", tr: "他仔细地打着领带。" },
+      { w: "tight", ph: "[taɪt]", def: "a.紧的;紧身的,装紧的;密封的 ad.紧紧地", ex: "These trousers are a bit tight.", tr: "这条裤子有点紧。" },
+      { w: "attach", ph: "[əˈtætʃ]", def: "v.系,贴,装,连接;使成为一部分;使依恋", ex: "They attach great importance to the project.", tr: "他们高度重视这个项目。" },
+      { w: "detach", ph: "[dɪˈtætʃ]", def: "vt.分开,分离,分遣,派遣(军队)", ex: "The skis should detach from the boot if you fall.", tr: "要是你跌倒了，滑雪板就该脱离靴子。" }
+    ]
+  },
+  {
+    root: "time", meaning: "时间", letter: "T",
+    words: [
+      { w: "time", ph: "[taɪm]", def: "n.时间,时刻,次,回;时代,时期;倍,乘", ex: "Time dragged terribly.", tr: "时间过得真慢。" },
+      { w: "timely", ph: "[ˈtaɪmli]", def: "a.及时的,适时的", ex: "This has been a timely reminder to us all.", tr: "对我们大家来说这个提醒非常及时。" },
+      { w: "temporary", ph: "[ˈtemprəri]", def: "a.暂时的,临时的", ex: "His job here is only temporary.", tr: "他在这儿的工作只是暂时的。" },
+      { w: "contemporary", ph: "[kənˈttemprəri]", def: "a.现代的,当代的;同时代的", ex: "Contemporary African cinema has much to offer.", tr: "当代非洲电影制作艺术有很多贡献。" }
+    ]
+  },
+  {
+    root: "tiny", meaning: "小", letter: "T",
+    words: [
+      { w: "tiny", ph: "[ˈtaɪni]", def: "a.极小的,微小的", ex: "Each individual flower is tiny.", tr: "每一朵花都很小。" },
+      { w: "timid", ph: "[ˈtɪmɪd]", def: "a.胆怯的,怯懦的", ex: "A timid voice said at her side.", tr: "她身边一个胆怯的声音说。" },
+      { w: "intimidate", ph: "[ɪnˈtɪmɪdeɪt]", def: "vt.胁迫,威胁(某人做某事)", ex: "Jones had set out to intimidate and dominate Paul.", tr: "琼斯曾试图威胁并控制保罗。" },
+      { w: "tame", ph: "[teɪm]", def: "a.驯服的,温顺的;沉闷的,乏味的 vt.驯服", ex: "They never became tame.", tr: "它们从没有被驯服。" }
+    ]
+  },
+  {
+    root: "title", meaning: "标题", letter: "T",
+    words: [
+      { w: "title", ph: "[ˈtaɪtl]", def: "n.书名,标题;头衔,称号", ex: "He was disgraced and stripped of his title.", tr: "他名誉扫地，被取消了头衔。" },
+      { w: "entitle", ph: "[ɪnˈtaɪtl]", def: "v.给予权利(或资格);给...称号(题名);授权", ex: "This ticket does not entitle you to travel first class.", tr: "你拿这张票不能坐头等舱。" },
+      { w: "entity", ph: "[ˈentəti]", def: "n.实体;存在(物);组织,机构;本质", ex: "These countries can no longer be viewed as a single entity.", tr: "这些国家不能再被看成一个单独的实体。" }
+    ]
+  },
+  {
+    root: "tong", meaning: "舌", letter: "T",
+    words: [
+      { w: "tongue", ph: "[tʌŋ]", def: "n.舌;语言", ex: "She stuck her tongue out at me.", tr: "她冲我吐了吐舌头。" },
+      { w: "tone", ph: "[təʊn]", def: "n.音调,音色;风气,气氛;腔调,语气;色调", ex: "She softened her tone a little.", tr: "她稍稍缓和了一下语气。" },
+      { w: "tune", ph: "[tjuːn]", def: "n.调子,曲调;和谐,协调 vt.调音,调节,调整", ex: "What's that tune you're humming?", tr: "你哼的是什么曲子？" }
+    ]
+  },
+  {
+    root: "tooth", meaning: "牙", letter: "T",
+    words: [
+      { w: "tooth", ph: "[tuːθ]", def: "n.(pl.teeth)牙齿；齿状物", ex: "He's got a front tooth missing.", tr: "他有一颗门牙掉了。" },
+      { w: "dental", ph: "[ˈdentl]", def: "a.牙齿的；牙科(用)的", ex: "I've got a dental appointment at 3 o'clock.", tr: "我约了3点看牙医。" },
+      { w: "dentist", ph: "[ˈdentɪst]", def: "n.牙医", ex: "He keeps putting off going to the dentist.", tr: "他把看牙医的事一拖再拖。" }
+    ]
+  },
+  {
+    root: "touch", meaning: "接触", letter: "T",
+    words: [
+      { w: "touch", ph: "[tʌtʃ]", def: "v.触,碰,摸;感动;涉及 n.触动,碰到;少许", ex: "Don't touch that plate—it's hot!", tr: "别碰那个盘子，烫手！" },
+      { w: "contact", ph: "[ˈkɒntækt]", def: "v./n.(使)接触,联系,交往", ex: "I will contact you by letter.", tr: "我会给你写信联系的。" },
+      { w: "intact", ph: "[ɪnˈtækt]", def: "a.完整无缺的,未经触动的,未受损伤的", ex: "Few buildings survived the war intact.", tr: "战争之后没几座完好的建筑了。" },
+      { w: "tactics", ph: "[ˈtæktɪks]", def: "n.(tactics)策略,战术", ex: "The president's tactics could backfire.", tr: "总统的策略可能会事与愿违。" },
+      { w: "tangle", ph: "[ˈtæŋgl]", def: "n.纠缠；缠结；混乱 v.(使)缠绕；变乱", ex: "Her hair tends to tangle.", tr: "她的头发容易打结。" }
+    ]
+  },
+  {
+    root: "trac", meaning: "拉", letter: "T",
+    words: [
+      { w: "tractor", ph: "[ˈtræktə(r)]", def: "n.拖拉机,牵引车", ex: "The truck was an 18-wheeler with a white tractor.", tr: "这辆卡车有18轮，还有一个白色牵引车头。" },
+      { w: "extract", ph: "[ˈekstrækt]", def: "v./n.拔出,抽出;摘录 n.抽取物;精华;选集", ex: "The first part is to extract each packet.", tr: "第一部分是提取每一个包。" },
+      { w: "attract", ph: "[əˈtrækt]", def: "vt.引起的注意(或兴趣等),吸引；引起；激起", ex: "She tried to attract the waiter's attention.", tr: "她试图引起服务员的注意。" },
+      { w: "attractive", ph: "[əˈtræktɪv]", def: "a.吸引人的,引人注意的；漂亮的,迷人的", ex: "She finds him sexually attractive.", tr: "她觉得他富有性魅力。" },
+      { w: "contract", ph: "[ˈkɒntrækt]", def: "n.(承包)合同/契约 v.订合同/契约；使缩小", ex: "His contract came up for renewal.", tr: "他的合同交上来要求延期。" },
+      { w: "distract", ph: "[dɪˈstrækt]", def: "v.分散;使分心;打扰;使心情烦乱", ex: "It was another attempt to distract attention from the truth.", tr: "这又是企图分散人们对事实真相的注意力。" },
+      { w: "subtract", ph: "[səbˈtrækt]", def: "v.(from)减(去)", ex: "The pupil could add and subtract but hadn't learned to divide.", tr: "这名小学生能做加法和减法，但还没学会做除法。" },
+      { w: "abstract", ph: "[ˈæbstrækt]", def: "a.抽象的 n.摘要,梗概 vt.提取；摘要要点", ex: "Abstract art is an acquired taste.", tr: "要慢慢培养才会欣赏抽象艺术。" },
+      { w: "trace", ph: "[treɪs]", def: "n.痕迹,踪迹;极少量 v.描绘;跟踪,追踪", ex: "Our efforts to trace him turned up nothing.", tr: "我们辛辛苦苦跟踪他，却无功而返。" },
+      { w: "track", ph: "[træk]", def: "n.跑道,小路;轨迹,轨迹 v.跟踪,追踪", ex: "a muddy track through the forest.", tr: "穿过森林的泥泞小径。" },
+      { w: "retreat", ph: "[rɪˈtriːt]", def: "v.撤退,退却", ex: "He commanded his men to retreat.", tr: "他命令手下撤退。" },
+      { w: "trigger", ph: "[ˈtrɪgə(r)]", def: "n.扳机 vt.触发，引起", ex: "He kept his finger on the trigger.", tr: "他的手指一直勾着扳机。" },
+      { w: "trail", ph: "[treɪl]", def: "n.踪迹,痕迹;小路 v.追踪,跟踪;拖,拖曳", ex: "The trail starts just outside the town.", tr: "足迹从刚出城的地方开始。" },
+      { w: "strict", ph: "[strɪkt]", def: "a.(with)严格的,严厉的;严谨的,精确的", ex: "She's on a very strict diet.", tr: "她正严格节食。" },
+      { w: "restrict", ph: "[rɪˈstrɪkt]", def: "v.限制,约束", ex: "I restrict myself to one cup of coffee a day.", tr: "我限制自己每天只喝一杯咖啡。" },
+      { w: "refrain", ph: "[rɪˈfreɪn]", def: "v.节制,避免,制止 n.(诗的)叠句", ex: "Please refrain from smoking.", tr: "请勿吸烟。" },
+      { w: "train", ph: "[treɪn]", def: "n.列车;行列,系列,一串 v.训练,培养", ex: "Somewhere a train whistled.", tr: "某个地方响起了火车的鸣笛声。" },
+      { w: "training", ph: "[ˈtreɪnɪŋ]", def: "n.训练,培养", ex: "He was weight training like mad.", tr: "他在疯了似的进行举重训练。" },
+      { w: "strain", ph: "[streɪn]", def: "v.拉紧;紧张;扭伤;竭尽全力 n.拉紧;负担", ex: "Moving house put a severe strain on our finances.", tr: "搬家使我们的经济十分紧张。" },
+      { w: "constrain", ph: "[kənˈstreɪn]", def: "vt.限制，约束；克制，抑制", ex: "Sometimes environments constrain those people.", tr: "有时环境会限制这些人。" },
+      { w: "restrain", ph: "[rɪˈstreɪn]", def: "v.(from)抑制,制止", ex: "She was unable to restrain her desperate anger.", tr: "她无法抑制她那不顾一切的愤怒。" },
+      { w: "restraint", ph: "[rɪˈstreɪnt]", def: "n.抑制,制止", ex: "She has been saintly in her self-restraint.", tr: "她一直似圣徒般能自我克制。" },
+      { w: "stretch", ph: "[stretʃ]", def: "v.伸展，延伸 n.拉长；伸展；一段时间/路程", ex: "The cables are designed not to stretch.", tr: "这些缆绳被设计成没有弹性。" },
+      { w: "drag", ph: "[dræg]", def: "v.拖,拖曳", ex: "I dragged the chair over to the window.", tr: "我把椅子拖到了窗口那边。" }
+    ]
+  },
+  {
+    root: "tray", meaning: "出卖", letter: "T",
+    words: [
+      { w: "tray", ph: "[treɪ]", def: "n.盘,碟,托盘", ex: "She came in with a tray of drinks.", tr: "她端着一托盘饮料走进来。" },
+      { w: "betray", ph: "[bɪˈtreɪ]", def: "v.背叛,出卖;暴露,流露,泄露", ex: "He was offered money to betray his colleagues.", tr: "有人收买他出卖他的同事。" },
+      { w: "traitor", ph: "[ˈtreɪtə(r)]", def: "n.叛徒,卖国贼", ex: "There is a traitor in our midst.", tr: "我们中间有个叛徒。" },
+      { w: "treason", ph: "[ˈtriːzn]", def: "n.谋反,通敌,叛国", ex: "He was executed for treason.", tr: "他因叛国罪被处死。" }
+    ]
+  },
+  {
+    root: "tri", meaning: "三", letter: "T",
+    words: [
+      { w: "three", ph: "[θriː]", def: "num.三 pron./a.三(个，只...)", ex: "Three runners sprinted past.", tr: "三名运动员飞跑了过去。" },
+      { w: "third", ph: "[θɜːd]", def: "num.第三(个)，三分之一(的)", ex: "He finished in third place.", tr: "他得了第三名。" },
+      { w: "thirteen", ph: "[ˌθɜːˈtiːn]", def: "num./a.十三 pron.十三(个，只...)", ex: "\"Thirteen?\" he guessed wildly.", tr: "\"十三？\"他胡乱猜道。" },
+      { w: "thirty", ph: "[ˈθɜːti]", def: "num.三十，三十个(人或物)", ex: "By sunset we had covered thirty miles.", tr: "到日落时我们已走了三十英里。" },
+      { w: "triple", ph: "[ˈtrɪpl]", def: "n.三倍数 a.三倍的;三部分构成的 v.使成三倍", ex: "The exhibition has tripled in size from last year.", tr: "这个展览会面积是去年的三倍。" },
+      { w: "triangle", ph: "[ˈtraɪæŋgl]", def: "n.三角(形)", ex: "The red triangle denotes danger.", tr: "红色三角形表示危险。" }
+    ]
+  },
+  {
+    root: "tribut", meaning: "给予", letter: "T",
+    words: [
+      { w: "tribe", ph: "[traɪb]", def: "n.种族，部落；(植物，动物)族，一类", ex: "His intercession could be of help to the tribe.", tr: "他的调解会对该部落有帮助。" },
+      { w: "tribute", ph: "[ˈtrɪbjuːt]", def: "n.贡品；颂词,称赞,(表示敬意的)礼物", ex: "The director paid tribute to all she had done for the charity.", tr: "董事赞扬她为慈善事业所做的一切。" },
+      { w: "contribute", ph: "[kənˈtrɪbjuːt; ˈkɒntrɪbjuːt]", def: "v.(to)贡献,捐助,捐献;投稿", ex: "Do you wish to contribute?", tr: "你想捐助吗？" },
+      { w: "contribution", ph: "[ˌkɒntrɪˈbjuːʃn]", def: "n.贡献；捐款，捐献物；投稿", ex: "His contribution could be key.", tr: "他的贡献可能是最重要的。" },
+      { w: "attribute", ph: "[əˈtrɪbjuːt]", def: "v.(to)归因于,归属于 n.属性,品质,特征", ex: "She attributes her success to hard work and a little luck.", tr: "她认为她的成功来自勤劳和一点运气。" },
+      { w: "distribute", ph: "[dɪˈstrɪbjuːt; ˈdɪstrɪbjuːt]", def: "v.分发;分配;分布;分配(电);(over)散布", ex: "UN peacekeepers are trying to distribute supplies to 30,000 civilians.", tr: "联合国维和士兵正努力将供给分发给三万平民。" }
+    ]
+  },
+  {
+    root: "trick", meaning: "诡计", letter: "T",
+    words: [
+      { w: "trick", ph: "[trɪk]", def: "n.诡计,骗局;恶作剧;窍门 vt.欺骗,哄骗", ex: "That was a nasty little trick.", tr: "这是个可恶的小骗局。" },
+      { w: "intricate", ph: "[ˈɪntrɪkət; ˈɪntrɪkɪt]", def: "a.复杂的,错综的,难以理解的", ex: "You develop in-depth knowledge of the intricate structure of the language.", tr: "你对复杂的语言结构有更深入的了解。" },
+      { w: "intrigue", ph: "[ɪnˈtriːg]", def: "n.阴谋 v.密谋,私通;激起...的兴趣;诡计取得", ex: "He found himself caught in a web of intrigue.", tr: "他发现自己中了圈套。" }
+    ]
+  },
+  {
+    root: "triv", meaning: "尝试", letter: "T",
+    words: [
+      { w: "try", ph: "[traɪ]", def: "v.尝试，试图；试验，试用；审讯 n.尝试", ex: "Let's try to plan further ahead.", tr: "咱们尽量计划得更长远些。" },
+      { w: "trial", ph: "[ˈtraɪəl]", def: "n.讯问，审讯；试验；试用；尝试", ex: "Their trial will shortly begin.", tr: "他们的审讯很快就要开始。" },
+      { w: "contrive", ph: "[kənˈtraɪv]", def: "vt.谋划，策划；设法做到；设计，想出", ex: "I decided to contrive a meeting between the two of them.", tr: "我决定设法让他们双方见上一面。" },
+      { w: "retrieve", ph: "[rɪˈtriːv]", def: "vt.重新得到，取回；挽回，补救；检索", ex: "There was absolutely no way that we were going to be able to retrieve it.", tr: "我们绝对不可能把它找回来。" }
+    ]
+  },
+  {
+    root: "turb", meaning: "混乱", letter: "T",
+    words: [
+      { w: "disturb", ph: "[dɪˈstɜːb]", def: "v.扰乱,妨碍,使不安", ex: "I didn't like to disturb you.", tr: "我本不愿打搅你。" },
+      { w: "disturbance", ph: "[dɪˈstɜːbəns]", def: "n.动乱,骚乱,干扰", ex: "He was charged with causing a disturbance after the game.", tr: "他被指控在比赛结束后制造骚乱。" },
+      { w: "turbulent", ph: "[ˈtɜːbjələnt]", def: "a.狂暴的,无秩序的", ex: "I had to have a boat that could handle turbulent seas.", tr: "我必须有一条能应付汹涌海浪的船。" }
+    ]
+  },
+  {
+    root: "turn", meaning: "转动", letter: "T",
+    words: [
+      { w: "turn", ph: "[tɜːn]", def: "v./n.(使)转动;(使)旋转;(使)转变 n.机会", ex: "He decided to turn professional.", tr: "他决定转为职业人员。" },
+      { w: "return", ph: "[rɪˈtɜːn]", def: "v./n.返回,回来;归还,送还;回答", ex: "I waited a long time for him to return.", tr: "我等他回来等了很长时间。" },
+      { w: "turnover", ph: "[ˈtɜːnəʊvə(r)]", def: "n.翻倒(物);人员调整;(资金等)周转;营业额", ex: "We have a fast turnover of stock.", tr: "我们的货物周转快。" },
+      { w: "retort", ph: "[rɪˈtɔːt]", def: "n./v.报复,反击,反驳", ex: "His sharp retort clearly made an impact.", tr: "他的尖锐反驳显然起了作用。" },
+      { w: "distort", ph: "[dɪˈstɔːt]", def: "v.弄歪(嘴脸等);扭曲;歪曲(真理、事实等)", ex: "A painter may exaggerate or distort shapes and forms.", tr: "画家可能会夸大或扭曲形状与形式。" },
+      { w: "torment", ph: "[ˈtɔːment]", def: "n.折磨；令人痛苦的东西(人) vt.折磨；纠缠", ex: "After years of turmoil and torment, she is finally at peace.", tr: "经历多年的动荡与痛苦后，她终于安心下来了。" },
+      { w: "torture", ph: "[ˈtɔːtʃə(r)]", def: "v.拷问,拷打;折磨,磨难 n.拷问;折磨;痛苦", ex: "The prisoner was subjected to systematic torture.", tr: "犯人受到蓄意折磨。" }
+    ]
+  },
+  {
+    root: "tut", meaning: "教", letter: "T",
+    words: [
+      { w: "teach", ph: "[tiːtʃ]", def: "vt.教，讲授；教导(训)vi.讲课，当教师", ex: "Could you teach me to do that?", tr: "你能教我干那活儿吗？" },
+      { w: "teacher", ph: "[ˈtiːtʃə(r)]", def: "n.教师(员)，老(导)师", ex: "She's a very capable teacher.", tr: "她是一位能力很强的教师。" },
+      { w: "preach", ph: "[priːtʃ]", def: "v.宣讲(教义),布道;竭力鼓吹,宣传;说教", ex: "\"Don't preach at me,\" he shouted.", tr: "\"不要对我说教，\"他喊道。" },
+      { w: "tutor", ph: "[ˈtjuːtə(r)]", def: "n.导师;家庭教师 v.辅导;当导师;当家庭教师", ex: "You seem to be on very familiar terms with your tutor.", tr: "你似乎和你的导师之间很随便。" },
+      { w: "tuition", ph: "[tjuˈɪʃn]", def: "n.学费；(某一学科的)教学，讲授，指导", ex: "I'll have to cough up $10,000 a year for tuition.", tr: "我将必须勉强支付每年$10000的学费。" },
+      { w: "intuition", ph: "[ˌɪntjuˈɪʃn]", def: "n.直觉,直观；凭直觉而知的事物", ex: "Her tact and intuition never failed.", tr: "她的得体和直觉从不出错。" },
+      { w: "doctor", ph: "[ˈdɒktə(r)]", def: "n.医生；博士 vt.授予博士学位;诊断;修改", ex: "She later became a doctor.", tr: "她后来当了医生。" },
+      { w: "doctorate", ph: "[ˈdɒktərət]", def: "n.博士学位;博士头衔", ex: "Professor Lanphier obtained his doctorate in social psychology.", tr: "兰菲尔教授获得了社会心理学博士学位。" },
+      { w: "document", ph: "[ˈdɒkjumənt]", def: "n.公文,文献", ex: "The document bore her signature.", tr: "文件上有她的签字。" },
+      { w: "documentary", ph: "[ˌdɒkjuˈmentri]", def: "a.文献的 n.纪录片", ex: "The documentary painted her in a bad light.", tr: "纪录片的描绘对她很不利。" }
+    ]
+  },
+  {
+    root: "twist", meaning: "扭", letter: "T",
+    words: [
+      { w: "waist", ph: "[weɪst]", def: "n.腰,腰部", ex: "The grass had grown waist-high.", tr: "草长得齐腰高了。" },
+      { w: "wrist", ph: "[rɪst]", def: "n.腕,腕关节", ex: "Kay grasped him by the wrist.", tr: "凯紧紧抓住他的手腕。" },
+      { w: "twist", ph: "[twɪst]", def: "v.捻;拧;扭曲;蜿蜒曲折而行 n.拧;歪曲;曲折", ex: "The story has taken another twist.", tr: "故事情节再一次变化。" }
+    ]
+  },
+  {
+    root: "under", meaning: "下面", letter: "U",
+    words: [
+      { w: "under", ph: "[ˈʌndə(r)]", def: "prep.在...下面；在...以下 ad.在下面；少于", ex: "She dived under the water.", tr: "她潜入水下。" },
+      { w: "underestimate", ph: "[ˌʌndərˈestɪmeɪt]", def: "vt.低估，看轻", ex: "I think a lot of people still underestimate him.", tr: "我认为许多人仍然低估了他。" },
+      { w: "undergo", ph: "[ˌʌndəˈgəʊ]", def: "vt.遭受,经历,承受", ex: "One idea is to allow people to study law as an undergraduate degree.", tr: "一个想法是允许人们在本科阶段学习法律。" },
+      { w: "undergraduate", ph: "[ˌʌndəˈgrædʒuət]", def: "n.大学生,大学毕业生", ex: "Every day, there's going to be a TA in the undergraduate lounge.", tr: "每天都会有一名助教在本科休息室里。" },
+      { w: "underground", ph: "[ˌʌndəˈgraʊnd]", def: "a.地下的;秘密的 n.地铁 ad.在地下", ex: "I always travel by underground.", tr: "我总是乘地铁。" },
+      { w: "underlie", ph: "[ˌʌndəˈlaɪ]", def: "vt.位于...之下，成为...的基础", ex: "These ideas underlie much of his work.", tr: "他的作品大部分都是以这些主题思想为基础。" },
+      { w: "underline", ph: "[ˌʌndəˈlaɪn]", def: "vt.在...下划线;强调", ex: "Some readers would underline the page as they read.", tr: "有些读者在阅读时会在页面下划线。" },
+      { w: "underlying", ph: "[ˌʌndəˈlaɪɪŋ]", def: "a.含蓄的,潜在的;在下面的", ex: "To stop a problem you have to understand its underlying causes.", tr: "要解决问题，你得了解其潜在原因。" },
+      { w: "undermine", ph: "[ˌʌndəˈmaɪn]", def: "v.暗中破坏,逐渐削弱;侵蚀...的基础", ex: "This crisis has undermined his position.", tr: "这场危机已损害了他的地位。" },
+      { w: "underneath", ph: "[ˌʌndəˈniːθ]", def: "prep.在...下面 ad.在下面,在底下", ex: "The device exploded underneath a van.", tr: "那个装置在一辆面包车底下爆炸了。" }
+    ]
+  },
+  {
+    root: "uni", meaning: "一", letter: "U",
+    words: [
+      { w: "uniform", ph: "[ˈjuːnɪfɔːm]", def: "n.制服,军服 a.相同的,一律的", ex: "He was wearing a brown uniform.", tr: "他穿着一件棕色制服。" },
+      { w: "unify", ph: "[ˈjuːnɪfaɪ]", def: "v.使联合,统一;使相同,使一致", ex: "He pledged to unify the city's political factions.", tr: "他保证要统一全市的政治小集团。" },
+      { w: "union", ph: "[ˈjuːniən]", def: "n.联合,团结;联盟,联邦;协会,社团;和谐", ex: "the European Union.", tr: "欧洲联盟。" },
+      { w: "unique", ph: "[juˈniːk]", def: "a.唯一的,独一无二的", ex: "Each person's signature is unique.", tr: "每个人的签名是独一无二的。" },
+      { w: "unit", ph: "[ˈjuːnɪt]", def: "n.单位,单元;部件,元件;机组,装置", ex: "The unit plugs into any TV set.", tr: "该部件可接入任何电视机。" },
+      { w: "unite", ph: "[juˈnaɪt]", def: "vi.联合,团结;统一,合并 vt.使联合", ex: "His aim was to unite Italy.", tr: "他的目标是统一意大利。" },
+      { w: "unity", ph: "[ˈjuːnəti]", def: "n.团结;统一,一致,整体", ex: "We have to act to preserve the unity of this nation.", tr: "我们必须行动起来以维护这个国家的统一。" },
+      { w: "university", ph: "[ˌjuːnɪˈvɜːsəti]", def: "n.(综合)大学", ex: "She goes to Duke University.", tr: "她上杜克大学。" }
+    ]
+  },
+  {
+    root: "up", meaning: "向上", letter: "U",
+    words: [
+      { w: "up", ph: "[ʌp]", def: "ad.向上，...起来；...完；起床 prep.向上", ex: "He jumped up from his chair.", tr: "他从椅子上跳起来。" },
+      { w: "upon", ph: "[əˈpɒn]", def: "prep.在...上；在...旁 [=on]", ex: "The wedding season is upon us.", tr: "婚礼旺季即将来临。" },
+      { w: "upper", ph: "[ˈʌpə(r)]", def: "a.上面的;上部的,较高的", ex: "Her novels poke fun at the upper class.", tr: "她的小说嘲弄上流社会。" },
+      { w: "upward", ph: "[ˈʌpwəd]", def: "a.向上的,上升的 ad.向上", ex: "She started once again on the steep upward climb.", tr: "她再次沿着峭壁开始向上攀爬。" },
+      { w: "upstairs", ph: "[ˌʌpˈsteəz]", def: "ad.向楼上;在楼上;上楼 a.楼上的", ex: "She's upstairs getting ready.", tr: "她在楼上做准备。" },
+      { w: "update", ph: "[ˌʌpˈdeɪt]", def: "v.更新,使现代化", ex: "We'll update you on the day's top news stories.", tr: "我们将向你提供当天的头条新闻。" },
+      { w: "up-to-date", ph: "[ˌʌptəˈdeɪt]", def: "a.现代化的，最新的；跟上时代的", ex: "You need an up-to-date Web browser.", tr: "你需要一个最新的网络浏览器。" }
+    ]
+  },
+  {
+    root: "urg", meaning: "催促", letter: "U",
+    words: [
+      { w: "urge", ph: "[ɜːdʒ]", def: "vt.催促;怂恿;强调 n.强烈欲望,迫切要求", ex: "We urge Congress to increase farmland conservation.", tr: "我们敦促国会加强耕地保护。" },
+      { w: "urgent", ph: "[ˈɜːdʒənt]", def: "a.急迫的，紧要的，紧急的", ex: "This condition requires urgent treatment.", tr: "这种情况得紧急处理。" }
+    ]
+  },
+  {
+    root: "use", meaning: "用", letter: "U",
+    words: [
+      { w: "use", ph: "[juːz]", def: "n.使/应用；用法/途；益/用处 vt.用；消耗", ex: "Can I use your phone, please?", tr: "我可以用一下你的电话吗？" },
+      { w: "used", ph: "[juːst]", def: "a.用旧了的，旧的；习惯于...；过去惯/经常", ex: "I'm not used to eating so much at lunchtime.", tr: "我不习惯午饭吃那么多。" },
+      { w: "useful", ph: "[ˈjuːsfl]", def: "a.有用的，实用的；有益的，有帮助的", ex: "Photos make useful teaching aids.", tr: "照片可以成为有用的教具。" },
+      { w: "usage", ph: "[ˈjuːsɪdʒ; ˈjuːzɪdʒ]", def: "n.使用，用法；利用，利用率", ex: "Car usage is predicted to increase.", tr: "汽车的使用率预计会增长。" },
+      { w: "abuse", ph: "[əˈbjuːs]", def: "vt.滥用；辱骂，诋毁 n.滥用；恶习；弊端", ex: "He was arrested on charges of corruption and abuse of power.", tr: "他因被控贪污腐化和滥用职权而遭逮捕。" },
+      { w: "utilize", ph: "[ˈjuːtəlaɪz]", def: "vt.利用", ex: "Sound engineers utilize a range of techniques to enhance the quality of the recordings.", tr: "音响工程师利用一系列的技术来提高录音质量。" }
+    ]
+  },
+  {
+    root: "vac", meaning: "空", letter: "V",
+    words: [
+      { w: "vacant", ph: "[ˈveɪkənt]", def: "a.空的,未占用的;空缺的;神情茫然的", ex: "The seat next to him was vacant.", tr: "他旁边的座位空着。" },
+      { w: "vacation", ph: "[veɪˈkeɪʃn; vəˈkeɪʃn]", def: "n.休假,假期", ex: "They're on vacation in Hawaii right now.", tr: "他们此时正在夏威夷度假。" },
+      { w: "vacuum", ph: "[ˈvækjuːm]", def: "n.真空,真空吸尘器", ex: "Vacuum cleaners work by suction.", tr: "真空吸尘器靠抽吸除尘。" },
+      { w: "evacuate", ph: "[ɪˈvækjueɪt]", def: "vt.撤离,疏散,排泄,剥夺", ex: "It has forced politicians to think again about the wisdom of trying to evacuate refugees.", tr: "这已迫使政客们重新考虑试图疏散难民是否明智。" },
+      { w: "vain", ph: "[veɪn]", def: "a.徒劳的,徒然的;自负的,爱虚荣的", ex: "All our efforts were in vain.", tr: "我们的所有努力都付诸东流了。" },
+      { w: "vanity", ph: "[ˈvænəti]", def: "n.虚荣心,浮华", ex: "She had no personal vanity about her appearance.", tr: "她对自己的相貌毫不自负。" },
+      { w: "avoid", ph: "[əˈvɔɪd]", def: "vt.防止，避免；逃避，避开", ex: "A person's health improves with the avoidance of stress.", tr: "一个人只要避免紧张，健康状况就会改善。" },
+      { w: "void", ph: "[vɔɪd]", def: "a.空虚的;没有的;无效的", ex: "The contract was declared void.", tr: "这份合同被宣布无效。" },
+      { w: "vanish", ph: "[ˈvænɪʃ]", def: "vi.突然不见;消失", ex: "The magician made a coin vanish.", tr: "魔术师让一枚硬币消失了。" }
+    ]
+  }
+];
+
+</script>
+<script>
+/* ============ 状态 ============ */
+const LS='wordmem_tv_v1';
+let store=JSON.parse(localStorage.getItem(LS)||'{}');
+store.mastered=store.mastered||{};
+store.star=store.star||{};
+function save(){localStorage.setItem(LS,JSON.stringify(store))}
+
+let curLetter='ALL', curSearch='', starOnly=false;
+
+/* ============ 发音 ============ */
+let voices=[];
+function loadVoices(){voices=speechSynthesis.getVoices()}
+loadVoices(); speechSynthesis.onvoiceschanged=loadVoices;
+function speak(text){
+  if(!('speechSynthesis' in window)){alert('当前浏览器不支持语音朗读');return}
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  const lang=document.getElementById('accentSel').value;
+  u.lang=lang; u.rate=.9; u.pitch=1;
+  const v=voices.find(x=>x.lang===lang)||voices.find(x=>x.lang.startsWith('en'));
+  if(v)u.voice=v;
+  speechSynthesis.speak(u);
+}
+
+/* ============ 工具 ============ */
+function allWords(){
+  const arr=[];
+  WORD_DATA.forEach(g=>g.words.forEach(w=>arr.push({...w,root:g.root,mean:g.meaning,letter:g.letter})));
+  return arr;
+}
+function filteredGroups(){
+  return WORD_DATA.filter(g=>curLetter==='ALL'||g.letter===curLetter)
+    .map(g=>{
+      let ws=g.words;
+      if(starOnly)ws=ws.filter(w=>store.star[w.w]);
+      if(curSearch){
+        const q=curSearch.toLowerCase();
+        ws=ws.filter(w=>w.w.toLowerCase().includes(q)||w.def.includes(curSearch)||g.root.includes(q)||g.meaning.includes(curSearch));
+      }
+      return {...g,words:ws};
+    }).filter(g=>g.words.length>0);
+}
+
+/* ============ 统计 ============ */
+function updateStats(){
+  const aw=allWords();
+  document.getElementById('stWords').textContent=aw.length;
+  document.getElementById('stRoots').textContent=WORD_DATA.length;
+  document.getElementById('stMastered').textContent=Object.values(store.mastered).filter(Boolean).length;
+  document.getElementById('stStar').textContent=Object.values(store.star).filter(Boolean).length;
+}
+
+/* ============ 浏览渲染 ============ */
+function renderBrowse(){
+  const box=document.getElementById('groupList');
+  const groups=filteredGroups();
+  if(groups.length===0){
+    box.innerHTML='<div class="empty"><div class="ico">🔍</div>没有匹配的单词</div>';return;
+  }
+  box.innerHTML=groups.map(g=>`
+    <div class="group">
+      <div class="g-head" onclick="toggleGroup(this)">
+        <span class="g-badge">${g.root}</span>
+        <span class="g-mean">${g.meaning}<small>词根 · ${g.letter}</small></span>
+        <button class="g-play" onclick="event.stopPropagation();speak('${g.root}')">🔊</button>
+        <span class="g-count">${g.words.length} 词</span>
+      </div>
+      <div class="g-body">
+        ${g.words.map(w=>cardHTML(w,g)).join('')}
+      </div>
+    </div>`).join('');
+}
+function cardHTML(w,g){
+  const m=store.mastered[w.w]?'mastered':'';
+  const st=store.star[w.w]?'on':'';
+  return `<div class="card ${m}" data-w="${w.w}">
+    <div class="c-top">
+      <span class="c-word">${w.w}</span>
+      <button class="c-play" onclick="speak('${w.w}')">🔊</button>
+      <button class="c-star ${st}" onclick="toggleStar('${w.w}',this)">★</button>
+    </div>
+    <div class="c-ph">${w.ph}</div>
+    <div class="c-def">${w.def}</div>
+    <div class="c-ex">
+      <span class="en">${w.ex}</span>
+      <span class="cn">${w.tr}</span>
+    </div>
+    <button class="c-check" onclick="toggleMaster('${w.w}',this)">${store.mastered[w.w]?'✓ 已掌握':'标记掌握'}</button>
+  </div>`;
+}
+function toggleGroup(el){el.nextElementSibling.classList.toggle('collapsed')}
+function toggleStar(w,btn){store.star[w]=!store.star[w];save();btn.classList.toggle('on');updateStats();if(starOnly)renderBrowse()}
+function toggleMaster(w,btn){
+  store.mastered[w]=!store.mastered[w];save();updateStats();
+  const card=btn.closest('.card');
+  card.classList.toggle('mastered');
+  btn.textContent=store.mastered[w]?'✓ 已掌握':'标记掌握';
+}
+
+/* ============ 字母导航 ============ */
+function buildLetterNav(){
+  const letters=[...new Set(WORD_DATA.map(g=>g.letter))];
+  const nav=document.getElementById('letterNav');
+  nav.innerHTML=`<button data-l="ALL" class="on" style="width:auto;padding:0 16px">全部</button>`+
+    letters.map(l=>`<button data-l="${l}">${l}</button>`).join('');
+  nav.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+    curLetter=b.dataset.l;
+    nav.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');renderBrowse();
+  });
+}
+
+/* ============ 模式切换 ============ */
+document.querySelectorAll('#modeSeg button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#modeSeg button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
+  const m=b.dataset.mode;
+  document.getElementById('browseStage').style.display=m==='browse'?'block':'none';
+  document.getElementById('flashStage').classList.toggle('on',m==='flash');
+  document.getElementById('quizStage').classList.toggle('on',m==='quiz');
+  if(m==='flash')initFlash();
+  if(m==='quiz')initQuiz();
+});
+
+/* ============ 搜索 & 收藏筛选 ============ */
+document.getElementById('searchInput').oninput=e=>{curSearch=e.target.value.trim();renderBrowse()};
+document.getElementById('filterStar').onclick=function(){starOnly=true;this.classList.add('on');document.getElementById('filterAll').classList.remove('on');renderBrowse()};
+document.getElementById('filterAll').onclick=function(){starOnly=false;this.classList.add('on');document.getElementById('filterStar').classList.remove('on');renderBrowse()};
+
+/* ============ 卡片模式 ============ */
+let fcList=[],fcIdx=0;
+function initFlash(){
+  const sel=document.getElementById('fcScope');
+  sel.innerHTML=`<option value="ALL">全部单词 (${allWords().length})</option>`+
+    `<option value="STAR">⭐ 我的收藏 (${Object.values(store.star).filter(Boolean).length})</option>`+
+    WORD_DATA.map(g=>`<option value="R:${g.root}">${g.root} · ${g.meaning} (${g.words.length})</option>`).join('');
+  sel.onchange=()=>{buildFcList(sel.value);fcIdx=0;showFc()};
+  buildFcList('ALL');fcIdx=0;showFc();
+}
+function buildFcList(scope){
+  if(scope==='ALL')fcList=allWords();
+  else if(scope==='STAR')fcList=allWords().filter(w=>store.star[w.w]);
+  else{const r=scope.slice(2);const g=WORD_DATA.find(x=>x.root===r);fcList=g.words.map(w=>({...w,root:g.root,mean:g.meaning}))}
+}
+function showFc(){
+  document.getElementById('flip').classList.remove('flipped');
+  if(fcList.length===0){document.getElementById('fcWord').textContent='暂无单词';document.getElementById('fcPh').textContent='';document.getElementById('fcProgress').textContent='0 / 0';return}
+  const w=fcList[fcIdx];
+  document.getElementById('fcWord').textContent=w.w;
+  document.getElementById('fcPh').textContent=w.ph;
+  document.getElementById('fcDef').textContent=w.def;
+  document.getElementById('fcExEn').textContent=w.ex;
+  document.getElementById('fcExCn').textContent=w.tr;
+  document.getElementById('fcRoot').textContent='词根 '+w.root+' · '+w.mean;
+  document.getElementById('fcProgress').textContent=`${fcIdx+1} / ${fcList.length}`;
+  const mb=document.getElementById('fcMaster');
+  mb.textContent=store.mastered[w.w]?'✓ 已掌握':'✓ 标记掌握';
+}
+document.getElementById('flip').onclick=function(){this.classList.toggle('flipped')};
+document.getElementById('fcPlay').onclick=e=>{e.stopPropagation();speak(fcList[fcIdx].w)};
+document.getElementById('fcNext').onclick=()=>{if(fcIdx<fcList.length-1){fcIdx++;showFc()}};
+document.getElementById('fcPrev').onclick=()=>{if(fcIdx>0){fcIdx--;showFc()}};
+document.getElementById('fcMaster').onclick=()=>{const w=fcList[fcIdx].w;store.mastered[w]=!store.mastered[w];save();updateStats();showFc()};
+
+/* ============ 测验模式 ============ */
+let quizList=[],qIdx=0,qScore=0;
+function initQuiz(){
+  quizList=shuffle(allWords()).slice(0,10);
+  qIdx=0;qScore=0;renderQuiz();
+}
+function renderQuiz(){
+  const box=document.getElementById('quizBox');
+  if(qIdx>=quizList.length){
+    box.innerHTML=`<div class="quiz-result">
+      <div style="font-size:40px">${qScore>=8?'🎉':qScore>=6?'👍':'💪'}</div>
+      <div class="big">${qScore} / ${quizList.length}</div>
+      <p>${qScore>=8?'太棒了，掌握得很牢固！':qScore>=6?'不错，继续加油！':'再复习一下词根卡片吧～'}</p>
+      <button class="fc-btn primary" onclick="initQuiz()">再来一组 →</button>
+    </div>`;return;
+  }
+  const w=quizList[qIdx];
+  const opts=shuffle([w.w,...shuffle(allWords().filter(x=>x.w!==w.w)).slice(0,3).map(x=>x.w)]);
+  box.innerHTML=`
+    <div class="q-num">第 ${qIdx+1} / ${quizList.length} 题 · 得分 ${qScore}</div>
+    <div class="q-prompt">根据释义选出正确的单词 &nbsp;<b>[词根 ${w.root}·${w.mean}]</b></div>
+    <div class="q-def">${w.def}</div>
+    <div class="q-opts">${opts.map(o=>`<button class="q-opt" onclick="answerQuiz(this,'${o}','${w.w}')">${o}</button>`).join('')}</div>
+    <button class="q-next" id="qNext" onclick="qIdx++;renderQuiz()">下一题 →</button>`;
+}
+function answerQuiz(btn,pick,ans){
+  const opts=document.querySelectorAll('.q-opt');
+  opts.forEach(o=>o.style.pointerEvents='none');
+  if(pick===ans){btn.classList.add('correct');qScore++;speak(ans)}
+  else{btn.classList.add('wrong');opts.forEach(o=>{if(o.textContent===ans)o.classList.add('correct')})}
+  document.getElementById('qNext').classList.add('show');
+}
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+/* ============ 键盘快捷键（卡片模式）============ */
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('flashStage').classList.contains('on'))return;
+  if(e.key==='ArrowRight')document.getElementById('fcNext').click();
+  if(e.key==='ArrowLeft')document.getElementById('fcPrev').click();
+  if(e.key===' '){e.preventDefault();document.getElementById('flip').click()}
+});
+
+/* ============ 初始化 ============ */
+buildLetterNav();
+updateStats();
+renderBrowse();
+</script>
+</body>
+</html>
