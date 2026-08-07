@@ -164,6 +164,50 @@ header{background:linear-gradient(135deg,#4f46e5,#7c3aed 55%,#9333ea);color:#fff
 .quiz-result .big{font-size:52px;font-weight:800;color:var(--brand);margin:8px 0}
 .quiz-result p{color:var(--sub);margin-bottom:20px}
 
+/* ---------- Speed mode (极速中文义速览) ---------- */
+.sp-stage{display:none;padding:6px 0 40px}
+.sp-stage.on{display:block}
+.sp-bar{background:var(--card);border-radius:14px;box-shadow:var(--shadow);padding:11px 14px;
+  margin-bottom:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.sp-seg{display:flex;background:#f1f2f7;border-radius:10px;padding:3px;gap:2px}
+.sp-seg button{border:0;background:transparent;padding:7px 13px;border-radius:8px;
+  font-size:13px;font-weight:600;color:var(--sub);cursor:pointer;white-space:nowrap;transition:.18s}
+.sp-seg button.on{background:#fff;color:var(--brand);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.sp-chk{font-size:13px;color:var(--sub);display:flex;align-items:center;gap:5px;cursor:pointer;user-select:none}
+.sp-btn{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:7px 14px;
+  font-size:13px;font-weight:700;cursor:pointer;color:var(--ink);transition:.18s}
+.sp-btn:hover{border-color:var(--brand);color:var(--brand)}
+.sp-btn.playing{background:var(--brand);color:#fff;border-color:var(--brand)}
+.sp-info{margin-left:auto;font-size:12.5px;color:var(--sub);font-weight:600}
+.sp-gh{display:flex;align-items:center;gap:9px;margin:16px 0 8px;padding:02px}
+.sp-gh .b{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;font-weight:800;
+  padding:3px 11px;border-radius:8px;font-size:12.5px}
+.sp-gh .m{font-size:13.5px;font-weight:700;color:var(--ink)}
+.sp-gh .c{margin-left:auto;font-size:11.5px;color:var(--sub);background:#f1f2f7;padding:2px 9px;border-radius:20px}
+.sp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(176px,1fr));gap:5px}
+.sp-item{display:flex;align-items:baseline;gap:5px;padding:7px 9px;border-radius:9px;
+  background:#fff;border:1px solid var(--line);cursor:pointer;transition:.14s;overflow:hidden}
+.sp-item:hover{border-color:#c7cbf5;background:#fbfaff}
+.sp-item.mastered{background:var(--ok-soft);border-color:#a7f3d0}
+.sp-en{font-weight:700;color:var(--brand);font-size:13.5px;font-family:Georgia,"Times New Roman",serif;flex-shrink:0}
+.sp-item.mastered .sp-en{color:var(--ok)}
+.sp-pos{font-size:10px;font-weight:700;padding:1px 4px;border-radius:4px;flex-shrink:0;
+  background:#f1f2f7;color:#9ca3af;font-family:sans-serif}
+.sp-pos.p-n{background:#e0f2fe;color:#0369a1}
+.sp-pos.p-v{background:#ffedd5;color:#c2410c}
+.sp-pos.p-a{background:#dcfce7;color:#15803d}
+.sp-pos.p-d{background:#f3e8ff;color:#7e22ce}
+.sp-cn{font-size:12.5px;color:#374151;margin-left:auto;text-align:right;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-radius:4px;padding:0 2px}
+.sp-item.hcn .sp-cn{background:#dfe2ea;color:transparent}
+.sp-item.hen .sp-en,.sp-item.hen .sp-pos{background:#dfe2ea;color:transparent;border-radius:4px}
+.sp-item.reveal .sp-cn,.sp-item.reveal .sp-en,.sp-item.reveal .sp-pos{background:transparent}
+.sp-item.reveal .sp-cn{color:#374151}
+.sp-item.reveal .sp-en{color:var(--brand)}
+.sp-item.speaking{border-color:var(--brand);background:var(--brand-soft);box-shadow:0 0 0 2px var(--brand-soft)}
+.sp-tip{font-size:12px;color:#9ca3af;margin-bottom:10px;padding:0 2px}
+@media(max-width:560px){.sp-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}.sp-info{margin-left:0;width:100%}}
+
 .empty{text-align:center;padding:50px 20px;color:var(--sub)}
 .empty .ico{font-size:44px;margin-bottom:12px}
 footer{text-align:center;padding:28px 20px;color:#9ca3af;font-size:12.5px}
@@ -202,7 +246,8 @@ footer{text-align:center;padding:28px 20px;color:#9ca3af;font-size:12.5px}
   <div class="toolbar">
     <div class="search"><input id="searchInput" placeholder="搜索单词 / 词根 / 释义…"></div>
     <div class="seg" id="modeSeg">
-      <button data-mode="browse" class="on">📚 浏览</button>
+      <button data-mode="speed" class="on">⚡ 速览</button>
+      <button data-mode="browse">📚 浏览</button>
       <button data-mode="flash">🎴 卡片</button>
       <button data-mode="quiz">✏️ 测验</button>
     </div>
@@ -214,13 +259,33 @@ footer{text-align:center;padding:28px 20px;color:#9ca3af;font-size:12.5px}
     </div>
   </div>
 
-  <!-- BROWSE -->
-  <div id="browseStage">
+  <div id="filterBar">
     <div class="letters" id="letterNav"></div>
     <div class="letters" style="margin-top:-8px">
       <button id="filterStar" style="width:auto;padding:0 14px">⭐ 只看收藏</button>
       <button id="filterAll" class="on" style="width:auto;padding:0 14px">全部单词</button>
     </div>
+  </div>
+
+  <!-- SPEED (极速中文义速览) -->
+  <div id="speedStage" class="sp-stage on">
+    <div class="sp-bar">
+      <div class="sp-seg" id="spViewSeg">
+        <button data-v="both" class="on">👀 词+义</button>
+        <button data-v="hidecn">🙈 遮中文</button>
+        <button data-v="hideen">🙉 遮单词</button>
+      </div>
+      <label class="sp-chk"><input type="checkbox" id="spFull"> 完整释义</label>
+      <label class="sp-chk"><input type="checkbox" id="spHideMastered">隐藏已掌握</label>
+      <button class="sp-btn" id="spAutoPlay">▶ 连续播放</button>
+      <span class="sp-info" id="spInfo"></span>
+    </div>
+    <div class="sp-tip">💡 点词条听发音 · 遮盖模式下点一下临时揭开 · 双击标记「已掌握」</div>
+    <div id="speedList"></div>
+  </div>
+
+  <!-- BROWSE -->
+  <div id="browseStage" style="display:none">
     <div id="groupList"></div>
   </div>
 
@@ -1269,7 +1334,7 @@ function buildLetterNav(){
       var bs=nav.getElementsByTagName('button');
       for(var k=0;k<bs.length;k++){bs[k].className=bs[k].className.replace(/\bon\b/,'').replace(/\s+$/,'');}
       this.className=(this.className+' on').replace(/\s+/g,' ');
-      renderBrowse();
+      rerenderList();
     };
   }
 }
@@ -1283,20 +1348,32 @@ function buildLetterNav(){
       for(var k=0;k<all.length;k++){all[k].className=all[k].className.replace(/\bon\b/,'').replace(/\s+$/,'');}
       this.className=(this.className+' on').replace(/\s+/g,' ');
       var m=this.getAttribute('data-mode');
+      if(typeof spStop==='function')spStop();
+      var fb=document.getElementById('filterBar');
+      if(fb)fb.style.display=(m==='speed'||m==='browse')?'block':'none';
+      setOn(document.getElementById('speedStage'),m==='speed','sp-stage');
       document.getElementById('browseStage').style.display=(m==='browse')?'block':'none';
       setOn(document.getElementById('flashStage'),m==='flash','fc-stage');
       setOn(document.getElementById('quizStage'),m==='quiz','quiz-stage');
+      if(m==='speed')renderSpeed();
+      if(m==='browse')renderBrowse();
       if(m==='flash')initFlash();
       if(m==='quiz')initQuiz();
     };
   }
 })();
 function setOn(el,on,base){el.className=on?(base+' on'):base;}
+/* 按当前所处模式重绘列表（速览 / 浏览） */
+function rerenderList(){
+  var sp=document.getElementById('speedStage');
+  if(sp&&sp.className.indexOf('on')>=0){renderSpeed();}
+  else{renderBrowse();}
+}
 
 /* ============ 搜索 & 收藏筛选 ============ */
-document.getElementById('searchInput').oninput=function(e){curSearch=(this.value||'').replace(/^\s+|\s+$/g,'');renderBrowse();};
-document.getElementById('filterStar').onclick=function(){starOnly=true;this.className='on';document.getElementById('filterAll').className='';renderBrowse();};
-document.getElementById('filterAll').onclick=function(){starOnly=false;this.className='on';document.getElementById('filterStar').className='';renderBrowse();};
+document.getElementById('searchInput').oninput=function(e){curSearch=(this.value||'').replace(/^\s+|\s+$/g,'');rerenderList();};
+document.getElementById('filterStar').onclick=function(){starOnly=true;this.className='on';document.getElementById('filterAll').className='';rerenderList();};
+document.getElementById('filterAll').onclick=function(){starOnly=false;this.className='on';document.getElementById('filterStar').className='';rerenderList();};
 
 /* ============ 卡片模式 ============ */
 var fcList=[],fcIdx=0;
@@ -1418,18 +1495,135 @@ function switchWeek(i){
   applyWeekMeta();
   buildLetterNav();
   updateStats();
-  renderBrowse();
+  if(typeof spStop==='function')spStop();
+  rerenderList();
   /* 若当前在卡片/测验模式，重置其内容 */
   if(document.getElementById('flashStage').className.indexOf('on')>=0)initFlash();
   if(document.getElementById('quizStage').className.indexOf('on')>=0)initQuiz();
 }
 window.switchWeek=switchWeek;
 
+/* ============ 极速中文义速览 ============ */
+/* 从冗长释义里抽取「核心中文义」：去括号注释 → 取首个词性段 → 取前1~2 个义项 */
+function coreDef(def){
+  var s=(''+(def||'')).replace(/（[^）]*）/g,'').replace(/\([^)]*\)/g,'').replace(/\s+/g,' ');
+  var pos='',rest=s;
+  var m=/^\s*((?:(?:n|vt|vi|v|adj|adv|ad|a|prep|conj|pron|num|int|aux|art)\.\s*\/?\s*)+)/.exec(s);
+  if(m){pos=m[1].replace(/\s/g,'');rest=s.slice(m[0].length);}
+  var m2=/[a-zA-Z]{1,4}\./.exec(rest);          /* 截断到下一个词性标记 */
+  if(m2&&m2.index>0){rest=rest.slice(0,m2.index);}
+  var parts=rest.split(/[；;，,、]/),out=[],i;
+  for(i=0;i<parts.length&&out.length<2;i++){
+    var p=parts[i].replace(/^\s+|\s+$/g,'');
+    if(p){out.push(p);}
+    if(out.join('，').length>=7){break;}
+  }
+  var cn=out.join('，');
+  if(cn.length>14){cn=cn.slice(0,14)+'…';}
+  if(!cn){cn=rest.replace(/^\s+|\s+$/g,'')||def;}
+  pos=pos.split('/')[0].replace(/\.$/,'');
+  return {pos:pos,cn:cn};
+}
+function posCls(p){
+  if(!p){return '';}
+  p=p.toLowerCase();
+  if(p.charAt(0)==='n'){return 'p-n';}
+  if(p.charAt(0)==='v'){return 'p-v';}
+  if(p.indexOf('ad')===0){return 'p-d';}
+  if(p.charAt(0)==='a'){return 'p-a';}
+  return '';
+}
+var spView='both',spFull=false,spHideMastered=false;
+function renderSpeed(){
+  var box=document.getElementById('speedList');
+  if(!box){return;}
+  var groups=filteredGroups(),total=0,html='',i,j;
+  for(i=0;i<groups.length;i++){
+    var g=groups[i],ws=g.words;
+    if(spHideMastered){ws=ws.filter(function(w){return !store.mastered[w.w];});}
+    if(!ws.length){continue;}
+    total+=ws.length;
+    var isLG=isLetterGroup(g),items='';
+    for(j=0;j<ws.length;j++){
+      var w=ws[j],c=coreDef(w.def);
+      var cn=spFull?w.def:c.cn;
+      var cls='sp-item'+(store.mastered[w.w]?' mastered':'')
+        +(spView==='hidecn'?' hcn':'')+(spView==='hideen'?' hen':'');
+      items+='<div class="'+cls+'" data-w="'+w.w+'" title="'+w.ph+' '+w.def+'"'
+        +' onclick="spTap(this)" ondblclick="spMaster(this)">'
+        +'<span class="sp-en">'+w.w+'</span>'
+        +(c.pos?'<span class="sp-pos '+posCls(c.pos)+'">'+c.pos+'</span>':'')
+        +'<span class="sp-cn">'+cn+'</span></div>';
+    }
+    html+='<div class="sp-gh"><span class="b">'+g.root+'</span>'
+      +'<span class="m">'+(isLG?('字母 '+g.root):g.meaning)+'</span>'
+      +'<span class="c">'+ws.length+' 词</span></div>'
+      +'<div class="sp-grid">'+items+'</div>';
+  }
+  box.innerHTML=html||'<div class="empty"><div class="ico">🔍</div>没有匹配的单词</div>';
+  var info=document.getElementById('spInfo');
+  if(info){info.textContent=total+' 词 · 已掌握 '+countStore(store.mastered);}
+}
+function spTap(el){
+  if(el.className.indexOf('reveal')<0){el.className=el.className+' reveal';}
+  speak(el.getAttribute('data-w'));
+}
+function spMaster(el){
+  var w=el.getAttribute('data-w');
+  store.mastered[w]=!store.mastered[w];save();updateStats();
+  el.className=store.mastered[w]?(el.className+' mastered'):el.className.replace(/\s*mastered/,'');
+  var info=document.getElementById('spInfo');
+  if(info&&spHideMastered){renderSpeed();}
+  else if(info){info.textContent=info.textContent.replace(/已掌握 \d+/,'已掌握 '+countStore(store.mastered));}
+}
+var spTimer=null,spQueue=[],spQi=0;
+function spStop(){
+  if(spTimer){clearInterval(spTimer);spTimer=null;}
+  for(var i=0;i<spQueue.length;i++){spQueue[i].className=spQueue[i].className.replace(/\s*speaking/,'');}
+  var b=document.getElementById('spAutoPlay');
+  if(b){b.className='sp-btn';b.textContent='▶ 连续播放';}
+}
+function spStep(){
+  if(spQi>=spQueue.length){spStop();return;}
+  var i,el=spQueue[spQi];
+  for(i=0;i<spQueue.length;i++){spQueue[i].className=spQueue[i].className.replace(/\s*speaking/,'');}
+  el.className=el.className+' speaking';
+  if(el.className.indexOf('reveal')<0){el.className=el.className+' reveal';}
+  try{el.scrollIntoView({block:'center'});}catch(e){try{el.scrollIntoView();}catch(e2){}}
+  speak(el.getAttribute('data-w'));
+  spQi++;
+}
+function spAutoToggle(){
+  if(spTimer){spStop();return;}
+  spQueue=toArr(document.querySelectorAll('#speedList .sp-item'));
+  if(!spQueue.length){return;}
+  spQi=0;
+  var b=document.getElementById('spAutoPlay');
+  if(b){b.className='sp-btn playing';b.textContent='■ 停止';}
+  spStep();
+  spTimer=setInterval(spStep,2600);
+}
+window.spTap=spTap;window.spMaster=spMaster;
+(function(){
+  var vb=document.querySelectorAll('#spViewSeg button'),i;
+  for(i=0;i<vb.length;i++){
+    vb[i].onclick=function(){
+      var all=document.querySelectorAll('#spViewSeg button');
+      for(var k=0;k<all.length;k++){all[k].className=all[k].className.replace(/\bon\b/,'').replace(/\s+$/,'');}
+      this.className=(this.className+' on').replace(/\s+/g,' ');
+      spView=this.getAttribute('data-v');renderSpeed();
+    };
+  }
+  document.getElementById('spFull').onclick=function(){spFull=!!this.checked;renderSpeed();};
+  document.getElementById('spHideMastered').onclick=function(){spHideMastered=!!this.checked;renderSpeed();};
+  document.getElementById('spAutoPlay').onclick=spAutoToggle;
+})();
+
 /* ============ 初始化 ============ */
 buildWeekSelector();
 buildLetterNav();
 updateStats();
-renderBrowse();
+renderSpeed();
 })();
 </script>
 </body>
