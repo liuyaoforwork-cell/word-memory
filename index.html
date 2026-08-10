@@ -1132,10 +1132,370 @@ if(typeof window!=='undefined'){window.WORD_DATA_WEEK2=WORD_DATA_WEEK2;}
 
 </script>
 <script>
+// 品睿教育高频词汇表（词根词缀分组） V-W-Y 部分（第3周）
+// 数据结构: { root: 词根, meaning: 词根义, words: [{w:单词, ph:音标, def:释义, ex:例句, tr:翻译}] }
+var WORD_DATA_WEEK3 = [
+  {
+    root: "vac", meaning: "空", letter: "V",
+    words: [
+      { w: "vacant", ph: "[ˈveɪkənt]", def: "a.空的,未占用的;空缺的;神情茫然的", ex: "The seat next to him was vacant.", tr: "他旁边的座位空着。" },
+      { w: "vacation", ph: "[veɪˈkeɪʃn]", def: "n.休假,假期", ex: "They're on vacation in Hawaii right now.", tr: "他们此时正在夏威夷度假。" },
+      { w: "vacuum", ph: "[ˈvækjuːm]", def: "n.真空,真空吸尘器", ex: "Vacuum cleaners work by suction.", tr: "真空吸尘器靠抽吸除尘。" },
+      { w: "evacuate", ph: "[ɪˈvækjueɪt]", def: "vt.撤离,疏散,排泄,剥夺", ex: "It has forced politicians to think again about the wisdom of trying to evacuate refugees.", tr: "这已迫使政客们重新考虑试图疏散难民是否明智。" },
+      { w: "vain", ph: "[veɪn]", def: "a.徒劳的,徒然的;自负的,爱虚荣的（in vain 徒劳）", ex: "All our efforts were in vain.", tr: "我们的所有努力都付诸东流了。" },
+      { w: "vanity", ph: "[ˈvænəti]", def: "n.虚荣心,浮华", ex: "She had no personal vanity about her appearance.", tr: "她对自己的相貌毫不自负。" },
+      { w: "avoid", ph: "[əˈvɔɪd]", def: "vt.防止,避免;逃避,避开", ex: "A person's health improves with the avoidance of stress.", tr: "一个人只要避免紧张，健康状况就会改善。" },
+      { w: "void", ph: "[vɔɪd]", def: "a.空虚的;没有的;无效的", ex: "The contract was declared void.", tr: "这份合同被宣布无效。" },
+      { w: "vanish", ph: "[ˈvænɪʃ]", def: "vi.突然不见;消失", ex: "I wait for their car to vanish before I put up the sign.", tr: "我等到他们的车消失在视线里才挂上标示。" }
+    ]
+  },
+  {
+    root: "vad", meaning: "走", letter: "V",
+    words: [
+      { w: "evade", ph: "[ɪˈveɪd]", def: "vt.逃避,回避;避开,躲避", ex: "He tried to evade the embarrassing question.", tr: "他企图回避这令人难堪的问题。" },
+      { w: "inevitable", ph: "[ɪnˈevɪtəbl]", def: "a.不可避免的,必然发生的", ex: "It was inevitable that there would be job losses.", tr: "裁员已是不可避免的事。" },
+      { w: "invade", ph: "[ɪnˈveɪd]", def: "vt.入侵,侵略,侵袭,侵扰", ex: "When did the Romans invade Britain?", tr: "古罗马人是何时侵略英国的？" },
+      { w: "invasion", ph: "[ɪnˈveɪʒn]", def: "n.入侵,侵略,侵犯", ex: "There was widespread condemnation of the invasion.", tr: "那次侵略遭到了人们普遍的谴责。" },
+      { w: "vague", ph: "[veɪɡ]", def: "a.不明确的,含糊的,暧昧的", ex: "The description was pretty vague.", tr: "这项描述是相当含糊的。" },
+      { w: "extravagant", ph: "[ɪkˈstrævəɡənt]", def: "a.奢侈的;过分的;(言行等)放肆的", ex: "She's got very extravagant tastes.", tr: "她有很奢侈的嗜好。" }
+    ]
+  },
+  {
+    root: "val", meaning: "价值", letter: "V",
+    words: [
+      { w: "value", ph: "[ˈvæljuː]", def: "n.价格;价值;实用性 v.评价,估价;尊重", ex: "The winner will receive a prize to the value of £1000.", tr: "获胜者将得到价值为1000英镑的奖项。" },
+      { w: "valuable", ph: "[ˈvæljuəbl]", def: "a.贵重的,有价值的 n.(pl.)贵重物品,财宝", ex: "Luckily, nothing valuable was stolen.", tr: "幸运的是，没有贵重物品失窃。" },
+      { w: "invaluable", ph: "[ɪnˈvæljuəbl]", def: "a.非常宝贵的,无价的", ex: "His help can prove invaluable.", tr: "他的帮助是无价的。" },
+      { w: "evaluate", ph: "[ɪˈvæljueɪt]", def: "v.估价,评价;求…的值", ex: "The market situation is difficult to evaluate.", tr: "市场形势难以评估。" },
+      { w: "equivalent", ph: "[ɪˈkwɪvələnt]", def: "a.(to)相等的,等价的 n.相等物,等价物", ex: "Eight kilometres is roughly equivalent to five miles.", tr: "八公里约等于五英里。" },
+      { w: "valid", ph: "[ˈvælɪd]", def: "a.有效的;有根据的;正当的", ex: "All tickets are valid for two months.", tr: "所有的票在两个月内有效。" },
+      { w: "invalid", ph: "[ɪnˈvælɪd]", def: "n.病人,伤残人 a.有病的,伤残的;无效的", ex: "I hate being treated as an invalid.", tr: "我讨厌被当作病人对待。" },
+      { w: "avail", ph: "[əˈveɪl]", def: "n.[一般用于否定句或疑问句中]效用,利益", ex: "His efforts were to no avail.", tr: "他的努力是徒劳的。" },
+      { w: "available", ph: "[əˈveɪləbl]", def: "a.(用于物)可利用的;可见到的,接受采访的", ex: "No relief drivers were available.", tr: "没有换班的司机。" },
+      { w: "prevail", ph: "[prɪˈveɪl]", def: "v.(over,against)取胜,占优势;流行,盛行", ex: "We hoped that common sense would prevail.", tr: "我们希望常识能占上风。" },
+      { w: "prevalent", ph: "[ˈprevələnt]", def: "a.流行的,普遍的", ex: "This condition is more prevalent in women than in men.", tr: "这种情况在女性中比在男性中更为普遍。" }
+    ]
+  },
+  {
+    root: "vanc", meaning: "走", letter: "V",
+    words: [
+      { w: "advance", ph: "[ədˈvɑːns]", def: "n.前进,预付 vi.前进,进展 vt.促进,推进（in advance 提前）", ex: "We live in an age of rapid technological advance.", tr: "我们生活在技术迅猛发展的时代。" },
+      { w: "advanced", ph: "[ədˈvɑːnst]", def: "a.超前的,先进的;高级的;开明的;前进的", ex: "The course is suitable for beginners and advanced students.", tr: "该课程适合初学者和高阶学生。" },
+      { w: "advantage", ph: "[ədˈvɑːntɪdʒ]", def: "n.优点,长处,有利条件;利益,好处（take advantage of 利用）", ex: "His height gives him a clear advantage.", tr: "他的身高使他具有明显的优势。" },
+      { w: "advent", ph: "[ˈædvent]", def: "n.(重要事件等的)到来,来临", ex: "The advent of the computer has brought this sort of task within the bounds of possibility.", tr: "电脑的出现使这种任务的完成成为可能。" },
+      { w: "adventure", ph: "[ədˈventʃə(r)]", def: "n.冒险,冒险活动,奇遇 vt.大胆进行", ex: "I set off for a new adventure in Alaska on the first day of the new year.", tr: "我在新年第一天出发去阿拉斯加进行一次新的冒险。" },
+      { w: "avenue", ph: "[ˈævənjuː]", def: "n.林荫路,大街;(比喻)途径,渠道,方法", ex: "He walked up Fifth Avenue to clear his head.", tr: "他在第五大街上走，让头脑清醒清醒。" },
+      { w: "event", ph: "[ɪˈvent]", def: "n.事件,事情（in the event of 万一）", ex: "The event was voted a great success.", tr: "大家认为这项活动很成功。" },
+      { w: "eventually", ph: "[ɪˈventʃuəli]", def: "ad.终于,最后", ex: "Eventually your child will leave home to lead her own life as a fully independent adult.", tr: "你的孩子最终会离开家，作为完全独立的成年人过她自己的日子。" },
+      { w: "intervene", ph: "[ˌɪntəˈviːn]", def: "v.(in)干涉,干预;插入,介入", ex: "The problem lies in deciding when to intervene.", tr: "问题在于决定何时介入。" },
+      { w: "revenue", ph: "[ˈrevənjuː]", def: "n.财政收入,税收", ex: "If they overestimate, they lose revenue.", tr: "如果他们过高地估算，就会损失收入。" },
+      { w: "ventilate", ph: "[ˈventɪleɪt]", def: "vt.使通风;给…装通风风设备", ex: "Open the window and ventilate the room.", tr: "打开窗户，让房间空气流通。" },
+      { w: "venture", ph: "[ˈventʃə(r)]", def: "v.冒险,拼;大胆表示 n.冒险事业,企业", ex: "We put all our savings into the venture.", tr: "我们把所有的积蓄都投进了那家企业。" },
+      { w: "convention", ph: "[kənˈvenʃn]", def: "n.大会,会议;惯例,常规,习俗;公约,协定", ex: "The convention does not apply to us.", tr: "该协定对我们不适用。" },
+      { w: "conventional", ph: "[kənˈvenʃənl]", def: "a.惯例的,常规的", ex: "Biofuels can be mixed with conventional fuels.", tr: "生物燃料能够和传统燃料混合。" },
+      { w: "convenient", ph: "[kənˈviːniənt]", def: "a.(to)便利的,方便的", ex: "She will try to arrange a mutually convenient time and place for an interview.", tr: "她会尽量把面谈安排在一个双方都方便的时间和地点。" },
+      { w: "convenience", ph: "[kənˈviːniəns]", def: "n.便利,方便;(pl.)便利设备", ex: "They may use a credit card for convenience.", tr: "他们可以为了方便而使用信用卡。" },
+      { w: "prevent", ph: "[prɪˈvent]", def: "v.(from)预防,防止,阻止,制止,妨碍", ex: "We are taking steps to prevent pollution.", tr: "我们正在采取措施防止污染。" },
+      { w: "inventory", ph: "[ˈɪnvəntri]", def: "n.详细目录,存货,财产清册,总量", ex: "I did all of the ordering for the store, and I kept track of the inventory.", tr: "我为店里做了所有的订单，并记录了库存情况。" }
+    ]
+  },
+  {
+    root: "vari", meaning: "变化", letter: "V",
+    words: [
+      { w: "vary", ph: "[ˈveəri]", def: "vt.改变,变化;使多样化", ex: "Her novels vary in length.", tr: "她的小说篇幅长短不一。" },
+      { w: "various", ph: "[ˈveəriəs]", def: "a.各种各样的;不同的", ex: "He directed various TV shows.", tr: "他导演过各种电视节目。" },
+      { w: "variation", ph: "[ˌveəriˈeɪʃn]", def: "n.变化,变动;变种,变异", ex: "Currency exchange rates are always subject to variation.", tr: "货币的兑换率始终波动。" },
+      { w: "variety", ph: "[vəˈraɪəti]", def: "n.种种,多种多样;种类,品种（a variety of 多种多样的）", ex: "There is little tonal variety in his voice.", tr: "他的嗓音中几乎没有声调的变化。" },
+      { w: "variable", ph: "[ˈveəriəbl]", def: "a.易变的;可变的;变量的 n.变量", ex: "The drill has variable speed control.", tr: "这钻机有变速控制。" },
+      { w: "invariably", ph: "[ɪnˈveəriəbli]", def: "ad.不变地,永恒地,总是", ex: "This is not invariably the case.", tr: "事情并非总是如此。" }
+    ]
+  },
+  {
+    root: "velop", meaning: "包裹", letter: "V",
+    words: [
+      { w: "develop", ph: "[dɪˈveləp]", def: "v.发展,开发,研制;显现,显影;发育,生长", ex: "We need to develop local industries.", tr: "我们需要发展地方工业。" },
+      { w: "envelope", ph: "[ˈenvələʊp]", def: "n.信封,信皮;封套", ex: "She opened the perfumed envelope.", tr: "她打开了带有香味的信封。" }
+    ]
+  },
+  {
+    root: "ver", meaning: "真实", letter: "V",
+    words: [
+      { w: "very", ph: "[ˈveri]", def: "ad.很,非常;完全 a.正式的;真正,真实的", ex: "He was very polite and very correct.", tr: "他很有礼貌且举止得体。" },
+      { w: "verify", ph: "[ˈverɪfaɪ]", def: "vt.证实,查证;证明", ex: "An external auditor will verify the accounts.", tr: "外部审计员将核实这些账目。" },
+      { w: "verdict", ph: "[ˈvɜːdɪkt]", def: "n.(陪审团的)裁决,判决;判断;定论", ex: "We intend to appeal the verdict.", tr: "我们打算对此裁决提出申诉。" }
+    ]
+  },
+  {
+    root: "vers", meaning: "转", letter: "V",
+    words: [
+      { w: "avert", ph: "[əˈvɜːt]", def: "v.防止,避免;转移(目光、注意力等)", ex: "He did his best to avert suspicion.", tr: "他尽量避嫌。" },
+      { w: "controversy", ph: "[ˈkɒntrəvɜːsi]", def: "n.争论,辩论,争吵", ex: "He is no stranger to controversy.", tr: "他对争论见得多了。" },
+      { w: "controversial", ph: "[ˌkɒntrəˈvɜːʃl]", def: "a.引起争论的,有争议的", ex: "The distinction between craft and fine art is more controversial.", tr: "工艺和美术之间的区别更有争议。" },
+      { w: "convert", ph: "[kənˈvɜːt]", def: "v.变换,转换;改变(信仰等);兑换(钱)", ex: "The hotel is going to be converted into a nursing home.", tr: "那家旅馆将被改建成私人疗养院。" },
+      { w: "conversion", ph: "[kənˈvɜːʃn]", def: "n.转变,转换;信仰的改变", ex: "the conversion of farm buildings into family homes", tr: "农场建筑物改建为家庭住宅" },
+      { w: "conversely", ph: "[ˈkɒnvɜːsli]", def: "ad.相反地", ex: "You can add the fluid to the powder, or, conversely, the powder to the fluid.", tr: "可把液体加入粉末，或者相反，把粉末加入液体。" },
+      { w: "versatile", ph: "[ˈvɜːsətaɪl]", def: "a.通用的;多才多艺的,多方面的", ex: "She is really versatile.", tr: "她真是多才多艺。" },
+      { w: "adverse", ph: "[ˈædvɜːs]", def: "a.逆的,相反的;敌对的;不利的;有害的", ex: "This drug is known to have adverse side effects.", tr: "众所周知，这种药具有不良副作用。" },
+      { w: "diverse", ph: "[daɪˈvɜːs]", def: "a.多种多样的,(from)不同的", ex: "The building houses a wide and diverse variety of antiques.", tr: "这栋楼里摆放着大量各式各样的古董。" },
+      { w: "diversion", ph: "[daɪˈvɜːʃn]", def: "n.转向,转移;牵制;解闷;娱乐", ex: "The party will make a pleasant diversion.", tr: "晚会会是一个很不错的消遣。" },
+      { w: "divert", ph: "[daɪˈvɜːt]", def: "vt.使转向,使改道;转移(注意力);使娱乐", ex: "We diverted a plane to rescue 100 passengers.", tr: "我们改变飞机航线以拯救100名乘客。" },
+      { w: "divorce", ph: "[dɪˈvɔːs]", def: "v./n.离婚,分离", ex: "Divorce was legalized in 1981.", tr: "离婚在1981年被合法化了。" },
+      { w: "reverse", ph: "[rɪˈvɜːs]", def: "n.相反;背面 a.相反的 v.颠倒,倒转", ex: "They have made it clear they will not reverse the decision to increase prices.", tr: "他们已经明确表示不会为了提高价格而转变这一决定。" },
+      { w: "inverse", ph: "[ˌɪnˈvɜːs]", def: "a.相反的,倒转的,反转的 n.相反之物 v.倒转", ex: "Evil is the inverse of good.", tr: "恶是善的反面。" },
+      { w: "invert", ph: "[ɪnˈvɜːt]", def: "v.倒置,倒转,颠倒", ex: "Invert the cake onto a serving plate.", tr: "把蛋糕倒扣过来放到一个盘子上。" },
+      { w: "universe", ph: "[ˈjuːnɪvɜːs]", def: "n.宇宙,万物", ex: "The universe is slowly yielding up its secrets.", tr: "宇宙慢慢地展现出它的秘密。" },
+      { w: "universal", ph: "[ˌjuːnɪˈvɜːsl]", def: "a.普遍的,全体的,通用的;宇宙的,世界的", ex: "The dove is a universal symbol of peace.", tr: "鸽子是和平的共同象征。" },
+      { w: "version", ph: "[ˈvɜːʃn]", def: "n.版本;译本,译文;说法", ex: "The original version featured a guitar solo.", tr: "原版以吉他独奏为特色。" },
+      { w: "versus", ph: "[ˈvɜːsəs]", def: "prep.(vs.)…对…(在诉讼,比赛等);与…相对", ex: "It is France versus Brazil in the final.", tr: "决赛是法国队对巴西队。" },
+      { w: "verge", ph: "[vɜːdʒ]", def: "n.边,边缘 v.濒临", ex: "He seemed to be on the verge of total desperation.", tr: "他似乎已濒临精神崩溃的边缘。" }
+    ]
+  },
+  {
+    root: "vest", meaning: "衣服", letter: "V",
+    words: [
+      { w: "vest", ph: "[vest]", def: "n.背心,马甲;汗衫,内衣", ex: "That is not my vest. My vest is red.", tr: "那不是我的背心。我的背心是红色的。" },
+      { w: "invest", ph: "[ɪnˈvest]", def: "vt.投资,投入(精力、时间等)", ex: "It would be hazardous to invest so much.", tr: "投资这么多会有风险。" },
+      { w: "investment", ph: "[ɪnˈvestmənt]", def: "n.投资,投资额", ex: "Training is an investment not a cost.", tr: "培训是一种投资而不是一种花费。" },
+      { w: "investigate", ph: "[ɪnˈvestɪɡeɪt]", def: "v.调查,调查研究", ex: "He felt impelled to investigate further.", tr: "他觉得有必要作进一步调查。" }
+    ]
+  },
+  {
+    root: "vic", meaning: "恶", letter: "V",
+    words: [
+      { w: "nice", ph: "[naɪs]", def: "a.美好的,令人愉快的;友好的,亲切的", ex: "It's been nice meeting you.", tr: "这次见到你真高兴。" },
+      { w: "vice", ph: "[vaɪs]", def: "n.邪恶;恶习;(pl.)台钳,老虎钳", ex: "Greed is a terrible vice.", tr: "贪婪是一种恶习。" },
+      { w: "vicious", ph: "[ˈvɪʃəs]", def: "a.恶毒的,凶残的,邪恶的", ex: "We need to break the vicious cycle of violence and counterviolence.", tr: "我们需要结束暴力和反暴力的恶性循环。" },
+      { w: "wicked", ph: "[ˈwɪkɪd]", def: "a.坏的;邪恶的;不道德的;恶劣的;淘气的", ex: "Jane has a wicked sense of humour.", tr: "简有一种恶作剧的幽默感。" },
+      { w: "witch", ph: "[wɪtʃ]", def: "n.女巫,巫婆,巫师", ex: "The witch foretold that she would marry a prince.", tr: "女巫预言她将嫁给王子。" }
+    ]
+  },
+  {
+    root: "vid", meaning: "分开", letter: "V",
+    words: [
+      { w: "individual", ph: "[ˌɪndɪˈvɪdʒuəl]", def: "a.个人的,单独的;独特的 n.个人,个体", ex: "It's impossible to hold any individual responsible.", tr: "不可能让何个人承担责任。" },
+      { w: "divide", ph: "[dɪˈvaɪd]", def: "v.分,划分,分开;分配;(by)除", ex: "How shall we divide up the work?", tr: "我们怎么分工呢？" },
+      { w: "dividend", ph: "[ˈdɪvɪdend]", def: "n.红利,股息;回报,效益;被除数", ex: "The first quarter dividend has been increased by nearly 4 percent.", tr: "第一季度的股息增加了近4%。" },
+      { w: "division", ph: "[dɪˈvɪʒn]", def: "n.分,分割;部门,科,处;除法;分界线", ex: "The current division of labour between workers and management will change.", tr: "劳资双方目前的劳动分配将会改变。" }
+    ]
+  },
+  {
+    root: "view", meaning: "看", letter: "V",
+    words: [
+      { w: "interview", ph: "[ˈɪntəvjuː]", def: "v./n.接见,会见;采访;面试", ex: "The interview went well.", tr: "面试很顺利。" },
+      { w: "review", ph: "[rɪˈvjuː]", def: "v.回顾,复习 n.回顾,复习;评论", ex: "The case is subject to judicial review.", tr: "这个案子必须接受司法审查。" },
+      { w: "revise", ph: "[rɪˈvaɪz]", def: "v.修订,校订;修正,修改", ex: "I can't come out tonight. I have to revise.", tr: "我今晚不能出去。我得复习。" },
+      { w: "video", ph: "[ˈvɪdiəʊ]", def: "n.电视,视频;录像 a.电视的,视频的;录像的", ex: "Do we have a blank video?", tr: "我们有空白录像带吗？" },
+      { w: "view", ph: "[vjuː]", def: "n.视野;风景;观察;见解;照片 vt.观察;认为（in view of 鉴于）", ex: "Such a view is pleasing.", tr: "这样一种风景令人愉快。" },
+      { w: "viewpoint", ph: "[ˈvjuːpɔɪnt]", def: "n.观点", ex: "She will have her own viewpoint on the matter.", tr: "她对这个问题会有她自己的看法。" },
+      { w: "evidence", ph: "[ˈevɪdəns]", def: "n.明显;显著;根据;证据;迹象", ex: "The evidence is against him.", tr: "证据对他不利。" },
+      { w: "evident", ph: "[ˈevɪdənt]", def: "a.明显的,明白的", ex: "It was evident that someone had gone through my possessions.", tr: "显然有人翻过我的物品。" },
+      { w: "provide", ph: "[prəˈvaɪd]", def: "v.供应,供给,准备,预防,规定", ex: "He refused to provide a specimen.", tr: "他拒绝提供抽样。" },
+      { w: "provided", ph: "[prəˈvaɪdɪd]", def: "conj.倘若,只要,假如", ex: "They would not provide any details.", tr: "他们不肯提供任何细节。" },
+      { w: "provision", ph: "[prəˈvɪʒn]", def: "n.供应,(一批)供应品;预备;条款;(pl.)给养", ex: "There is a lack of adequate provision for disabled students.", tr: "为残疾学生提供的服务不够。" },
+      { w: "supervise", ph: "[ˈsuːpəvaɪz]", def: "v.管理,监督", ex: "I supervise the packing of all mail orders.", tr: "我监督所有邮购商品的包装。" },
+      { w: "visa", ph: "[ˈviːzə]", def: "n.(护照等的)签证;维萨信用卡 vt.签证", ex: "Do you need a visa for the USA?", tr: "你需要美国签证吗？" },
+      { w: "visible", ph: "[ˈvɪzəbl]", def: "a.看得见的,明显的,显著的", ex: "The warning lights were clearly visible.", tr: "警示灯清晰可见。" },
+      { w: "vision", ph: "[ˈvɪʒn]", def: "n.视力,视觉;远见;洞察力;幻想,幻影;想象力", ex: "Cats have good night vision.", tr: "猫在夜间视力好。" },
+      { w: "visit", ph: "[ˈvɪzɪt]", def: "n.访问,参观 v.访问,参观;视察;降临;闲谈", ex: "I timed our visit for March 7.", tr: "我把我们访问时间定在3月7日。" },
+      { w: "visitor", ph: "[ˈvɪzɪtə(r)]", def: "n.访问者,客人,来宾,参观者", ex: "I wasn't expecting a visitor.", tr: "我没有预期会有访客。" },
+      { w: "visual", ph: "[ˈvɪʒuəl]", def: "a.看的,看得见的;视觉的", ex: "I have a very good visual memory.", tr: "我过目不忘。" },
+      { w: "advice", ph: "[ədˈvaɪs]", def: "n.劝告,忠告,(医生等的)意见", ex: "He offered some useful advice.", tr: "他提出了一些有益的建议。" },
+      { w: "advisable", ph: "[ədˈvaɪzəbl]", def: "a.可取的,适当的,明智的", ex: "Early booking is advisable.", tr: "早订票是明智的。" },
+      { w: "advise", ph: "[ədˈvaɪz]", def: "vt.忠告,劝告,建议;通知,告知", ex: "I'd advise you not to tell him.", tr: "我劝你别告诉他。" },
+      { w: "devise", ph: "[dɪˈvaɪz]", def: "vt.设计;发明;图谋;作出(计划);想出(办法)", ex: "A new system has been devised to control traffic in the city.", tr: "控制城市交通的新系统已经设计出来。" },
+      { w: "device", ph: "[dɪˈvaɪs]", def: "n.装置,设备,仪表;方法,设计", ex: "The device is fixed to a post.", tr: "该设备固定在一根柱子上。" },
+      { w: "envisage", ph: "[ɪnˈvɪzɪdʒ]", def: "v.想象,设想,展望,正视", ex: "I can't envisage her coping with this job.", tr: "我无法设想她如何应付这个工作。" },
+      { w: "invisible", ph: "[ɪnˈvɪzəbl]", def: "a.看不见的,无形的", ex: "Most spiders weave webs that are almost invisible.", tr: "大多数蜘蛛可结成几乎看不见的网。" },
+      { w: "TV", ph: "[ˌtiːˈviː]", def: "n.(television)电视;电视机", ex: "He directed various TV shows.", tr: "他导演过各种电视节目。" },
+      { w: "prudent", ph: "[ˈpruːdnt]", def: "a.谨慎的,智慧的,稳健的,节俭的", ex: "It is clearly prudent to take all precautions.", tr: "采取一切防范措施显然是慎重的。" },
+      { w: "envy", ph: "[ˈenvi]", def: "v./n.羡慕,忌妒", ex: "She was devoured by envy and hatred.", tr: "她心中充满嫉妒和憎恨。" },
+      { w: "survey", ph: "[ˈsɜːveɪ]", def: "v./n.俯瞰,眺望;全面审视,调查;测量图,勘定", ex: "This very thorough survey goes back to 1784.", tr: "这项非常彻底的调查可追溯到1784年。" },
+      { w: "wisdom", ph: "[ˈwɪzdəm]", def: "n.智慧,明智;名言,格言", ex: "They were godlike in their wisdom and compassion.", tr: "他们的智慧和关爱犹如圣贤一般。" },
+      { w: "wise", ph: "[waɪz]", def: "a.有智慧的,聪明的", ex: "She had made a very wise decision.", tr: "她作出了一个非常明智的决定。" },
+      { w: "wit", ph: "[wɪt]", def: "n.智力,才智,智慧（a woman of wit and intelligence 才思敏捷、聪颖的女子）", ex: "a woman of wit and intelligence", tr: "才思敏捷、聪颖的女子" },
+      { w: "witness", ph: "[ˈwɪtnəs]", def: "n.目击者,证人;证据,证明 v.目击,目睹;做证", ex: "He was a witness for the prosecution.", tr: "他是原告证人。" },
+      { w: "watch", ph: "[wɒtʃ]", def: "v.观看;看守;(for)窥伺,等待 n.看管;表", ex: "My watch keeps going wrong.", tr: "我的表不断地出毛病。" }
+    ]
+  },
+  {
+    root: "viol", meaning: "暴力", letter: "V",
+    words: [
+      { w: "violate", ph: "[ˈvaɪəleɪt]", def: "vt.违背;冒犯;妨碍;侵犯;亵渎(圣物)", ex: "Thornburgh said such demands wouldn't violate the First Amendment.", tr: "桑伯说这样的要求不违反第一修正案。" },
+      { w: "violence", ph: "[ˈvaɪələns]", def: "n.猛烈,强烈;暴力,暴行;强暴", ex: "Violence is always pointless.", tr: "暴力总是毫无意义的。" },
+      { w: "violent", ph: "[ˈvaɪələnt]", def: "a.猛烈的,激烈的;暴力引起的,强暴的", ex: "Man is not inherently violent.", tr: "人类并非生来就暴力。" }
+    ]
+  },
+  {
+    root: "viv", meaning: "生命", letter: "V",
+    words: [
+      { w: "revive", ph: "[rɪˈvaɪv]", def: "v.恢复;(使)复苏", ex: "The flowers soon revived in water.", tr: "这些花见了水很快就活过来了。" },
+      { w: "survival", ph: "[səˈvaɪvl]", def: "n.幸存,生存;幸存者,残存物", ex: "Life became a struggle for survival.", tr: "生活变成了一场争取生存的斗争。" },
+      { w: "survive", ph: "[səˈvaɪv]", def: "v.幸免于,幸存;比…长命", ex: "Most women will survive their spouses.", tr: "大多数女性比她们的配偶活得长。" },
+      { w: "vital", ph: "[ˈvaɪtl]", def: "a.生死攸关的,重大的;生命的,生机的", ex: "Tourism is vital for the economy.", tr: "旅游业对于经济至关重要。" },
+      { w: "vitamin", ph: "[ˈvɪtəmɪn]", def: "n.维生素", ex: "Oranges are rich in vitamin C.", tr: "橘子含有丰富的维生素C。" },
+      { w: "vivid", ph: "[ˈvɪvɪd]", def: "a.鲜艳的;生动的,栩栩如生的", ex: "The report paints a vivid picture of life in the city.", tr: "报告生动地描绘了都市生活。" },
+      { w: "vigorous", ph: "[ˈvɪɡərəs]", def: "a.朝气蓬勃的,精力旺盛的", ex: "She was a very vigorous sort of person.", tr: "她是那种精力非常旺盛的人。" }
+    ]
+  },
+  {
+    root: "vok", meaning: "喊", letter: "V",
+    words: [
+      { w: "evoke", ph: "[ɪˈvəʊk]", def: "vt.唤起(回忆、感情等);引起", ex: "His case is unlikely to evoke public sympathy.", tr: "他的情况不大可能引起公众的同情。" },
+      { w: "provoke", ph: "[prəˈvəʊk]", def: "v.挑动;激发;招惹", ex: "The article was intended to provoke discussion.", tr: "这篇文章旨在引发讨论。" },
+      { w: "voice", ph: "[vɔɪs]", def: "n.声音;嗓音;发音能力;意见,发言权;语态", ex: "to raise/lower your voice (= to speak louder/more quietly)", tr: "提高／压低嗓门" },
+      { w: "vocal", ph: "[ˈvəʊkl]", def: "a.声音的;有声的;直言不讳的", ex: "He has been very vocal in his displeasure over the results.", tr: "他直言不讳地说出了对结果的不满。" },
+      { w: "vocation", ph: "[vəʊˈkeɪʃn]", def: "n.职业;召唤;天命;天职;才能", ex: "Her vocation is her work as an actress.", tr: "她适合的职业就是当演员。" },
+      { w: "advocate", ph: "[ˈædvəkeɪt]", def: "n.辩护者,拥护者,鼓吹者 vt.拥护,提倡", ex: "Many experts advocate rewarding your child for good behaviour.", tr: "很多专家主张对小孩的良好表现加以奖励。" },
+      { w: "vocabulary", ph: "[vəˈkæbjələri]", def: "n.词汇,词汇量;词汇表", ex: "Reading will enlarge your vocabulary.", tr: "阅读能扩大词汇量。" },
+      { w: "vote", ph: "[vəʊt]", def: "n.投票,表决;选票,选票数 v.投票,表决", ex: "She obtained 40% of the vote.", tr: "她获得40%的选票。" },
+      { w: "veto", ph: "[ˈviːtəʊ]", def: "n./v.否决", ex: "They need 12 votes to override his veto.", tr: "他们需要12票来推翻他的否决。" },
+      { w: "devote", ph: "[dɪˈvəʊt]", def: "v.(to)奉献,致力（devote to 投身于）", ex: "It can't be denied that we need to devote more resources to this problem.", tr: "无可否认，我们必须投入更多的资源来解决这个问题。" }
+    ]
+  },
+  {
+    root: "volve", meaning: "转", letter: "V",
+    words: [
+      { w: "involve", ph: "[ɪnˈvɒlv]", def: "v.卷入,陷入,连累;包含,含有,涉及（involve in 参与,从事）", ex: "The treatment does not involve the use of any artificial drugs.", tr: "这种疗法不涉及任何人造药物的使用。" },
+      { w: "revolve", ph: "[rɪˈvɒlv]", def: "v.(使)旋转;考虑;【天】公转,循环", ex: "Our planet Earth, together with other planets, revolve around our Sun.", tr: "我们的行星地球，连同其他行星，围绕我们的太阳旋转。" },
+      { w: "revolt", ph: "[rɪˈvəʊlt]", def: "v./n.反抗,起义", ex: "The peasants rose in revolt.", tr: "农民起来造反了。" },
+      { w: "revolution", ph: "[ˌrevəˈluːʃn]", def: "n.革命;旋转,转数", ex: "the outbreak of the French Revolution in 1789", tr: "1789年法国大革命的爆发" },
+      { w: "revolutionary", ph: "[ˌrevəˈluːʃənəri]", def: "a.革命的,革新的 n.革命者", ex: "The country was in the throes of revolutionary change.", tr: "国家正处于革命动荡中。" },
+      { w: "evolution", ph: "[ˌiːvəˈluːʃn]", def: "n.进化,演变,发展,进展", ex: "Darwin eventually put forward a model of biological evolution.", tr: "达尔文最终提出了一套生物进化的理论模式。" },
+      { w: "evolve", ph: "[ɪˈvɒlv]", def: "v.(使)发展;(使)进化;(使)进展", ex: "Your body didn't evolve to handle this kind of thing.", tr: "你的身体没有进化到可以来处理这种事情。" }
+    ]
+  },
+  {
+    root: "war", meaning: "战争", letter: "W",
+    words: [
+      { w: "war", ph: "[wɔː(r)]", def: "n.战争(状态);冲突 vi.作战", ex: "Diplomacy is better than war.", tr: "采取外交手段胜于诉诸战争。" },
+      { w: "warfare", ph: "[ˈwɔːfeə(r)]", def: "n.战争(状态);斗争;冲突", ex: "These clashes could develop into open warfare.", tr: "这些冲突可能会发展成公开的战争。" },
+      { w: "march", ph: "[mɑːtʃ]", def: "v.(使)行军,(使)行进 n.行军,行程", ex: "We went skiing in France in March.", tr: "三月份我们去法国滑雪了。" },
+      { w: "militant", ph: "[ˈmɪlɪtənt]", def: "a.好战的,富于战斗性的 n.斗士", ex: "Student militants were fighting with the police.", tr: "好战的学生在与警察对抗。" },
+      { w: "military", ph: "[ˈmɪlətri]", def: "a.军事的,军用的,军队的", ex: "He was recalled to military duty.", tr: "他被召回执行军事任务。" }
+    ]
+  },
+  {
+    root: "ward", meaning: "方向", letter: "W",
+    words: [
+      { w: "award", ph: "[əˈwɔːd]", def: "vt.授予,给予;判定 n.奖励,奖金;仲裁", ex: "He got an award for bravery.", tr: "他因英勇受奖。" },
+      { w: "reward", ph: "[rɪˈwɔːd]", def: "n.(for)报酬,赏金 v.(for)酬劳;酬谢", ex: "You deserve a reward for being so helpful.", tr: "你帮了这么大的忙，理应受到奖励。" }
+    ]
+  },
+  {
+    root: "ware", meaning: "意识", letter: "W",
+    words: [
+      { w: "aware", ph: "[əˈweə(r)]", def: "a.知道的,意识到的", ex: "He was well aware of the problem.", tr: "他很清楚这个问题。" },
+      { w: "beware", ph: "[bɪˈweə(r)]", def: "v.当心,谨防", ex: "Motorists have been warned to beware of icy roads.", tr: "已经提醒开车的人当心冰封的路面。" }
+    ]
+  },
+  {
+    root: "way", meaning: "道路", letter: "W",
+    words: [
+      { w: "way", ph: "[weɪ]", def: "n.道路,路程;方法/方式,手段;习惯;状态", ex: "We wound our way southeast.", tr: "我们向东南方向蜿蜒前行。" },
+      { w: "anyway", ph: "[ˈeniweɪ]", def: "ad.不管怎么说,无论如何;不论以何种方式", ex: "It's too late now, anyway.", tr: "反正现在已经太迟了。" },
+      { w: "away", ph: "[əˈweɪ]", def: "ad.在远处;离开;渐渐远去;一直;去掉", ex: "She walked quickly away.", tr: "她迅速走开了。" },
+      { w: "sideways", ph: "[ˈsaɪdweɪz]", def: "ad./a.向旁边(的),侧身,横着(的),斜着(的)", ex: "She slid him a sideways glance.", tr: "她斜眼看了他一下。" },
+      { w: "doorway", ph: "[ˈdɔːweɪ]", def: "n.门口", ex: "I bonked my head on the doorway.", tr: "我没留意在门口碰了一下头。" },
+      { w: "subway", ph: "[ˈsʌbweɪ]", def: "n.地铁;地下行人隧道", ex: "The closest subway stop is Houston Street.", tr: "最近的地铁站是休斯敦街。" },
+      { w: "highway", ph: "[ˈhaɪweɪ]", def: "n.公路,大路", ex: "Anita drove north up Pacific Highway.", tr: "安尼塔开车沿着太平洋公路向北行驶。" },
+      { w: "convey", ph: "[kənˈveɪ]", def: "v.运送,搬运,转运;传达,传播", ex: "Please convey my gratitude to her.", tr: "请向她转达我的谢意。" },
+      { w: "vehicle", ph: "[ˈviːəkl]", def: "n.车辆,交通工具;媒介,载体", ex: "The robbers drove off in a stolen vehicle.", tr: "劫匪驾驶着一辆偷来的汽车逃跑了。" },
+      { w: "vein", ph: "[veɪn]", def: "n.血管;静脉;叶脉;纹理;情绪 vt.使成脉络", ex: "A tiny wire is threaded through a vein to the heart.", tr: "一根细金属丝从静脉里穿到心脏。" },
+      { w: "via", ph: "[ˈvaɪə]", def: "prep.经;通过;凭借", ex: "We flew home via Dubai.", tr: "我们乘飞机经迪拜回国。" },
+      { w: "deviate", ph: "[ˈdiːvieɪt]", def: "v.(from)背离,偏离", ex: "Take care not to deviate.", tr: "当心不要出偏差。" },
+      { w: "previous", ph: "[ˈpriːviəs]", def: "a.先前的,以前的", ex: "Previous to this, she'd always been well.", tr: "这以前，她身体一向很好。" },
+      { w: "voyage", ph: "[ˈvɔɪɪdʒ]", def: "n.航海;航行;旅行", ex: "He saw life as a voyage of discovery.", tr: "他把生命看作是一次探索未知世界的航行。" }
+    ]
+  },
+  {
+    root: "weal", meaning: "财富", letter: "W",
+    words: [
+      { w: "wealth", ph: "[welθ]", def: "n.财富,财产;大量", ex: "She was jealous of his wealth.", tr: "她嫉妒他的富有。" },
+      { w: "wealthy", ph: "[ˈwelθi]", def: "a.富有的,丰裕的,充分的 n.富人,有钱人", ex: "They live in a wealthy suburb of Chicago.", tr: "他们住在芝加哥郊区的一处富人区。" },
+      { w: "commonwealth", ph: "[ˈkɒmənwelθ]", def: "n.共和国,联邦,共同体", ex: "The prime minister of Fiji has said Fiji is in no hurry to rejoin the Commonwealth.", tr: "斐济总理称斐济并不急于重返英联邦。" },
+      { w: "welfare", ph: "[ˈwelfeə(r)]", def: "n.福利;幸福;福利事业", ex: "Welfare provides a cushion against hardship.", tr: "福利给困苦提供了一个缓解。" },
+      { w: "wallet", ph: "[ˈwɒlɪt]", def: "n.皮夹,钱包", ex: "This wallet feels like leather.", tr: "这个钱包摸上去像是皮的。" }
+    ]
+  },
+  {
+    root: "weep", meaning: "哭", letter: "W",
+    words: [
+      { w: "weep", ph: "[wiːp]", def: "v.哭泣,流泪;滴下 n.哭泣", ex: "I do not weep over his death.", tr: "他死了我也不哭。" },
+      { w: "sweep", ph: "[swiːp]", def: "v.扫,打扫;席卷,冲光;扫过,掠过", ex: "Wintry weather continues to sweep across Colorado.", tr: "寒冬气候继续席卷科罗拉多州。" },
+      { w: "wipe", ph: "[waɪp]", def: "v./n.擦,揩,抹", ex: "I'll just wipe the table.", tr: "我只擦擦桌子。" },
+      { w: "vibrate", ph: "[vaɪˈbreɪt]", def: "v.(使)振动,(使)摇摆;受…而感动", ex: "The ground shook and the cliffs seemed to vibrate.", tr: "大地摇晃，那些悬崖似乎在颤动。" }
+    ]
+  },
+  {
+    root: "wel", meaning: "速度", letter: "W",
+    words: [
+      { w: "wheel", ph: "[wiːl]", def: "n.轮,车轮", ex: "The wheel is pulling to the left.", tr: "方向盘正在向左打。" },
+      { w: "accelerate", ph: "[əkˈseləreɪt]", def: "v.使加速,使增速,促进 vi.加快,增加", ex: "Inflation continues to accelerate.", tr: "通货膨胀不断加速。" },
+      { w: "velocity", ph: "[vəˈlɒsəti]", def: "n.速度,速率", ex: "Tigers can move with an astonishing velocity.", tr: "老虎跑起来速度惊人。" }
+    ]
+  },
+  {
+    root: "will", meaning: "意愿", letter: "W",
+    words: [
+      { w: "will", ph: "[wɪl]", def: "aux./v.将;会;愿意 n.意志;决心;愿望", ex: "I don't want to go against your will.", tr: "我不想违背您的意愿。" },
+      { w: "willing", ph: "[ˈwɪlɪŋ]", def: "a.愿意的,乐意的,心甘情愿的", ex: "Are you willing to vouch for him?", tr: "你愿意为他担保吗？" },
+      { w: "voluntary", ph: "[ˈvɒləntri]", def: "a.自愿的,自愿的", ex: "He took voluntary redundancy.", tr: "他选择了自愿裁汰。" },
+      { w: "volunteer", ph: "[ˌvɒlənˈtɪə(r)]", def: "n./v.自愿(者,兵);自愿(提供)", ex: "I am an Olympic volunteer.", tr: "我是一位奥运志愿者。" }
+    ]
+  },
+  {
+    root: "win", meaning: "赢", letter: "W",
+    words: [
+      { w: "win", ph: "[wɪn]", def: "vi.获胜,赢 vt.赢得;在…中获胜 n.胜利", ex: "Everyone has a chance to win.", tr: "每个人都有机会赢。" },
+      { w: "victory", ph: "[ˈvɪktəri]", def: "n.胜利", ex: "She is confident of victory in Saturday's final.", tr: "她对在星期六决赛中取得胜利充满信心。" },
+      { w: "victim", ph: "[ˈvɪktɪm]", def: "n.牺牲品,受害者", ex: "She was the innocent victim of an arson attack.", tr: "她是一起纵火案的无辜受害者。" },
+      { w: "convict", ph: "[kənˈvɪkt]", def: "v.(经审讯)证明…有罪,宣判…有罪 n.囚犯", ex: "The escaped convict was seized outside the city.", tr: "逃犯在城外被抓获。" }
+    ]
+  },
+  {
+    root: "wor", meaning: "虫", letter: "W",
+    words: [
+      { w: "worm", ph: "[wɜːm]", def: "n.虫,蠕虫", ex: "He stopped on it to look for a worm.", tr: "他停在那里找虫子。" },
+      { w: "virus", ph: "[ˈvaɪrəs]", def: "n.病毒;(精神,道德方面的)有害影响", ex: "There's a virus going around the office.", tr: "办公室里流行着一种病毒性疾病。" }
+    ]
+  },
+  {
+    root: "worth", meaning: "价值", letter: "W",
+    words: [
+      { w: "worth", ph: "[wɜːθ]", def: "n.价值 a.价值…的,值得…的", ex: "They weren't worth four bits.", tr: "它们不值50美分了。" },
+      { w: "worthwhile", ph: "[ˌwɜːθˈwaɪl]", def: "a.值得(做)的", ex: "The smile on her face made it all worthwhile.", tr: "她脸上的笑容使得这一切都非常值得。" },
+      { w: "worthy", ph: "[ˈwɜːði]", def: "a.(of)值得…的,配得上…的;有价值的", ex: "He felt he was not worthy of her.", tr: "他觉得他配不上她。" },
+      { w: "worship", ph: "[ˈwɜːʃɪp]", def: "n.礼拜,礼拜仪式;崇拜 v.崇拜,敬仰;做礼拜", ex: "We worship historical heroes.", tr: "我们崇拜很多历史英雄。" }
+    ]
+  },
+  {
+    root: "young", meaning: "年轻", letter: "Y",
+    words: [
+      { w: "young", ph: "[jʌŋ]", def: "a.年轻的,幼小的;没经验的 n.青年人", ex: "He's a brilliant young scientist.", tr: "他是一个才华横溢的青年科学家。" },
+      { w: "youngster", ph: "[ˈjʌŋstə(r)]", def: "n.小伙子,年轻人;少年,儿童", ex: "The youngster got nine months' youth custody.", tr: "那个小伙子被判少年拘留9个月。" },
+      { w: "youth", ph: "[juːθ]", def: "n.青年;年轻人", ex: "The poem contrasts youth and age.", tr: "这首诗对比了青春与老年。" },
+      { w: "juvenile", ph: "[ˈdʒuːvənaɪl]", def: "n.青少年,少年读物 a.青少年的,幼稚的", ex: "Juvenile crime is increasing at a terrifying rate.", tr: "青少年犯罪在以惊人的速度增加。" },
+      { w: "junior", ph: "[ˈdʒuːniə(r)]", def: "a./n.年少的/者,三年级的/学生,下级(的)", ex: "A handful of junior officers were made to bear responsibility for the incident.", tr: "几名下级军官被迫对此事件负责。" },
+      { w: "prior", ph: "[ˈpraɪə(r)]", def: "a.优先的,在前面的;(to)在…之前（prior to 在…之前）", ex: "Visits are by prior arrangement.", tr: "参观需要事先安排。" },
+      { w: "priority", ph: "[praɪˈɒrəti]", def: "n.优先,先前;优先,重点,优先权", ex: "Club members will be given priority.", tr: "俱乐部成员享有优先权。" },
+      { w: "senior", ph: "[ˈsiːniə(r)]", def: "a.年长的;地位较高的 n.(大学)四年级学生", ex: "He was the senior serving naval officer.", tr: "他曾是高级现役海军军官。" },
+      { w: "inferior", ph: "[ɪnˈfɪəriə(r)]", def: "a.下等的,下级的;劣等的,差的 n.下级,晚辈（inferior to 不如）", ex: "Modern music is often considered inferior to that of the past.", tr: "现代音乐常被认为不如过去的。" },
+      { w: "superior", ph: "[suːˈpɪəriə(r)]", def: "a.优良的,卓越的;上级的 n.上级;长者;高手", ex: "Finch gave a superior smile.", tr: "芬奇富有优越感地一笑。" },
+      { w: "superiority", ph: "[suːˌpɪəriˈɒrəti]", def: "n.优越(性),优势,优等;高傲,傲慢", ex: "He had a well-developed sense of his own superiority.", tr: "他的个人优越感十足。" },
+      { w: "exterior", ph: "[ɪkˈstɪəriə(r)]", def: "a.外部的,外面的 n.外部", ex: "The exterior of the house needs painting.", tr: "房子外墙需要油漆。" },
+      { w: "external", ph: "[ɪkˈstɜːnl]", def: "a.外部的;客观的;外国的;表面的;[医]外用的", ex: "An external auditor will verify the accounts.", tr: "外部审计员将核实这些账目。" }
+    ]
+  }
+];
+if(typeof window!=='undefined'){window.WORD_DATA_WEEK3=WORD_DATA_WEEK3;}
+
+</script>
+<script>
 /* 把各周词表汇总到 WEEKS，WORD_DATA 指向"当前周"。以后每周新增：加一份 words_weekN.js 并在此追加一项即可。 */
 var WEEKS=[];
 if(typeof WORD_DATA!=='undefined'&&WORD_DATA){WEEKS.push({name:'第1周 · 词根词缀高频词 (T–V)',sub:'按词根词缀分组速记',data:WORD_DATA});}
 if(typeof WORD_DATA_WEEK2!=='undefined'&&WORD_DATA_WEEK2){WEEKS.push({name:'第2周 · 基础词汇 (T–Z)',sub:'常用基础单词表',data:WORD_DATA_WEEK2});}
+if(typeof WORD_DATA_WEEK3!=='undefined'&&WORD_DATA_WEEK3){WEEKS.push({name:'第3周 · 词根词缀高频词 (V–Y)',sub:'按词根词缀分组速记',data:WORD_DATA_WEEK3});}
 </script>
 <script>
 /* 兼容 ES5：全部改写为老旧手机浏览器（安卓自带/X5/UC/QQ内核等）也能解析执行的写法。
