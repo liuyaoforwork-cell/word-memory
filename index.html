@@ -1491,11 +1491,533 @@ if(typeof window!=='undefined'){window.WORD_DATA_WEEK3=WORD_DATA_WEEK3;}
 
 </script>
 <script>
+// 品睿教育 高频词汇表（词根词缀分组） A-B 部分（第4周）
+// 数据结构: { root: 词根, meaning: 词根义, words: [{w:单词, ph:音标, def:释义, ex:例句, tr:翻译}] }
+var WORD_DATA_WEEK4 = [
+  {
+    root: "able", meaning: "能力", letter: "A",
+    words: [
+      { w: "enable", ph: "[ɪˈneɪbl]", def: "v.使能够,使成为可能;授予权力或方法（enable sb to do）", ex: "The software enables you to access the Internet in seconds.", tr: "这种软件使你在几秒钟内便可访问互联网。" },
+      { w: "disable", ph: "[dɪsˈeɪbl]", def: "vt.使残废;使失去能力;丧失能力", ex: "He was disabled in a car accident.", tr: "他在车祸中残废了。" },
+      { w: "able", ph: "[ˈeɪbl]", def: "a.有(能力、时间、知识等)做某事,有本事的", ex: "You must be able to speak French for this job.", tr: "干这项工作你得会说法语。" },
+      { w: "ability", ph: "[əˈbɪləti]", def: "n.能力;本领;才能,才干;专门技能,天资", ex: "The system has the ability to run more than one program at the same time.", tr: "该系统能够同时运行一个以上的程序。" }
+    ]
+  },
+  {
+    root: "ac", meaning: "酸，角", letter: "A",
+    words: [
+      { w: "acid", ph: "[ˈæsɪd]", def: "n.酸,酸性物质 a.酸的,酸味的;尖刻的", ex: "Acid corrodes metal.", tr: "酸腐蚀金属。" },
+      { w: "acute", ph: "[əˈkjuːt]", def: "a.剧烈的;敏锐的;成锐角的;尖的,高音的", ex: "There is an acute shortage of water.", tr: "水严重短缺。" },
+      { w: "anchor", ph: "[ˈæŋkə(r)]", def: "n./v.锚;危难时可依靠的人或物;用锚泊船", ex: "The ship lay at anchor two miles off the rocky coast.", tr: "船在离岩岸两英里处抛锚停泊。" },
+      { w: "angle", ph: "[ˈæŋgl]", def: "n.角,角度 v.钓鱼;(采用各种方法)取得", ex: "The tower of Pisa leans at an angle.", tr: "比萨斜塔塔身倾斜。" },
+      { w: "ankle", ph: "[ˈæŋkl]", def: "n.足踝,踝关节", ex: "John twisted his ankle badly.", tr: "约翰的脚踝严重扭伤。" }
+    ]
+  },
+  {
+    root: "acad", meaning: "学院", letter: "A",
+    words: [
+      { w: "academic", ph: "[ˌækəˈdemɪk]", def: "a.学院的,大学的;学术性的;理论的", ex: "The students return in October for the start of the new academic year.", tr: "学生于十月返校，开始新学年的学习。" },
+      { w: "academy", ph: "[əˈkædəmi]", def: "n.(高等)专科院校;学术社团,协会,研究院", ex: "The academy is far more inclusive now than it used to be.", tr: "该学院如今比过去更为兼收并蓄。" }
+    ]
+  },
+  {
+    root: "add", meaning: "增加", letter: "A",
+    words: [
+      { w: "add", ph: "[æd]", def: "vt.加;增加(进);进一步说/写 vi.(to)增添", ex: "Add up all the money I owe you.", tr: "把我欠你的钱全部加起来。" },
+      { w: "addition", ph: "[əˈdɪʃn]", def: "n.加,加法;附加部分,增加(物)（in addition 此外）", ex: "There is, in addition, one further point to make.", tr: "此外，还有一点要说。" },
+      { w: "additional", ph: "[əˈdɪʃənl]", def: "a.额外的,附加的,另外的", ex: "The government provided an additional £25 million to expand the service.", tr: "政府另拨 2500 万英镑用于扩展该服务项目。" },
+      { w: "aid", ph: "[eɪd]", def: "n.援助,救护;助手,辅助物 vi.援助,救援", ex: "An extra £10 million in foreign aid has been promised.", tr: "额外的 1000 万英镑外国援助款项已得到保证。" }
+    ]
+  },
+  {
+    root: "ache", meaning: "疼痛", letter: "A",
+    words: [
+      { w: "headache", ph: "[ˈhedeɪk]", def: "n.头痛", ex: "Red wine gives me a headache.", tr: "我喝红酒会头痛。" },
+      { w: "ache", ph: "[eɪk]", def: "vi.痛;哀怜 n.(指连续)疼痛、酸痛", ex: "Her eyes ached from lack of sleep.", tr: "她的眼睛因睡眠不足而隐隐作痛。" },
+      { w: "agony", ph: "[ˈægəni]", def: "n.(精神或肉体的)极大痛苦,创伤", ex: "The worst agonies of the war were now beginning.", tr: "战争最深重的苦难现在开始了。" }
+    ]
+  },
+  {
+    root: "acre", meaning: "田地，耕种", letter: "A",
+    words: [
+      { w: "acre", ph: "[ˈeɪkə(r)]", def: "n.英亩;田地;地产", ex: "Each house has acres of space around it.", tr: "每座房屋四周都有大量空地。" },
+      { w: "agriculture", ph: "[ˈægrɪkʌltʃə(r)]", def: "n.农业,农艺,农耕", ex: "The number of people employed in agriculture has fallen in the last decade.", tr: "过去十年，农业从业人数已经下降。" },
+      { w: "cultivate", ph: "[ˈkʌltɪveɪt]", def: "v.耕作,栽培,养殖;培养,教养,磨炼", ex: "The land around here has never been cultivated.", tr: "这一带的土地从未开垦过。" },
+      { w: "culture", ph: "[ˈkʌltʃə(r)]", def: "n.文化,文明;修养;耕种;栽培,培育", ex: "The children are taught to respect different cultures.", tr: "孩子们受到的教育叫他们要尊重不同的文化。" },
+      { w: "colony", ph: "[ˈkɒləni]", def: "n.殖民地;侨民;聚居区;(动植物的)群体", ex: "America used to be a British colony.", tr: "美国曾经是英国的殖民地。" },
+      { w: "colonial", ph: "[kəˈləʊniəl]", def: "a.殖民地的,关于殖民的 n.殖民地居民", ex: "Tunisia achieved independence from French colonial rule in 1956.", tr: "突尼斯于 1956 年从法国的殖民统治下获得独立。" }
+    ]
+  },
+  {
+    root: "act", meaning: "做", letter: "A",
+    words: [
+      { w: "act", ph: "[ækt]", def: "v.表演;举动;起作用 n.行为,法令;一幕", ex: "Can you act as an interpreter?", tr: "你能担任口译吗？" },
+      { w: "action", ph: "[ˈækʃn]", def: "n.行动,动作;作用;运转;行为;战斗（take action 采取行动）", ex: "Take whatever action is needed.", tr: "采取任何必要的行动。" },
+      { w: "active", ph: "[ˈæktɪv]", def: "adj.活跃的,敏捷的,积极的;在活动中的", ex: "They were both politically active.", tr: "他们两人在政治上都很积极。" },
+      { w: "activity", ph: "[ækˈtɪvəti]", def: "n.活动;活力;能动性", ex: "Children are supposed to get 60 minutes of physical activity every day.", tr: "儿童应该每天获得 60 分钟的体育活动。" },
+      { w: "activate", ph: "[ˈæktɪveɪt]", def: "vt.启动,激活;驱动,驱使;使开始起作用", ex: "The burglar alarm is activated by movement.", tr: "这防盗警报器一动就会响。" },
+      { w: "actor", ph: "[ˈæktə(r)]", def: "n.男演员;演员,行动者", ex: "He was nominated (as) best actor.", tr: "他获得了最佳男演员的提名。" },
+      { w: "actress", ph: "[ˈæktrəs]", def: "n.女演员", ex: "She's not only a great dramatic actress but she's also very funny.", tr: "她不仅是一位伟大的女戏剧演员，而且也很幽默。" },
+      { w: "actual", ph: "[ˈæktʃuəl]", def: "a.实际的;现实的,真实的,目前的", ex: "The actual cost was higher than we expected.", tr: "实际成本比我们预计的要高。" },
+      { w: "react", ph: "[rɪˈækt]", def: "v.反应,起作用;(against)反对,起反作用", ex: "Local residents have reacted angrily to the news.", tr: "当地居民对这一消息表示愤怒。" },
+      { w: "interact", ph: "[ˌɪntərˈækt]", def: "v.互相作用,互相影响", ex: "Teachers have a limited amount of time to interact with each child.", tr: "教师和每个孩子沟通的时间有限。" },
+      { w: "transaction", ph: "[trænˈzækʃn]", def: "n.办理,处理;交易,事务;(pl.)会报,学报", ex: "The transaction is completed by payment of the fee.", tr: "交易在支付费用之后就完成了。" },
+      { w: "agent", ph: "[ˈeɪdʒənt]", def: "n.代理人;代理商;产生作用的人或事物", ex: "Our agent in New York deals with all US sales.", tr: "我们在纽约的代理商经办在整个美国的销售。" },
+      { w: "agency", ph: "[ˈeɪdʒənsi]", def: "n.代理(处);代办处;[美](政府的)机关,厅", ex: "You can book the air flight at your local travel agency.", tr: "你可以在当地的旅行社订机票。" },
+      { w: "agenda", ph: "[əˈdʒendə]", def: "n.议事日程,记事册", ex: "What's the next item on the agenda?", tr: "议程的下一项是什么？" },
+      { w: "exaggerate", ph: "[ɪgˈzædʒəreɪt]", def: "v.夸大,夸张", ex: "He tends to exaggerate the difficulties.", tr: "他往往夸大困难。" },
+      { w: "agitate", ph: "[ˈædʒɪteɪt]", def: "v.(尤指为法律、社会状况的改变)激烈争论,鼓动", ex: "Her family are agitating to have her transferred to a prison in the UK.", tr: "她的家人正努力游说要把她转到英国监狱。" }
+    ]
+  },
+  {
+    root: "air", meaning: "航空", letter: "A",
+    words: [
+      { w: "air", ph: "[eə(r)]", def: "n.空气;(复数)神气 vt.(使)通风;晾干", ex: "Let's go out for some fresh air.", tr: "咱们出去呼吸点新鲜空气。" },
+      { w: "aircraft", ph: "[ˈeəkrɑːft]", def: "n.飞机,飞船,飞行器", ex: "The aircraft was gaining height.", tr: "飞机在爬高。" },
+      { w: "airline", ph: "[ˈeəlaɪn]", def: "n.(飞机)航线 a.(飞机)航线的", ex: "The airline regrets any inconvenience.", tr: "航空公司对所造成的任何不便表示歉意。" },
+      { w: "airport", ph: "[ˈeəpɔːt]", def: "n.机场,航空站,航空港", ex: "Will you pick me up at the airport?", tr: "你到机场接我好吗？" },
+      { w: "aerial", ph: "[ˈeəriəl]", def: "a.(在或来自)空中的,航空的 n.天线", ex: "The aerial doesn't look very secure to me.", tr: "我看这天线不太牢固。" },
+      { w: "aeroplane", ph: "[ˈeərəpleɪn]", def: "n.(airplane)(英)飞机", ex: "The aeroplane will travel at twice the speed of sound.", tr: "飞机将以两倍于音速的速度飞行。" },
+      { w: "aviation", ph: "[ˌeɪviˈeɪʃn]", def: "n.航空,航空学;飞机制造业", ex: "Here are some live links to other aviation-related web pages.", tr: "这是另外一些与航空有关网页的有效链接。" }
+    ]
+  },
+  {
+    root: "allow", meaning: "允许", letter: "A",
+    words: [
+      { w: "allow", ph: "[əˈlaʊ]", def: "vt.允许,准许;承认;给予;(for)考虑到（allow for 顾及,考虑到）", ex: "He won't allow himself to fail.", tr: "他不容许自己失败。" },
+      { w: "allowance", ph: "[əˈlaʊəns]", def: "n.补贴,津贴;零用钱;减价,折扣;允许", ex: "Do you get an allowance for clothing?", tr: "你有服装补贴吗？" }
+    ]
+  },
+  {
+    root: "am", meaning: "爱", letter: "A",
+    words: [
+      { w: "amateur", ph: "[ˈæmətə(r)]", def: "a.&n.业余(水平)的(运动员、艺术家等)", ex: "Brian considered Sam a lightweight, a real amateur.", tr: "布赖恩认为萨姆是个无足轻重的人，是个真正的业余选手。" },
+      { w: "amiable", ph: "[ˈeɪmiəbl]", def: "a.和蔼可亲的,友善的,亲切的", ex: "Her parents seemed very amiable.", tr: "她的父母好像很和蔼可亲。" }
+    ]
+  },
+  {
+    root: "amb", meaning: "行走", letter: "A",
+    words: [
+      { w: "ambassador", ph: "[æmˈbæsədə(r)]", def: "n.大使;特使,(派驻国际组织的)代表", ex: "I've been invited to meet with the ambassador.", tr: "我已经被邀请和大使会晤。" },
+      { w: "embassy", ph: "[ˈembəsi]", def: "n.大使馆;大使及其随员", ex: "Iran reopened its embassy in London.", tr: "伊朗重新开放了在伦敦的大使馆。" },
+      { w: "ambulance", ph: "[ˈæmbjələns]", def: "n.救护车,救护船,救护飞机", ex: "An ambulance drove past.", tr: "一辆救护车驶了过去。" }
+    ]
+  },
+  {
+    root: "ampl", meaning: "大", letter: "A",
+    words: [
+      { w: "ample", ph: "[ˈæmpl]", def: "a.充分的,富裕的;宽敞的,宽大的", ex: "There was ample time to get to the airport.", tr: "有足够的时间到达机场。" },
+      { w: "amplifier", ph: "[ˈæmplɪfaɪə(r)]", def: "n.放大器,扩大器", ex: "The amplifier exploded in a fountain of sparks.", tr: "放大器爆炸，喷射出火星。" },
+      { w: "amplify", ph: "[ˈæmplɪfaɪ]", def: "vt.放大,增强;详述,详加解说", ex: "This landscape seemed to trap and amplify sounds.", tr: "这种地形好像能聚拢和扩大声音。" }
+    ]
+  },
+  {
+    root: "anc", meaning: "古老", letter: "A",
+    words: [
+      { w: "once", ph: "[wʌns]", def: "ad.一次,曾经 conj.一(旦)…就… n.一次", ex: "I met Miquela once, briefly.", tr: "我见过蜜凯拉一次，时间很短。" },
+      { w: "ancient", ph: "[ˈeɪnʃənt]", def: "a.古代的,古老的,古式的", ex: "Lettuce was grown by the ancient Romans.", tr: "莴苣是由古罗马人种植的。" },
+      { w: "ancestor", ph: "[ˈænsestə(r)]", def: "n.祖宗,祖先;原型,先驱", ex: "His ancestors had come to America from Ireland.", tr: "他的祖先从爱尔兰来到美国。" },
+      { w: "anecdote", ph: "[ˈænɪkdəʊt]", def: "n.轶事,趣闻,短故事", ex: "Pete was telling them an anecdote about their mother.", tr: "皮特正告诉他们一个关于他们母亲的趣闻轶事。" },
+      { w: "anticipate", ph: "[ænˈtɪsɪpeɪt]", def: "vt.预料;期望;预先考虑;抢先;提前使用", ex: "We anticipate that sales will rise next year.", tr: "我们预料明年销售量将会增加。" },
+      { w: "antique", ph: "[ænˈtiːk]", def: "a.古式的,过时的 n.有价值的古物,古董", ex: "This isn't a genuine antique—you've been done.", tr: "这不是真正的古董—你上当了。" }
+    ]
+  },
+  {
+    root: "ang", meaning: "生气", letter: "A",
+    words: [
+      { w: "angry", ph: "[ˈæŋgri]", def: "a.生气的,愤怒的;(天气)风雨交加的", ex: "He never stays angry for long.", tr: "他生气时间从来不会长。" },
+      { w: "anger", ph: "[ˈæŋgə(r)]", def: "n.愤怒,气愤 vt.使发怒,激怒 vi.发怒", ex: "My anger slowly drained away.", tr: "我的怒火慢慢平息下来。" },
+      { w: "anguish", ph: "[ˈæŋgwɪʃ]", def: "n.(尤指心灵上的)极度痛苦,烦恼", ex: "He groaned in anguish.", tr: "他痛苦地呻吟。" },
+      { w: "anxiety", ph: "[æŋˈzaɪəti]", def: "n.挂念,焦虑,焦急,忧虑;渴望,热望", ex: "Her voice was full of anxiety.", tr: "她的声音饱含焦虑。" },
+      { w: "anxious", ph: "[ˈæŋkʃəs]", def: "a.焦虑的,担心的;急于(得到的),渴望的", ex: "Both the Americans and the Russians are anxious to avoid conflict in South Asia.", tr: "美国人与俄国人都急于避免南亚冲突。" }
+    ]
+  },
+  {
+    root: "apply", meaning: "申请", letter: "A",
+    words: [
+      { w: "apply", ph: "[əˈplaɪ]", def: "vi.(以书面形式)申请;请求 vt.应用;实施", ex: "I am continuing to apply for jobs.", tr: "我在继续申请工作。" },
+      { w: "appliance", ph: "[əˈplaɪəns]", def: "n.电器;器械,装置;应用,适用", ex: "Before you buy a new appliance, talk to someone who owns one.", tr: "在你买新电器之前，先和有这个电器的人谈谈。" },
+      { w: "applicable", ph: "[əˈplɪkəbl]", def: "a.可应用(实施)的;适当的,合适的", ex: "What is a reasonable standard for one family is not applicable for another.", tr: "对一个家庭合理的标准对于另一个家庭并不适用。" },
+      { w: "application", ph: "[ˌæplɪˈkeɪʃn]", def: "n.申请,请求,申请书;应用,实施,实用性", ex: "Her application was hurried through.", tr: "她的申请很快得到了处理。" }
+    ]
+  },
+  {
+    root: "ar", meaning: "弓", letter: "A",
+    words: [
+      { w: "arrow", ph: "[ˈærəʊ]", def: "n.箭,矢,箭状物;箭头符号", ex: "He shot an arrow from his bow.", tr: "他张弓射了一箭。" },
+      { w: "arch", ph: "[ɑːtʃ]", def: "n.拱门,桥拱洞 v.拱起,(使)变成弓形", ex: "He went under a brick arch.", tr: "他从一座砖拱门下面走过。" },
+      { w: "architect", ph: "[ˈɑːkɪtekt]", def: "n.建筑师;设计师;缔造者;创造者", ex: "The architect drew the house in section.", tr: "建筑师绘制了房子的剖面图。" },
+      { w: "architecture", ph: "[ˈɑːkɪtektʃə(r)]", def: "n.建筑,建筑学;建筑式样或风格,建筑物", ex: "He began a new magazine on post-war architecture.", tr: "他创办了一份专论战后建筑的新杂志。" }
+    ]
+  },
+  {
+    root: "arg", meaning: "说理", letter: "A",
+    words: [
+      { w: "argue", ph: "[ˈɑːgjuː]", def: "vi.辩论,争论 vt.辩论,论证;说服,劝说", ex: "I'm not disposed to argue.", tr: "我无意争论。" },
+      { w: "argument", ph: "[ˈɑːgjumənt]", def: "n.争论(吵),辩论;理由,论证", ex: "It's a seductive argument.", tr: "这是一个很有诱惑力的论点。" }
+    ]
+  },
+  {
+    root: "arm", meaning: "武器", letter: "A",
+    words: [
+      { w: "arm", ph: "[ɑːm]", def: "n.手臂,扶手,臂状物 v.武装;配备 n.武器", ex: "He squeezed her arm reassuringly.", tr: "他安慰地捏了捏她的手臂。" },
+      { w: "army", ph: "[ˈɑːmi]", def: "n.军队,陆军,军;大群,大批", ex: "The army put down the rebellion.", tr: "军队镇压了叛乱。" },
+      { w: "alarm", ph: "[əˈlɑːm]", def: "n.惊恐;警报(器) vt.惊动,惊吓;向…报警", ex: "Any intruders will trip the alarm.", tr: "任何非法入室者都会触响报警器。" }
+    ]
+  },
+  {
+    root: "art", meaning: "艺术", letter: "A",
+    words: [
+      { w: "art", ph: "[ɑːt]", def: "n.艺术,美术;技术,技艺;文科,人文科学", ex: "Dance is a very theatrical art.", tr: "舞蹈是非常讲究舞台感的一种艺术。" },
+      { w: "artist", ph: "[ˈɑːtɪst]", def: "n.艺术家,美术家;(某方面的)能手", ex: "They got taken by a scam artist.", tr: "他们被一个假冒的艺术家骗了。" },
+      { w: "artistic", ph: "[ɑːˈtɪstɪk]", def: "a.艺术(家)的,美术(家)的;善于艺术创作的", ex: "She comes from a very artistic family.", tr: "她出身于艺术世家。" },
+      { w: "article", ph: "[ˈɑːtɪkl]", def: "n.文章,论文;条款,条文;物件;冠词", ex: "The article caused (an) uproar.", tr: "这篇文章引起了轩然大波。" },
+      { w: "articulate", ph: "[ɑːˈtɪkjuleɪt]", def: "a.善于表达的;有关节相连的 v.清楚地讲话", ex: "She is an articulate young woman.", tr: "她是个善表达的年轻女子。" }
+    ]
+  },
+  {
+    root: "aud", meaning: "听", letter: "A",
+    words: [
+      { w: "audience", ph: "[ˈɔːdiəns]", def: "n.听众,观众,读者;见面,会见", ex: "The audience cheered and clapped.", tr: "观众又是喝彩又是鼓掌。" },
+      { w: "audio", ph: "[ˈɔːdiəʊ]", def: "n./a.音频(响)(的);声音(的),听觉(的)", ex: "This digital audio player supports multiple formats.", tr: "这台数字音频播放器支持多种格式。" },
+      { w: "audit", ph: "[ˈɔːdɪt]", def: "v.审计;查账;核对;旁听", ex: "List of possible audit types.", tr: "可能的审计类型列表。" },
+      { w: "auditorium", ph: "[ˌɔːdɪˈtɔːriəm]", def: "n.观众席,听众席;会堂,礼堂", ex: "The auditorium pulsed with excitement.", tr: "礼堂里洋溢着热烈的气氛。" }
+    ]
+  },
+  {
+    root: "aug", meaning: "增加", letter: "A",
+    words: [
+      { w: "August", ph: "[ɔːˈgʌst]", def: "n.8 月", ex: "This place is lousy with tourists in August.", tr: "在八月份，这个地方挤满游人。" },
+      { w: "augment", ph: "[ɔːgˈment]", def: "vt.(使)增大,增加,增长,扩张", ex: "The government's first concern was to augment the army and auxiliary forces.", tr: "政府首要关注的是扩充军队与后备军。" },
+      { w: "auction", ph: "[ˈɔːkʃn]", def: "n./vt.拍卖", ex: "The painting is expected to fetch up to $400,000 at auction.", tr: "这幅画预计在拍卖会上能卖到 40 万美元。" },
+      { w: "auxiliary", ph: "[ɔːgˈzɪliəri]", def: "a.辅助的,支援的 n.辅助者,辅助设备", ex: "He also brought an auxiliary engine with him.", tr: "他还带了一个辅助的发电机。" }
+    ]
+  },
+  {
+    root: "auth", meaning: "作者", letter: "A",
+    words: [
+      { w: "author", ph: "[ˈɔːθə(r)]", def: "n.作者,作家,著作人;创始人,发起人", ex: "Who is your favourite author?", tr: "你最喜欢哪位作家？" },
+      { w: "authority", ph: "[ɔːˈθɒrəti]", def: "n.权力,权威;权威人士;(pl.)官方,当局", ex: "She had an aura of authority.", tr: "她有一种权威气质。" },
+      { w: "authentic", ph: "[ɔːˈθentɪk]", def: "a.真的,真正的;可靠的,可信的,有根据的", ex: "She has authentic charm whereas most people simply have nice manners.", tr: "她有真正的魅力，而大多数人只是有礼貌而已。" }
+    ]
+  },
+  {
+    root: "auto", meaning: "自动", letter: "A",
+    words: [
+      { w: "auto", ph: "[ˈɔːtəʊ]", def: "n.(automobile)(口语)汽车", ex: "Over the last decade, auto theft has increased by over 56 percent.", tr: "过去的 10 年来汽车盗窃案上升了 56% 以上。" },
+      { w: "automatic", ph: "[ˌɔːtəˈmætɪk]", def: "a.自动(装置)的;无意识的 n.自动机械", ex: "The automatic doors slid open.", tr: "自动门慢慢开了。" },
+      { w: "automation", ph: "[ˌɔːtəˈmeɪʃn]", def: "n.自动,自动化,自动操作", ex: "Automation meant the loss of many factory jobs.", tr: "自动化意味着许多工厂工人失业。" },
+      { w: "autonomy", ph: "[ɔːˈtɒnəmi]", def: "n.自治,自治权", ex: "She sets a high value on autonomy.", tr: "她高度重视自主权。" }
+    ]
+  },
+  {
+    root: "aw", meaning: "畏惧", letter: "A",
+    words: [
+      { w: "awe", ph: "[ɔː]", def: "n.敬畏,惊惧 vt.使敬畏,使惊惧", ex: "She gazed in awe at the great stones.", tr: "她敬畏地凝视着那些巨石。" },
+      { w: "awful", ph: "[ˈɔːfl]", def: "a.极度的,极坏的;威严的,可怕的", ex: "Slowly the awful truth dawned.", tr: "可怕的事实慢慢清晰起来。" }
+    ]
+  },
+  {
+    root: "back", meaning: "包裹", letter: "B",
+    words: [
+      { w: "back", ph: "[bæk]", def: "a.后面的 ad.向后 v.倒退;支持 n.背;后面", ex: "I'll be right back.", tr: "我马上就回来。" },
+      { w: "backward", ph: "[ˈbækwəd]", def: "a.向后的,倒行的;迟钝的 ad.向后,朝反方向", ex: "This country is going backward.", tr: "这个国家正在倒退。" },
+      { w: "bag", ph: "[bæg]", def: "n.袋,提包 v.把…装入袋中;猎杀;占有", ex: "Someone's left their bag behind.", tr: "有人把包落下了。" },
+      { w: "baggage", ph: "[ˈbægɪdʒ]", def: "n.行李", ex: "All exits must be kept clear of baggage.", tr: "所有出口必须保持通畅，不得堆放行李。" },
+      { w: "pack", ph: "[pæk]", def: "v.捆扎,打包;塞满,挤满 n.包裹,背包,一群/副", ex: "All joiners will receive a welcome pack.", tr: "每位入会者都会收到一个迎新包。" },
+      { w: "package", ph: "[ˈpækɪdʒ]", def: "n.包装,包裹,箱,包装费,标准部件,成套设备", ex: "This package is for you.", tr: "这份包裹是给你的。" },
+      { w: "packet", ph: "[ˈpækɪt]", def: "n.小包裹,小捆;盒;一捆,一扎;邮船,班轮", ex: "He went out to buy a packet of cigarettes.", tr: "他出去买了一包香烟。" },
+      { w: "pocket", ph: "[ˈpɒkɪt]", def: "n.衣袋 a.袖珍的,小型的 v.把…装入袋内", ex: "I slid the wallet into his pocket.", tr: "我把那钱包滑进了他的口袋。" },
+      { w: "parcel", ph: "[ˈpɑːsl]", def: "n.包裹,邮包,部分 v.打包,捆扎,分配", ex: "The parcel came in this morning's post.", tr: "这个包裹是今天上午邮送来的。" },
+      { w: "sack", ph: "[sæk]", def: "n.开除,解雇;袋,包,麻袋 v.解雇", ex: "Four hundred workers face the sack.", tr: "四百名工人面临解雇的危险。" },
+      { w: "purse", ph: "[pɜːs]", def: "n.钱包", ex: "Oh no, I left my purse at home.", tr: "该死，我把钱包落在家里了。" },
+      { w: "bacon", ph: "[ˈbeɪkən]", def: "n.咸猪肉,熏猪肉", ex: "He could smell the bacon grease.", tr: "他闻到了一股熏肉的油脂味儿。" }
+    ]
+  },
+  {
+    root: "ban", meaning: "禁止", letter: "B",
+    words: [
+      { w: "abandon", ph: "[əˈbændən]", def: "vt.离弃,丢弃;遗弃,抛弃;放弃", ex: "The study showed a deep fear among the elderly of being abandoned to the care of strangers.", tr: "研究表明，老人十分害怕被丢给陌生人照管。" },
+      { w: "banner", ph: "[ˈbænə(r)]", def: "n.旗(帜)", ex: "Protesters carried a banner reading 'Save our Wildlife'.", tr: "抗议者打着\"救救我们的野生生物\"字样的横幅。" },
+      { w: "ban", ph: "[bæn]", def: "v.取缔,查禁;(from)禁止 n.禁止,禁令", ex: "They wanted a total ban on handguns.", tr: "他们要求彻底禁止拥有手枪。" }
+    ]
+  },
+  {
+    root: "bak", meaning: "烘，烤", letter: "B",
+    words: [
+      { w: "bake", ph: "[beɪk]", def: "v.烤,烘,焙;烧硬,焙干", ex: "Bake the cake until the crust is golden.", tr: "把糕饼烤至外皮呈金黄色。" },
+      { w: "batch", ph: "[bætʃ]", def: "n.一批,一组,一群", ex: "I baked a batch of cookies.", tr: "我烤了一批小甜饼。" }
+    ]
+  },
+  {
+    root: "ball", meaning: "球", letter: "B",
+    words: [
+      { w: "ball", ph: "[bɔːl]", def: "n.球(状物);(正式的)舞会 vt.把…捏成球状", ex: "He kicked the ball into touch.", tr: "他把球踢出了边线。" },
+      { w: "balloon", ph: "[bəˈluːn]", def: "n.气球,飞船 a.气球状的 v.乘坐气球;膨胀", ex: "A balloon suddenly went bang.", tr: "一只气球突然砰的一声爆了。" },
+      { w: "football", ph: "[ˈfʊtbɔːl]", def: "n.足球", ex: "Luckily, we both love football.", tr: "幸好我们俩都热爱足球。" },
+      { w: "basketball", ph: "[ˈbɑːskɪtbɔːl]", def: "n.篮球,篮球运动", ex: "I enjoy playing basketball.", tr: "我喜欢打篮球。" },
+      { w: "volleyball", ph: "[ˈvɒlibɔːl]", def: "n.排球", ex: "They had a volleyball court in the middle of the courtyard.", tr: "他们在院子中央有一个排球场。" },
+      { w: "baseball", ph: "[ˈbeɪsbɔːl]", def: "n.棒球", ex: "He often wore a baseball cap.", tr: "他经常戴顶棒球帽。" },
+      { w: "bald", ph: "[bɔːld]", def: "a.秃的,秃头的", ex: "He started going bald in his twenties.", tr: "他二十几岁便开始谢顶。" },
+      { w: "ballot", ph: "[ˈbælət]", def: "n.(不记名)投票;投票总数;投票权 vi.投票", ex: "She won 58.8% of the ballot.", tr: "她赢得了投票总数的 58.8%。" }
+    ]
+  },
+  {
+    root: "band", meaning: "带，绑", letter: "B",
+    words: [
+      { w: "band", ph: "[bænd]", def: "n.条,带;乐队;波段;一群,一伙 v.缚,绑扎", ex: "The singer re-formed his band.", tr: "这名歌手对他的乐队进行了重组。" },
+      { w: "bandage", ph: "[ˈbændɪdʒ]", def: "n.绷带 v.用绷带扎缚", ex: "We put some medicine and a bandage on his knee.", tr: "我们在他的膝盖上涂了些药膏，还缠了一条绷带。" },
+      { w: "bend", ph: "[bend]", def: "v.(使)弯曲;屈从,屈服 n.弯曲(处),曲折处", ex: "Black faded on the final bend.", tr: "布莱克在最后一个弯道处速度慢了下来。" },
+      { w: "bind", ph: "[baɪnd]", def: "v.捆,绑,包扎,束缚", ex: "Add an egg yolk to make the mixture bind.", tr: "加个蛋黄使混合料凝结在一起。" },
+      { w: "bound", ph: "[baʊnd]", def: "v./n.跳(跃) a.被束缚的,一定的;n.界限（bound to 肯定,一定；bound for 开往）", ex: "They bound his hands together.", tr: "他们把他的双手绑在一起。" },
+      { w: "boundary", ph: "[ˈbaʊndri]", def: "n.分界线,边界", ex: "We crossed the county boundary into Devon.", tr: "我们越过郡界进入了德文。" },
+      { w: "bounce", ph: "[baʊns]", def: "n./vi.(球)弹起,弹回;弹起,跳起;n.弹力", ex: "There's not much bounce left in these balls.", tr: "这些球已没有多少弹性了。" },
+      { w: "abound", ph: "[əˈbaʊnd]", def: "vi.大量存在;(in, with)充满,富于", ex: "The lakes abound with fish.", tr: "这些湖泊盛产鱼。" },
+      { w: "border", ph: "[ˈbɔːdə(r)]", def: "n.边界,国界;边(沿) v.交界,与…接壤;接近", ex: "They fled across the border.", tr: "他们越过边界逃走了。" },
+      { w: "bond", ph: "[bɒnd]", def: "n.结合(物);黏结(剂);联结;公债,债券,契约", ex: "A bond of friendship had been forged between them.", tr: "他们之间形成了一种友谊的纽带。" },
+      { w: "abundance", ph: "[əˈbʌndəns]", def: "n.丰富,充裕,大量", ex: "Fruit and vegetables grew in abundance on the island.", tr: "该岛盛产水果和蔬菜。" },
+      { w: "abundant", ph: "[əˈbʌndənt]", def: "a.大量(充足)的;(in)丰富(富裕)的", ex: "There is an abundant supply of cheap labour.", tr: "有丰富的廉价劳动力供应。" },
+      { w: "redundant", ph: "[rɪˈdʌndənt]", def: "a.多余的,过剩的;(食物)丰富的;被解雇的", ex: "This word is redundant, and it can be left out.", tr: "这个字是多余的，可以去掉。" }
+    ]
+  },
+  {
+    root: "bar", meaning: "暴露", letter: "B",
+    words: [
+      { w: "bare", ph: "[beə(r)]", def: "a.赤裸的,空的;稀少的,仅有的 v.露出,暴露", ex: "She likes to walk around in bare feet.", tr: "她喜欢光着脚走来走去。" },
+      { w: "barely", ph: "[ˈbeəli]", def: "ad.赤裸裸地,无遮蔽地;仅仅,勉强,几乎没有", ex: "John could barely remember the ride to the hospital.", tr: "约翰只勉强记得被送到了医院。" },
+      { w: "barren", ph: "[ˈbærən]", def: "a.贫瘠的;不育的;(植物)不结果的;无用的", ex: "The land was barren and infertile.", tr: "这片土地荒芜而贫瘠。" }
+    ]
+  },
+  {
+    root: "bas", meaning: "基础", letter: "B",
+    words: [
+      { w: "base", ph: "[beɪs]", def: "n.基础,底部;根据地 v.(on)把…基于", ex: "The building has a heavy base.", tr: "这座大楼基础很牢固。" },
+      { w: "basement", ph: "[ˈbeɪsmənt]", def: "n.建筑物的底部,地下室,地窖", ex: "Kitchen goods are sold in the basement.", tr: "厨房用具在地下室出售。" },
+      { w: "basic", ph: "[ˈbeɪsɪk]", def: "a.基本的,基础的", ex: "Access to justice is a basic right.", tr: "享有公正是一种基本权利。" },
+      { w: "basis", ph: "[ˈbeɪsɪs]", def: "n.基础,根据（on the basis of 根据,在…基础上）", ex: "The basis of a good marriage is trust.", tr: "美满婚姻的基础是信赖。" }
+    ]
+  },
+  {
+    root: "be", meaning: "在…的", letter: "B",
+    words: [
+      { w: "be", ph: "[bi; biː]", def: "v.(就)是,等于;(存)在;到达,来到,发生", ex: "I can be very persuasive when I want to be.", tr: "当我想要的时候，我会很有说服力的。" },
+      { w: "beloved", ph: "[bɪˈlʌvɪd]", def: "a./n.受爱戴的,敬爱的;爱人,被心爱的人", ex: "It was a gift from her beloved.", tr: "那是她心爱的人送的礼物。" },
+      { w: "because", ph: "[bɪˈkəz]", def: "conj.因为,由于", ex: "They are here because of us.", tr: "他们是因为我们才来这里的。" },
+      { w: "cause", ph: "[kɔːz]", def: "n.原因;事业,事件,奋斗目标 v.使产生,引起", ex: "He died for a noble cause.", tr: "他为了高尚的事业而牺牲。" },
+      { w: "become", ph: "[bɪˈkʌm]", def: "vi.变成,开始变得 vt.适合,同…相称", ex: "He has become more moralistic.", tr: "他变得更喜欢说教了。" },
+      { w: "before", ph: "[bɪˈfɔː(r)]", def: "prep.(指时间)在…以前,在…前面,在…之前", ex: "He paused before answering.", tr: "他在回答前停了下来。" },
+      { w: "behalf", ph: "[bɪˈhɑːf]", def: "n.利益（on behalf of 代表）", ex: "She was nominated to speak on our behalf.", tr: "她被指派代表我们发言。" },
+      { w: "being", ph: "[ˈbiːɪŋ]", def: "n.生物,生命,存在", ex: "A new era was brought into being by the war.", tr: "那场战争使得一个新的时代产生了。" },
+      { w: "below", ph: "[bɪˈləʊ]", def: "prep.在…下面,在…以下 ad.在下面,向下", ex: "It's 15 degrees below freezing.", tr: "温度是零下 15 摄氏度。" },
+      { w: "beneath", ph: "[bɪˈniːθ]", def: "prep.在…下边,在…之下 ad.在下方", ex: "They found the body buried beneath a pile of leaves.", tr: "他们发现尸体被埋在一堆树叶下面。" },
+      { w: "underneath", ph: "[ˌʌndəˈniːθ]", def: "prep.在…下面 ad.在下面,在底下", ex: "The coin rolled underneath the piano.", tr: "硬币滚到了钢琴底下。" },
+      { w: "beside", ph: "[bɪˈsaɪd]", def: "prep.在…旁边,在…附近;和…相比", ex: "She kneeled down beside him.", tr: "她在他身旁跪下。" },
+      { w: "besides", ph: "[bɪˈsaɪdz]", def: "ad.此外;并且 prep.于…之外;除…以外", ex: "What other sports do you play besides hockey?", tr: "除了玩曲棍球你还做哪些运动？" }
+    ]
+  },
+  {
+    root: "bene", meaning: "好", letter: "B",
+    words: [
+      { w: "benefit", ph: "[ˈbenɪfɪt]", def: "n.利益,好处,恩惠 v.有益于;(from,by)受益", ex: "I've had the benefit of a good education.", tr: "我得益于受过良好教育。" },
+      { w: "beneficial", ph: "[ˌbenɪˈfɪʃl]", def: "a.(to)有利的,有益的", ex: "A good diet is beneficial to health.", tr: "良好的饮食有益于健康。" },
+      { w: "benign", ph: "[bɪˈnaɪn]", def: "a.(病)良性的,(气候)良好的,仁慈的,和蔼的", ex: "It wasn't cancer, only a benign tumour.", tr: "这不是癌，只是良性肿瘤。" }
+    ]
+  },
+  {
+    root: "bi", meaning: "二", letter: "B",
+    words: [
+      { w: "combine", ph: "[kəmˈbaɪn]", def: "v.联合;结合;化合 n.集团;联合企业", ex: "The trip will combine business with pleasure.", tr: "此次旅行将把出差和娱乐结合起来。" },
+      { w: "combination", ph: "[ˌkɒmbɪˈneɪʃn]", def: "n.结合,联合;化合;团体;组合密码", ex: "I can't remember the combination.", tr: "我不记得密码锁的数码组合了。" },
+      { w: "dilemma", ph: "[dɪˈlemə]", def: "n.(进退两难的)窘境,困境", ex: "The bad weather put us in a dilemma—shall we move on or go back?", tr: "糟糕的天气使我们进退两难——是继续前进呢，还是打道回府？" },
+      { w: "dilute", ph: "[daɪˈluːt]", def: "vt.稀释,冲淡 a.稀释的,冲淡的", ex: "The nurse diluted the drug with water.", tr: "护士用水把药加以稀释。" }
+    ]
+  },
+  {
+    root: "bid", meaning: "要求", letter: "B",
+    words: [
+      { w: "bid", ph: "[bɪd]", def: "v.祝愿;命令,吩咐;报价,投标 n.出众,投标", ex: "The bank announced its intention to bid.", tr: "银行宣布了其投标意向。" },
+      { w: "forbid", ph: "[fəˈbɪd]", def: "v.禁止,不许", ex: "I forbid anyone to touch that clock.", tr: "我不准任何人碰那台钟。" }
+    ]
+  },
+  {
+    root: "bit", meaning: "咬", letter: "B",
+    words: [
+      { w: "bite", ph: "[baɪt]", def: "v./n.咬,叮 n.一口", ex: "Most European spiders don't bite.", tr: "大多数欧洲蜘蛛不咬人。" },
+      { w: "abide", ph: "[əˈbaɪd]", def: "vi.(abode, abided)(by)遵守;坚持", ex: "They have got to abide by the rules.", tr: "他们必须遵守规定。" },
+      { w: "bait", ph: "[beɪt]", def: "n.饵,引诱物 vt.用饵引诱;折磨,奚落", ex: "The fish took the bait.", tr: "鱼咬了钓饵。" }
+    ]
+  },
+  {
+    root: "blind", meaning: "盲", letter: "B",
+    words: [
+      { w: "blind", ph: "[blaɪnd]", def: "a.盲的,瞎的;盲目的 vt.使失明 n.百叶窗", ex: "Doctors think he will go blind.", tr: "医生们认为他会失明。" },
+      { w: "blunder", ph: "[ˈblʌndə(r)]", def: "v.(因无知等而)犯大错;跟跟跄跄地走 n.大错", ex: "She cast a sidelong glance at Eric to see if he had noticed her blunder.", tr: "她偷偷斜扫了埃里克一眼，看他有没有留意到她的错误。" },
+      { w: "blunt", ph: "[blʌnt]", def: "a.率直的;钝的 v.(使)钝;(使)迟钝", ex: "The police said he had been hit with a blunt instrument.", tr: "警方说他遭到了钝器袭击。" }
+    ]
+  },
+  {
+    root: "blood", meaning: "血", letter: "B",
+    words: [
+      { w: "blood", ph: "[blʌd]", def: "n.血液,血;血统,血亲;血气", ex: "His face was covered in blood.", tr: "他满脸是血。" },
+      { w: "bloody", ph: "[ˈblʌdi]", def: "a.流血的,血腥的", ex: "She did bloody well to win that race.", tr: "她非常出色地赢得了那场赛跑。" },
+      { w: "bleed", ph: "[bliːd]", def: "v.出血,流血", ex: "One morning, the old man started to bleed.", tr: "有天早上，老人开始出血。" },
+      { w: "blush", ph: "[blʌʃ]", def: "v./n.脸红", ex: "She doesn't blush easily.", tr: "她不容易脸红。" }
+    ]
+  },
+  {
+    root: "blow", meaning: "吹", letter: "B",
+    words: [
+      { w: "blow", ph: "[bləʊ]", def: "vi.吹,吹气,打气;吹奏;爆炸;n.打,打击", ex: "The blow knocked her out.", tr: "这一击把她打昏了。" },
+      { w: "inflation", ph: "[ɪnˈfleɪʃn]", def: "n.通货膨胀", ex: "Inflation is a constant threat.", tr: "通货膨胀是一种持续的威胁。" },
+      { w: "flatter", ph: "[ˈflætə(r)]", def: "vt.奉承;使高兴;使满意;胜过", ex: "Are you trying to flatter me?", tr: "你是想讨好我？" }
+    ]
+  },
+  {
+    root: "board", meaning: "木板", letter: "B",
+    words: [
+      { w: "keyboard", ph: "[ˈkiːbɔːd]", def: "n.键盘 vt.用键盘输入(信息)", ex: "Treat your keyboard with care and it should last for years.", tr: "爱惜你的键盘，这样就可以使用很多年。" },
+      { w: "aboard", ph: "[əˈbɔːd]", def: "ad.&prep.在船(飞机、车)上;ad.上船(飞机)", ex: "He was already aboard the plane.", tr: "他已经登机了。" },
+      { w: "blackboard", ph: "[ˈblækbɔːd]", def: "n.黑板", ex: "The menu was on a blackboard.", tr: "菜单在黑板上。" },
+      { w: "board", ph: "[bɔːd]", def: "n.板,木板,全体委员;伙食 v.上船(车,飞机)（on board 在船（车/飞机）上）", ex: "She jumped off the top board.", tr: "她从高层跳板上跳了下来。" },
+      { w: "cupboard", ph: "[ˈkʌbəd]", def: "n.碗柜,小橱", ex: "The cupboard is easy to assemble.", tr: "这个橱柜容易组装。" },
+      { w: "float", ph: "[fləʊt]", def: "n.漂浮;漂流物 v.浮动;漂浮;传播;动摇", ex: "Can you float on your back?", tr: "你能仰浮吗？" },
+      { w: "boat", ph: "[bəʊt]", def: "n.小船,艇", ex: "The boat heaved beneath them.", tr: "小船在他们脚下颠簸着。" },
+      { w: "oar", ph: "[ɔː(r)]", def: "n.桨,橹 v.划,划动,划行", ex: "Each person has one oar which goes on one side.", tr: "每个人都有一支桨，放在一边。" },
+      { w: "boss", ph: "[bɒs]", def: "n.老板,上司 vt.指挥,控制,发号施令", ex: "His boss has a foul temper.", tr: "他的老板脾气很坏。" },
+      { w: "fleet", ph: "[fliːt]", def: "n.舰队,船队", ex: "There's been a big reduction in the size of the merchant fleet in recent years.", tr: "近年来商船队的数量大为缩减。" },
+      { w: "exotic", ph: "[ɪgˈzɒtɪk]", def: "a.奇异的;异国情调的;外(国)来的", ex: "She travels to all kinds of exotic locations all over the world.", tr: "她走遍了全世界所有具有奇异风情的地方。" },
+      { w: "embark", ph: "[ɪmˈbɑːk]", def: "v.(使)上船(或飞机,汽车等);着手,从事", ex: "She is about to embark on a diplomatic career.", tr: "她即将开始外交生涯。" }
+    ]
+  },
+  {
+    root: "bar²", meaning: "棒、棍、打", letter: "B",
+    words: [
+      { w: "bar", ph: "[bɑː(r)]", def: "n.条,杆,闩;酒吧;栅,障碍(物) v.闩上,阻拦", ex: "She was sitting at the bar.", tr: "她坐在酒吧的柜台那里。" },
+      { w: "bargain", ph: "[ˈbɑːgən]", def: "n.廉价货;交易,契约,合同 v.议价,成交", ex: "The so-called bargain was just a big con!", tr: "这种所谓的减价商品只不过是个大骗局！" },
+      { w: "barrel", ph: "[ˈbærəl]", def: "n.桶;枪管,炮管", ex: "Oil prices fell to $9 a barrel.", tr: "石油价格降到了每桶 9 元。" },
+      { w: "barrier", ph: "[ˈbæriə(r)]", def: "n.栅栏,屏障;障碍(人物)", ex: "I realized I had to surmount the language barrier.", tr: "我认识到我必须得克服语言障碍。" },
+      { w: "embarrass", ph: "[ɪmˈbærəs]", def: "vt.使困窘,使局促不安;阻碍,麻烦", ex: "When you embarrass me, I'll tell you.", tr: "你要是使我感到难堪，我就会跟你说的。" },
+      { w: "bat", ph: "[bæt]", def: "n.球拍,球棒,短棒;蝙蝠", ex: "I bolted the door the instant I saw the bat.", tr: "我一看到那只蝙蝠就把门闩上了。" },
+      { w: "battery", ph: "[ˈbætri]", def: "n.电池(组);(器具等的)一组,一套;炮兵连", ex: "I have a battery tester in my garage.", tr: "我的车库里有台电池测试仪。" },
+      { w: "battle", ph: "[ˈbætl]", def: "n.战役,战斗;斗争 v.战斗,斗争,搏斗", ex: "A much bigger battle is ahead for the president.", tr: "总统还将面临一场更大的战斗。" },
+      { w: "combat", ph: "[ˈkɒmbæt]", def: "v./n.战斗,搏斗,格斗", ex: "It was the end of a long combat.", tr: "那是一场长时间搏斗的结束。" },
+      { w: "debate", ph: "[dɪˈbeɪt]", def: "v./n.争论,辩论", ex: "There is an ongoing debate on the issue.", tr: "关于这个问题的争论还在继续。" },
+      { w: "beat", ph: "[biːt]", def: "n.敲打;(心脏等)跳动 v.打败;(心脏等)跳动", ex: "You can't beat Italian shoes.", tr: "意大利鞋是无与伦比的。" },
+      { w: "fight", ph: "[faɪt]", def: "v./n.打(仗),搏斗,斗争,战斗", ex: "Did you have a fight with him?", tr: "你和他争辩了？" }
+    ]
+  },
+  {
+    root: "body", meaning: "体", letter: "B",
+    words: [
+      { w: "body", ph: "[ˈbɒdi]", def: "n.身体,本体;主体;尸体;物体;(一)群,批,堆", ex: "They heaved the body overboard.", tr: "他们使劲把尸体从船上抛入水中。" },
+      { w: "embody", ph: "[ɪmˈbɒdi]", def: "vt.具体表达,使具体化;包含,收录", ex: "a politician who embodied the hopes of black youth", tr: "代表黑人青年希望的政治家" }
+    ]
+  },
+  {
+    root: "born", meaning: "出生", letter: "B",
+    words: [
+      { w: "born", ph: "[bɔːn]", def: "a.出生的,产生的;天生的,十足的", ex: "Some people are born brainy.", tr: "有些人生来就聪明。" },
+      { w: "birth", ph: "[bɜːθ]", def: "n.出生,诞生;出身,血统;起源;出现", ex: "She weighed 3.2kg at birth.", tr: "她出生时重 3.2 千克。" },
+      { w: "birthday", ph: "[ˈbɜːθdeɪ]", def: "n.生日;(成立)纪念日", ex: "We threw a huge birthday party.", tr: "我们举办了一次盛大的生日派对。" },
+      { w: "bear", ph: "[beə(r)]", def: "n.熊 v.忍受,容忍;负担;结果实,生子女", ex: "He can't bear being laughed at.", tr: "他无法忍受遭人嘲笑。" },
+      { w: "bearing", ph: "[ˈbeərɪŋ]", def: "n.轴承;忍受;关系,影响;举止;方向", ex: "Recent events had no bearing on our decision.", tr: "近期的事件与我们的决定没有关系。" },
+      { w: "abolish", ph: "[əˈbɒlɪʃ]", def: "vt.废除(法律、习惯等);取消", ex: "These reforms will abolish racially discriminatory laws.", tr: "这些改革将废除种族歧视法律。" },
+      { w: "affiliate", ph: "[əˈfɪlieɪt]", def: "v.使隶属(或附属)于 n.附属机构,分公司", ex: "The hospital is affiliated with the local university.", tr: "这家医院附属于当地大学。" },
+      { w: "fertile", ph: "[ˈfɜːtaɪl]", def: "a.肥沃的,富饶的;能繁殖的", ex: "Farmers worked the fertile valleys.", tr: "农民们开垦了这个肥沃的山谷。" },
+      { w: "fertilizer", ph: "[ˈfɜːtəlaɪzə(r)]", def: "n.(fertiliser)肥料", ex: "The tractor hauled the fertilizer away.", tr: "拖拉机把肥料拉走了。" }
+    ]
+  },
+  {
+    root: "bow", meaning: "弯曲", letter: "B",
+    words: [
+      { w: "bow", ph: "[baʊ]", def: "v./n.鞠躬,点头 n.弓(形);蝴蝶结", ex: "He shot an arrow from his bow.", tr: "他张弓射了一箭。" },
+      { w: "rainbow", ph: "[ˈreɪnbəʊ]", def: "n.虹", ex: "Finally the rainbow disappeared.", tr: "最后，彩虹消失了。" },
+      { w: "elbow", ph: "[ˈelbəʊ]", def: "n.肘,(衣服的)肘部 vt.用肘推,用肘挤", ex: "He's fractured his elbow.", tr: "他肘部骨折。" },
+      { w: "bowel", ph: "[ˈbaʊəl]", def: "n.肠;[pl.]内部,深处", ex: "The boy was suffering from a bowel obstruction.", tr: "那男孩当时在受肠梗阻之苦。" }
+    ]
+  },
+  {
+    root: "brac", meaning: "托架", letter: "B",
+    words: [
+      { w: "brace", ph: "[breɪs]", def: "v.准备(面对不愉快或困难之事);使(手,足,肩等)绷紧 n.托架", ex: "He braced himself for the icy plunge into the black water.", tr: "他准备跳入冰冷的黑水中。" },
+      { w: "embrace", ph: "[ɪmˈbreɪs]", def: "v.拥抱;包含;包围;环绕;采用;接受", ex: "He held her in a warm embrace.", tr: "他热烈地拥抱着她。" },
+      { w: "bracket", ph: "[ˈbrækɪt]", def: "n.(方)括号;(价格、年龄、收入等的)组级,等级", ex: "Most of the houses are out of our price bracket.", tr: "大多数房子都超出我们的价格范围。" },
+      { w: "rack", ph: "[ræk]", def: "n.挂物架,搁物架 v.使痛苦,折磨", ex: "A luggage rack is a sensible option.", tr: "行李架是个明智的选择。" },
+      { w: "racket", ph: "[ˈrækɪt]", def: "n.球拍", ex: "Can I try your new badminton racket?", tr: "我可以试用你的羽毛球拍吗？" }
+    ]
+  },
+  {
+    root: "break", meaning: "破坏", letter: "B",
+    words: [
+      { w: "break", ph: "[breɪk]", def: "vt.打破;中止;违反 vi.破(裂) n.休息时间（break down 抛锚,出故障；break out 爆发）", ex: "Who's going to break it to her?", tr: "由谁来把这事告诉她呢？" },
+      { w: "breakdown", ph: "[ˈbreɪkdaʊn]", def: "n.崩溃;衰竭;(关系、计划或讨论等的)中断", ex: "She's still recovering from her breakdown.", tr: "她精神崩溃后还在恢复中。" },
+      { w: "breakfast", ph: "[ˈbrekfəst]", def: "n.早餐 v.(给某人)吃早餐", ex: "I haven't eaten since breakfast.", tr: "早饭以后我还没吃过东西呢。" },
+      { w: "brake", ph: "[breɪk]", def: "v./n.制动(机器),闸,刹车", ex: "High interest rates are a brake on the economy.", tr: "高利率阻碍了经济发展。" },
+      { w: "breach", ph: "[briːtʃ]", def: "n.违反,不履行;破裂 vt.冲破,攻破", ex: "They escaped through a breach in the wire fence.", tr: "他们从铁丝网上的一个缺口逃走了。" },
+      { w: "fraction", ph: "[ˈfrækʃn]", def: "n.碎片,小部分,一点儿;分数", ex: "She hesitated for the merest fraction of a second.", tr: "她略微犹豫了一下。" },
+      { w: "fracture", ph: "[ˈfræktʃə(r)]", def: "n.裂缝(痕);骨折 v.(使)断裂,(使)折断", ex: "I had a stress fracture in my left shin.", tr: "我的左小腿出现应力性骨折。" },
+      { w: "fragile", ph: "[ˈfrædʒaɪl]", def: "a.易碎的,脆的,易损坏的;虚弱的,脆弱的", ex: "The economy remains extremely fragile.", tr: "经济仍然极其脆弱。" },
+      { w: "fragment", ph: "[ˈfrægmənt]", def: "n.碎片,小部分,片段", ex: "She read everything, digesting every fragment of news.", tr: "她什么都读，对新闻的每一个片段都细细品味。" },
+      { w: "friction", ph: "[ˈfrɪkʃn]", def: "n.摩擦,摩擦力", ex: "Sara sensed that there had been friction between her children.", tr: "萨拉感觉到她的孩子们中间出现了摩擦。" },
+      { w: "brittle", ph: "[ˈbrɪtl]", def: "a.易碎的;脆弱的;冷淡的;(声音)尖利的", ex: "Brittle things break easily.", tr: "脆的东西容易破碎。" }
+    ]
+  },
+  {
+    root: "bri", meaning: "明亮", letter: "B",
+    words: [
+      { w: "bright", ph: "[braɪt]", def: "a.明亮的,辉煌的;聪明的;欢快的,美好的", ex: "Bright colours are his signature.", tr: "他总爱用亮丽的色彩。" },
+      { w: "brilliant", ph: "[ˈbrɪliənt]", def: "a.光辉的,灿烂的;卓越的,有才华的", ex: "The sky was a brilliant blue.", tr: "天空一片蔚蓝。" },
+      { w: "brisk", ph: "[brɪsk]", def: "a.轻快的;生气勃勃的;兴隆的", ex: "Taking a brisk walk can often bring a feeling of well-being.", tr: "轻快的散步经常能使人心旷神怡。" }
+    ]
+  },
+  {
+    root: "broad", meaning: "宽", letter: "B",
+    words: [
+      { w: "broad", ph: "[brɔːd]", def: "a.宽的,广阔的;广大的;宽宏的,豁达的", ex: "A broad range of issues was discussed.", tr: "广泛的问题得到了讨论。" },
+      { w: "broadcast", ph: "[ˈbrɔːdkɑːst]", def: "v./n.广播(节目)", ex: "The concert will be broadcast live on television and radio.", tr: "音乐会将通过电视和电台现场直播。" },
+      { w: "abroad", ph: "[əˈbrɔːd]", def: "ad.到国外,在国外;在传播,在流传", ex: "He's never ventured abroad in his life.", tr: "他一生中从来不敢出国。" },
+      { w: "breadth", ph: "[bredθ]", def: "n.宽度,幅", ex: "The breadth of the whole camp was 400 paces.", tr: "整个营地的宽度为 400 步。" }
+    ]
+  },
+  {
+    root: "bud", meaning: "花苞", letter: "B",
+    words: [
+      { w: "bud", ph: "[bʌd]", def: "n.芽,花苞 v.发芽,含苞欲放", ex: "The tree is in bud already.", tr: "树已发芽。" },
+      { w: "budget", ph: "[ˈbʌdʒɪt]", def: "n.预算 v.做预算", ex: "We have a very tight budget.", tr: "我们的预算很紧。" }
+    ]
+  },
+  {
+    root: "bur", meaning: "埋葬", letter: "B",
+    words: [
+      { w: "bury", ph: "[ˈberi]", def: "v.埋(葬),安葬;埋藏,遮盖", ex: "Bury the old world and build a new one.", tr: "埋葬旧世界，建设新世界。" },
+      { w: "funeral", ph: "[ˈfjuːnərəl]", def: "n.丧葬,葬礼", ex: "Several presidents attended the funeral.", tr: "好几位总统参加了葬礼。" }
+    ]
+  },
+  {
+    root: "calen", meaning: "计算", letter: "C",
+    words: [
+      { w: "calendar", ph: "[ˈkælɪndə(r)]", def: "n.日历,月历", ex: "This is one of the biggest weeks in the racing calendar.", tr: "这是全年赛马日程表中最重要的几个星期之一。" },
+      { w: "calculate", ph: "[ˈkælkjuleɪt]", def: "v.计算,推算;计划,打算", ex: "This formula is used to calculate the area of a circle.", tr: "这个公式用于计算圆的面积。" }
+    ]
+  },
+  {
+    root: "call", meaning: "召唤", letter: "C",
+    words: [
+      { w: "call", ph: "[kɔːl]", def: "vt.叫,喊;打电话 vi.叫;访问 n.叫;号召（call off 放弃,取消）", ex: "I'll call again later.", tr: "我过会儿再打电话来。" },
+      { w: "so-called", ph: "[ˌsəʊ ˈkɔːld]", def: "a.(贬)所谓的,号称的", ex: "How have these so-called improvements helped the local community?", tr: "这些所谓的进步对当地社区有什么帮助？" }
+    ]
+  }
+];
+if(typeof window!=='undefined'){window.WORD_DATA_WEEK4=WORD_DATA_WEEK4;}
+
+</script>
+<script>
 /* 把各周词表汇总到 WEEKS，WORD_DATA 指向"当前周"。以后每周新增：加一份 words_weekN.js 并在此追加一项即可。 */
 var WEEKS=[];
 if(typeof WORD_DATA!=='undefined'&&WORD_DATA){WEEKS.push({name:'第1周 · 词根词缀高频词 (T–V)',sub:'按词根词缀分组速记',data:WORD_DATA});}
 if(typeof WORD_DATA_WEEK2!=='undefined'&&WORD_DATA_WEEK2){WEEKS.push({name:'第2周 · 基础词汇 (T–Z)',sub:'常用基础单词表',data:WORD_DATA_WEEK2});}
 if(typeof WORD_DATA_WEEK3!=='undefined'&&WORD_DATA_WEEK3){WEEKS.push({name:'第3周 · 词根词缀高频词 (V–Y)',sub:'按词根词缀分组速记',data:WORD_DATA_WEEK3});}
+if(typeof WORD_DATA_WEEK4!=='undefined'&&WORD_DATA_WEEK4){WEEKS.push({name:'第4周 · 词根词缀高频词 (A–B)',sub:'按词根词缀分组速记',data:WORD_DATA_WEEK4});}
 </script>
 <script>
 /* 兼容 ES5：全部改写为老旧手机浏览器（安卓自带/X5/UC/QQ内核等）也能解析执行的写法。
